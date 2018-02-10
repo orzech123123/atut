@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Atut.Models;
+using Atut.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,10 +41,14 @@ namespace Atut
 //                options.Filters.Add(typeof(ApiExceptionFilter));
             });
 
-//            IndentJsonForDevelopment(mvc);
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
 
-//            services.Configure<ConfigurationManager>(Configuration.GetSection("AppSettings"));
-//            services.Resolve<IJWtHelper>().AddJwtAuthentication(services);
+            //            IndentJsonForDevelopment(mvc);
+
+            //            services.Configure<ConfigurationManager>(Configuration.GetSection("AppSettings"));
+            //            services.Resolve<IJWtHelper>().AddJwtAuthentication(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,13 +59,6 @@ namespace Atut
 //            IDatabaseManager databaseManager
             )
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
-            builder.AddEnvironmentVariables();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -83,6 +78,8 @@ namespace Atut
                 RequestPath = "/AdminLTE-2.4.3",
                 EnableDirectoryBrowsing = true
             });
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

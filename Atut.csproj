@@ -5,10 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="AdminLTE-2.4.3\**" />
-    <Content Remove="AdminLTE-2.4.3\**" />
-    <EmbeddedResource Remove="AdminLTE-2.4.3\**" />
-    <None Remove="AdminLTE-2.4.3\**" />
+    <None Include="AdminLTE-2.4.3\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +15,7 @@
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
+
 
 </Project>
 

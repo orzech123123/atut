@@ -41,6 +41,7 @@ namespace Atut
 //                options.Filters.Add(typeof(ApiExceptionFilter));
             });
 
+            services.AddScoped<IDatabaseManager, DatabaseManager>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
@@ -55,8 +56,8 @@ namespace Atut
         public void Configure(
             IApplicationBuilder app,
             IHostingEnvironment env,
-            ILoggerFactory loggerFactory
-//            IDatabaseManager databaseManager
+            ILoggerFactory loggerFactory,
+            IDatabaseManager databaseManager
             )
         {
             if (env.IsDevelopment())
@@ -87,6 +88,8 @@ namespace Atut
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            databaseManager.EnsureDatabaseCreated();
         }
 
 //        private void RegisterServices(IServiceCollection services)

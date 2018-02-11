@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Atut.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -27,7 +28,6 @@ namespace Atut.Controllers
             return View();
         }
 
-        [Authorize]
         public IActionResult About()
         {
             var uu = _httpContextAccessor.HttpContext.User;

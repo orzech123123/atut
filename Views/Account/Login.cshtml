@@ -1,12 +1,18 @@
-﻿@using Atut.ViewModels.AccountViewModels
+﻿@using Atut.Services
+@using Atut.ViewModels.AccountViewModels
 @using Microsoft.AspNetCore.Identity;
 
 @model LoginViewModel
 @inject SignInManager<User> SignInManager
+@inject INotificationManager NotificationManager
 
 @{
     ViewData["Title"] = "Logowanie";
     Layout = null;
+
+    var infos = NotificationManager.GeByTypeAndClear(NotificationType.Information);
+    var warnings = NotificationManager.GeByTypeAndClear(NotificationType.Warning);
+    var errors = NotificationManager.GeByTypeAndClear(NotificationType.Error);
 }
 
 
@@ -44,6 +50,16 @@
             padding: 0;
             margin: 0;
         }
+        .callout.callout-info > ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .callout.callout-warning > ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 
 </head>
@@ -56,6 +72,43 @@
         <div class="login-box-body">
             <p class="login-box-msg">Zaloguj się, aby rozpocząć sesję</p>
             
+            @if (errors.Any())
+            {
+                <div class="callout callout-danger">
+                    <ul>
+                        @foreach (var error in errors)
+                        {
+                            <li>@error.Content</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            @if (warnings.Any())
+            {
+                <div class="callout callout-warning">
+                    <ul>
+                        @foreach (var warning in warnings)
+                        {
+                            <li>@warning.Content</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            @if (infos.Any())
+            {
+                <div class="callout callout-info">
+                    <ul>
+                        @foreach (var info in infos)
+                        {
+                            <li>@info.Content</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+
             @if (!ViewData.ModelState.IsValid)
             {
                 <div asp-validation-summary="All" class="callout callout-danger"></div>

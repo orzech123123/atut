@@ -17,21 +17,21 @@ namespace Atut.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly IEmailSender _emailSender;
-        private readonly ISmsSender _smsSender;
+        private readonly IEmailService _emailService;
+        private readonly INotificationManager _notificationManager;
         private readonly ILogger _logger;
 
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IEmailSender emailSender,
-            ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            IEmailService emailService,
+            ILoggerFactory loggerFactory,
+            INotificationManager notificationManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailSender = emailSender;
-            _smsSender = smsSender;
+            _emailService = emailService;
+            _notificationManager = notificationManager;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -55,6 +55,13 @@ namespace Atut.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null) if (!await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model);
+                }
+
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
@@ -78,7 +85,7 @@ namespace Atut.Controllers
                     return View(model);
                 }
             }
-
+            
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -107,20 +114,16 @@ namespace Atut.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code }, HttpContext.Request.Scheme);
+                    await _emailService.SendEmailAsync(model.Email, "Atut - Potwierdź utworzenie konta", $"Potwierdź utworzenie konta w systemie Atut klikając w link: <a href='{callbackUrl}'>link</a>");
+                    
+                    _notificationManager.Add(NotificationType.Information, "Na skrzynkę e-mailową wysłana została wiadomość w celu potwierdzenia utworzenia konta. Kliknij link aktywujący i zaloguj się.");
+                    return RedirectToLocal(callbackUrl);
                 }
                 AddErrors(result);
             }
-
-            // If we got this far, something failed, redisplay form
+            
             return View(model);
         }
 
@@ -245,8 +248,11 @@ namespace Atut.Controllers
             {
                 return View("Error");
             }
+
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+            _notificationManager.Add(NotificationType.Information, "Konto zostało potwierdzone. Możesz przejść do logowania.");
+
+            return RedirectToAction(nameof(AccountController.Login), "Account");
         }
 
         //
@@ -389,11 +395,7 @@ namespace Atut.Controllers
             var message = "Your security code is: " + code;
             if (model.SelectedProvider == "Email")
             {
-                await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
-            }
-            else if (model.SelectedProvider == "Phone")
-            {
-                await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), message);
+                await _emailService.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
             }
 
             return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });

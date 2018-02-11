@@ -41,10 +41,11 @@ namespace Atut
 //                options.Filters.Add(typeof(ApiExceptionFilter));
             });
 
+            services.AddSingleton<INotificationManager, NotificationManager>();
             services.AddScoped<IDatabaseManager, DatabaseManager>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<IEmailService, EmailLabsMailService>();
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
             //            IndentJsonForDevelopment(mvc);
 

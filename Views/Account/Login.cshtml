@@ -41,6 +41,15 @@
     <![endif]-->
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    
+    <style>
+        .callout.callout-danger > ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+
 </head>
 <body class="hold-transition login-page">
     <div class="login-box">
@@ -50,16 +59,27 @@
         <!-- /.login-logo -->
         <div class="login-box-body">
             <p class="login-box-msg">Sign in to start your session</p>
+            
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div asp-validation-summary="All" class="callout callout-danger"></div>
+            }
 
-            <form action="../../index2.html" method="post">
-                <div class="form-group has-feedback">
-                    <input type="email" class="form-control" placeholder="Email">
-                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form">
+                 <div class="form-group has-feedback">
+                     <input asp-for="Email" type="email" class="form-control" placeholder="Email" />
+                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                 </div>
+                 <div class="form-group">
+                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="password" class="form-control" placeholder="Password">
+                    <input asp-for="Password" type="password" class="form-control"  placeholder="Password" />
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
+                 <div class="form-group">
+                     <span asp-validation-for="Password" class="text-danger"></span>
+                 </div>
                 <div class="row">
                     <div class="col-xs-8">
                         @* TODO <div class="checkbox icheck">

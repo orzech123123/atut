@@ -23,6 +23,7 @@ namespace Atut.Services
         public Task SendEmailAsync(string email, string subject, string message)
         {
             var mailMessage = new MailMessage(_emailSettings.Value.MailSender, email, subject, message);
+            mailMessage.IsBodyHtml = true;
 
             var client = new SmtpClient
             {

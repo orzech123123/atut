@@ -11,9 +11,10 @@ using System;
 namespace Atut.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    partial class IdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180212205527_AddedFirstAndLastNameToIdentity")]
+    partial class AddedFirstAndLastNameToIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

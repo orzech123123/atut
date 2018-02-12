@@ -27,8 +27,6 @@ namespace Atut
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //            RegisterServices(services);
-
             services.AddDbContext<IdentityDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -36,24 +34,17 @@ namespace Atut
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders();
 
-            IMvcBuilder mvc = services.AddMvc(options =>
-            {
-//                options.Filters.Add(typeof(ApiExceptionFilter));
-            });
+            services.AddScoped<IUserClaimsPrincipalFactory<User>, IdentityAppClaimsPrincipalFactory>();
+            
+            services.AddMvc();
 
             services.AddSingleton<INotificationManager, NotificationManager>();
             services.AddScoped<IDatabaseManager, DatabaseManager>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IEmailService, EmailLabsMailService>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
-
-            //            IndentJsonForDevelopment(mvc);
-
-            //            services.Configure<ConfigurationManager>(Configuration.GetSection("AppSettings"));
-            //            services.Resolve<IJWtHelper>().AddJwtAuthentication(services);
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(
             IApplicationBuilder app,
             IHostingEnvironment env,
@@ -92,23 +83,5 @@ namespace Atut
 
             databaseManager.EnsureDatabaseCreated();
         }
-
-//        private void RegisterServices(IServiceCollection services)
-//        {
-//            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CallGateConnectionString")));
-//            services.AddAutoMapper();
-//            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-//            DependencyInjectionRegisterer.RegisterAssemblies(services);
-//
-//            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-//            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-//            services.AddScoped<IUrlHelper>(provider =>
-//            {
-//                var actionContext = provider.GetService<IActionContextAccessor>().ActionContext;
-//                return new UrlHelper(actionContext);
-//            });
-//            services.AddTransient<ISeeder, UserSeeder>();
-//            services.AddTransient<ISeeder, GroupSeeder>();
-//        }
     }
 }

@@ -1,6 +1,4 @@
-using System;
-
-namespace Atut.Models
+namespace Atut.ViewModels
 {
     public class ErrorViewModel
     {

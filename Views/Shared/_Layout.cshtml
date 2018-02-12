@@ -1,87 +1,13 @@
-﻿@*
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Atut</title>
-
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
-</head>
-<body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Atut</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2018 - Atut</p>
-        </footer>
-    </div>
-
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-
-    @RenderSection("Scripts", required: false)
-</body>
-</html>
-*@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Context
 
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Starter</title>
+    <title>Atut | @ViewData["Title"]</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="@Url.Content("~/AdminLTE-2.4.3/bower_components/bootstrap/dist/css/bootstrap.min.css")">
@@ -130,11 +56,11 @@ desired effect
         <!-- Main Header -->
         <header class="main-header">
             <!-- Logo -->
-            <a href="index2.html" class="logo">
+            <a href="@Url.Action("/")" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><b>A</b>LT</span>
+                <span class="logo-mini"><b>A</b></span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b>Admin</b>LTE</span>
+                <span class="logo-lg"><b>Atut</b></span>
             </a>
             <!-- Header Navbar -->
             <nav class="navbar navbar-static-top" role="navigation">
@@ -146,7 +72,7 @@ desired effect
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
                         <!-- Messages: style can be found in dropdown.less-->
-                        <li class="dropdown messages-menu">
+                        @*<li class="dropdown messages-menu">
                             <!-- Menu toggle button -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-envelope-o"></i>
@@ -179,10 +105,10 @@ desired effect
                                 </li>
                                 <li class="footer"><a href="#">See All Messages</a></li>
                             </ul>
-                        </li>
+                        </li>*@
                         <!-- /.messages-menu -->
                         <!-- Notifications Menu -->
-                        <li class="dropdown notifications-menu">
+                    @*    <li class="dropdown notifications-menu">
                             <!-- Menu toggle button -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-bell-o"></i>
@@ -204,9 +130,9 @@ desired effect
                                 </li>
                                 <li class="footer"><a href="#">View all</a></li>
                             </ul>
-                        </li>
+                        </li>*@
                         <!-- Tasks Menu -->
-                        <li class="dropdown tasks-menu">
+                   @*     <li class="dropdown tasks-menu">
                             <!-- Menu Toggle Button -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-flag-o"></i>
@@ -242,7 +168,7 @@ desired effect
                                     <a href="#">View all tasks</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li>*@
                         <!-- User Account Menu -->
                         <li class="dropdown user user-menu">
                             <!-- Menu Toggle Button -->
@@ -250,19 +176,23 @@ desired effect
                                 <!-- The user image in the navbar-->
                                 <img src="@Url.Content("~/AdminLTE-2.4.3/dist/img/user2-160x160.jpg")" class="user-image" alt="User Image">
                                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                                <span class="hidden-xs">Alexander Pierce</span>
+                                <span class="hidden-xs">
+                                    @Context.HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.GivenName).Value
+                                    @Context.HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.Surname).Value
+                                </span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- The user image in the menu -->
                                 <li class="user-header">
                                     <img src="@Url.Content("~/AdminLTE-2.4.3/dist/img/user2-160x160.jpg")" class="img-circle" alt="User Image">
                                     <p>
-                                        Alexander Pierce - Web Developer
-                                        <small>Member since Nov. 2012</small>
+                                        @Context.HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.GivenName).Value
+                                        @Context.HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.Surname).Value
+                                        @*  <small>Member since Nov. 2012</small>*@
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
-                                <li class="user-body">
+                                @*<li class="user-body">
                                     <div class="row">
                                         <div class="col-xs-4 text-center">
                                             <a href="#">Followers</a>
@@ -275,22 +205,22 @@ desired effect
                                         </div>
                                     </div>
                                     <!-- /.row -->
-                                </li>
+                                </li>*@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
-                                    <div class="pull-left">
+                                    @*<div class="pull-left">
                                         <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                    </div>
+                                    </div>*@
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                        <a href="@Url.Action("LogOff", "Account")" class="btn btn-default btn-flat">Wyloguj się</a>
                                     </div>
                                 </li>
                             </ul>
                         </li>
                         <!-- Control Sidebar Toggle Button -->
-                        <li>
+                      @*  <li>
                             <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                        </li>
+                        </li>*@
                     </ul>
                 </div>
             </nav>
@@ -300,7 +230,7 @@ desired effect
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel">
+             @*   <div class="user-panel">
                     <div class="pull-left image">
                         <img src="@Url.Content("~/AdminLTE-2.4.3/dist/img/user2-160x160.jpg")" class="img-circle" alt="User Image">
                     </div>
@@ -309,9 +239,9 @@ desired effect
                         <!-- Status -->
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
-                </div>
+                </div>*@
                 <!-- search form (Optional) -->
-                <form action="#" method="get" class="sidebar-form">
+              @*  <form action="#" method="get" class="sidebar-form">
                     <div class="input-group">
                         <input type="text" name="q" class="form-control" placeholder="Search...">
                         <span class="input-group-btn">
@@ -320,14 +250,14 @@ desired effect
                             </button>
                         </span>
                     </div>
-                </form>
+                </form>*@
                 <!-- /.search form -->
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu" data-widget="tree">
-                    <li class="header">HEADER</li>
+                    @*<li class="header">HEADER</li>*@
                     <!-- Optionally, you can add icons to the links -->
-                    <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-                    <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
+                    <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Pojazdy</span></a></li>
+                    @*<li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-link"></i> <span>Multilevel</span>
@@ -339,7 +269,7 @@ desired effect
                             <li><a href="#">Link in level 2</a></li>
                             <li><a href="#">Link in level 2</a></li>
                         </ul>
-                    </li>
+                    </li>*@
                 </ul>
                 <!-- /.sidebar-menu -->
             </section>
@@ -350,13 +280,13 @@ desired effect
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Page Header
-                    <small>Optional description</small>
+                    @ViewData["Title"]
+                    <small>@ViewData["Description"]</small>
                 </h1>
-                <ol class="breadcrumb">
+                @*<ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
                     <li class="active">Here</li>
-                </ol>
+                </ol>*@
             </section>
             <!-- Main content -->
             <section class="content container-fluid">
@@ -369,13 +299,13 @@ desired effect
         <footer class="main-footer">
             <!-- To the right -->
             <div class="pull-right hidden-xs">
-                Anything you want
+               @* Anything you want*@
             </div>
             <!-- Default to the left -->
-            <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+            <strong>Copyright &copy; 2018 <a href="#">Atut</a></strong>
         </footer>
         <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
+       @* <aside class="control-sidebar control-sidebar-dark">
             <!-- Create the tabs -->
             <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
                 <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
@@ -438,11 +368,11 @@ desired effect
                 </div>
                 <!-- /.tab-pane -->
             </div>
-        </aside>
+        </aside>*@
         <!-- /.control-sidebar -->
         <!-- Add the sidebar's background. This div must be placed
         immediately after the control sidebar -->
-        <div class="control-sidebar-bg"></div>
+        @*<div class="control-sidebar-bg"></div>*@
     </div>
     <!-- ./wrapper -->
     <!-- REQUIRED JS SCRIPTS -->

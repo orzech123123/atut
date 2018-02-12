@@ -59,7 +59,7 @@ namespace Atut.Controllers
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user != null) if (!await _userManager.IsEmailConfirmedAsync(user))
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Logowanie nie powiodło się.");
                     return View(model);
                 }
 
@@ -82,7 +82,7 @@ namespace Atut.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Logowanie nie powiodło się.");
                     return View(model);
                 }
             }
@@ -355,7 +355,8 @@ namespace Atut.Controllers
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
-                throw new NotSupportedException("Reseting password for non existing user.");
+                _notificationManager.Add(NotificationType.Information, "Nowe hasło zostało ustawione. Możesz przejść do logowania.");
+                return RedirectToAction(nameof(Login), "Account");
             }
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)

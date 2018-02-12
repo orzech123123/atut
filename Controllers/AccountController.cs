@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Atut.Models;
@@ -233,6 +234,71 @@ namespace Atut.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View(model);
         }
+        
+        //
+        // GET: /Account/ForgotPassword
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            var viewModel = new SendEmailViewModel
+            {
+                TitleText = "Zapomniałeś hasła?",
+                ContentText = "Zapomniałeś hasła? Wprowadź swój adres e-mailowy",
+                ButtonText = "Wyślij"
+            };
+
+            return View("SendEmail", viewModel);
+        }
+
+        // GET: /Account/ReconfirmRegistrationEmail
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ReconfirmRegistrationEmail()
+        {
+            var viewModel = new SendEmailViewModel
+            {
+                TitleText = "Reaktywuj konto",
+                ContentText = "W celu reaktywacji konta wprowadź swój adres e-mailowy",
+                ButtonText = "Wyślij"
+            };
+
+            return View("SendEmail", viewModel);
+        }
+
+        //
+        // POST: /Account/ReconfirmRegistrationOrForgotPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ReconfirmRegistrationOrForgotPassword(SendEmailViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user != null)
+                {
+                    if (!await _userManager.IsEmailConfirmedAsync(user))
+                    {
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code }, HttpContext.Request.Scheme);
+                        await _emailService.SendEmailAsync(model.Email, "Atut - Potwierdź utworzenie konta", $"Potwierdź utworzenie konta w systemie Atut klikając w link: <a href='{callbackUrl}'>link</a>");
+                    }
+                    else
+                    {
+                        var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                        var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code }, HttpContext.Request.Scheme);
+                        await _emailService.SendEmailAsync(model.Email, "Atut - Odzyskiwanie hasła", "Aby zresetować hasło w systemi Atut klinij w link i postępuj zgodnie z instrukcjami: <a href=\"" + callbackUrl + "\">link</a>");
+                    }
+                }
+
+                _notificationManager.Add(NotificationType.Information, "Na skrzynkę e-mailową wysłana została wiadomość w celu rozwiązania problemu. Kliknij link w wiadomości.");
+                return RedirectToAction(nameof(Login), "Account");
+            }
+
+            return View("SendEmail", model);
+        }
 
         // GET: /Account/ConfirmEmail
         [HttpGet]
@@ -256,44 +322,6 @@ namespace Atut.Controllers
         }
 
         //
-        // GET: /Account/ForgotPassword
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ForgotPassword()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Account/ForgotPassword
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
-                }
-
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                // Send an email with this link
-                //var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                //   "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
-                //return View("ForgotPasswordConfirmation");
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        //
         // GET: /Account/ForgotPasswordConfirmation
         [HttpGet]
         [AllowAnonymous]
@@ -308,7 +336,10 @@ namespace Atut.Controllers
         [AllowAnonymous]
         public IActionResult ResetPassword(string code = null)
         {
-            return code == null ? View("Error") : View();
+            return code == null ? View("Error") : View(new ResetPasswordViewModel
+            {
+                Code = code
+            });
         }
 
         //
@@ -325,16 +356,16 @@ namespace Atut.Controllers
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
-                // Don't reveal that the user does not exist
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                throw new NotSupportedException("Reseting password for non existing user.");
             }
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                _notificationManager.Add(NotificationType.Information, "Nowe hasło zostało ustawione. Możesz przejść do logowania.");
+                return RedirectToAction(nameof(Login), "Account");
             }
             AddErrors(result);
-            return View();
+            return View(model);
         }
 
         //

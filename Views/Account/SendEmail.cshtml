@@ -2,12 +2,12 @@
 @using Atut.ViewModels.AccountViewModels
 @using Microsoft.AspNetCore.Identity;
 
-@model LoginViewModel
+@model SendEmailViewModel
 @inject SignInManager<User> SignInManager
 @inject INotificationManager NotificationManager
 
 @{
-    ViewData["Title"] = "Logowanie";
+    ViewData["Title"] = Model.TitleText;
     Layout = null;
 
     var infos = NotificationManager.GeByTypeAndClear(NotificationType.Information);
@@ -21,7 +21,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Atut | Logowanie</title>
+    <title>Atut | @Model.TitleText</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -70,7 +70,7 @@
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">Zaloguj się, aby rozpocząć sesję</p>
+            <p class="login-box-msg">@Model.ContentText</p>
             
             @if (errors.Any())
             {
@@ -114,7 +114,7 @@
                 <div asp-validation-summary="All" class="callout callout-danger"></div>
             }
 
-            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form">
+            <form asp-controller="Account" asp-action="ReconfirmRegistrationOrForgotPassword"  asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form">
                  <div class="form-group has-feedback">
                      <input asp-for="Email" type="email" class="form-control" placeholder="Email" />
                      <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -122,13 +122,6 @@
                  <div class="form-group">
                      <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
-                <div class="form-group has-feedback">
-                    <input asp-for="Password" type="password" class="form-control"  placeholder="Hasło" />
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                </div>
-                 <div class="form-group">
-                     <span asp-validation-for="Password" class="text-danger"></span>
-                 </div>
                 <div class="row">
                     <div class="col-xs-8">
                         @* TODO <div class="checkbox icheck">
@@ -139,14 +132,14 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">Zaloguj</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">@Model.ButtonText</button>
                     </div>
                     <!-- /.col -->
                 </div>
             </form>
 
-            <a href="@Url.Action("Register")" class="text-center">Utwórz konto użytkownika</a><br/>
-            <a href="@Url.Action("ForgotPassword")">Zapomniałem hasła</a><br>
+            <a href="@Url.Action("Login")">Posiadasz już konto? Zaloguj się</a><br/>
+            <a href="@Url.Action("Register")" class="text-center">Utwórz konto użytkownika</a>
         </div>
         <!-- /.login-box-body -->
     </div>

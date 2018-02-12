@@ -2,7 +2,7 @@
 
 namespace Atut.ViewModels.AccountViewModels
 {
-    public class ForgotPasswordViewModel
+    public class SendEmailViewModel
     {
         [Required]
         [EmailAddress]

@@ -92,6 +92,8 @@ namespace Atut
 
             identityDbManager.EnsureDatabaseCreated();
             atutDbManager.EnsureDatabaseCreated();
+            identityDbManager.Migrate();
+            atutDbManager.Migrate();
         }
     }
 }

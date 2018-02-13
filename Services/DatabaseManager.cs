@@ -23,5 +23,10 @@ namespace Atut.Services
                 _databaseContext.SaveChanges();
             }
         }
+
+        public void Migrate()
+        {
+            _databaseContext.Database.Migrate();
+        }
     }
 }

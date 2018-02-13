@@ -6,5 +6,6 @@ namespace Atut.Services
     {
         void EnsureDatabaseCreated();
         void Commit();
+        void Migrate();
     }
 }

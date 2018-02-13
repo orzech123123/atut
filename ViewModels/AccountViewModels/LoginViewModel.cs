@@ -5,7 +5,7 @@ namespace Atut.ViewModels.AccountViewModels
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Niepoprawny e-mail")]
         public string Email { get; set; }
 
         [Required]

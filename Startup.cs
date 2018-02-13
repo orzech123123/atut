@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
 using Atut.Models;
 using Atut.Services;
 using Microsoft.AspNetCore.Builder;
@@ -53,6 +54,10 @@ namespace Atut
             IDatabaseManager databaseManager
             )
         {
+//            var cultureInfo = new CultureInfo("pl-PL");
+//            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+//            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

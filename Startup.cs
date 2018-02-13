@@ -32,7 +32,8 @@ namespace Atut
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityDbContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddErrorDescriber<PolishIdentityErrorDescriber>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<User>, IdentityAppClaimsPrincipalFactory>();
             

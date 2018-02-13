@@ -1,12 +1,12 @@
-﻿using Atut.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Atut.Services
 {
-    public class DatabaseManager : IDatabaseManager
+    public class DatabaseManager<TContext> : IDatabaseManager<TContext> where TContext : DbContext
     {
-        private readonly IdentityDbContext _databaseContext;
+        private readonly TContext _databaseContext;
 
-        public DatabaseManager(IdentityDbContext databaseContext)
+        public DatabaseManager(TContext databaseContext)
         {
             _databaseContext = databaseContext;
         }

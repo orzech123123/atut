@@ -1,49 +1,29 @@
-﻿using System.Diagnostics;
+﻿using System.Linq;
+using Atut.Models;
+using Atut.Services;
 using Microsoft.AspNetCore.Mvc;
-using Atut.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 
 namespace Atut.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly AtutDbContext _dbContext;
+        private readonly IDatabaseManager<AtutDbContext> _databaseManager;
 
-        public HomeController(IHttpContextAccessor httpContextAccessor)
+        public HomeController(AtutDbContext dbContext, IDatabaseManager<AtutDbContext> databaseManager)
         {
-            _httpContextAccessor = httpContextAccessor;
+            _dbContext = dbContext;
+            _databaseManager = databaseManager;
         }
 
         public IActionResult Index()
         {
-            var uu = _httpContextAccessor.HttpContext.User;
-            var user = this.User;
+            _dbContext.Vehicles.Add(new Vehicle {Name = "asd", RegistrationNumber = "324"});
+            _databaseManager.Commit();
 
-            return View();
-        }
-
-        public IActionResult About()
-        {
-            var uu = _httpContextAccessor.HttpContext.User;
-            var user = this.User;
-
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(_dbContext.Vehicles.Count());
         }
     }
 }

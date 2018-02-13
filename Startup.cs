@@ -1,5 +1,5 @@
-﻿using System.Globalization;
-using System.IO;
+﻿using System.IO;
+using Atut.Identity;
 using Atut.Models;
 using Atut.Services;
 using Microsoft.AspNetCore.Builder;
@@ -30,6 +30,8 @@ namespace Atut
         {
             services.AddDbContext<IdentityDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<AtutDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityDbContext>()
@@ -41,7 +43,7 @@ namespace Atut
             services.AddMvc();
 
             services.AddSingleton<INotificationManager, NotificationManager>();
-            services.AddScoped<IDatabaseManager, DatabaseManager>();
+            services.AddScoped(typeof(IDatabaseManager<>), typeof(DatabaseManager<>));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IEmailService, EmailLabsMailService>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
@@ -51,7 +53,8 @@ namespace Atut
             IApplicationBuilder app,
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
-            IDatabaseManager databaseManager
+            IDatabaseManager<IdentityDbContext> identityDbManager,
+            IDatabaseManager<IdentityDbContext> atutDbManager
             )
         {
 //            var cultureInfo = new CultureInfo("pl-PL");
@@ -87,7 +90,8 @@ namespace Atut
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            databaseManager.EnsureDatabaseCreated();
+            identityDbManager.EnsureDatabaseCreated();
+            atutDbManager.EnsureDatabaseCreated();
         }
     }
 }

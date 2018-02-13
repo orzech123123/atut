@@ -90,11 +90,11 @@ namespace Atut
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            identityDbManager.EnsureDatabaseCreated();
-            atutDbManager.EnsureDatabaseCreated();
-
             atutDbManager.Migrate();
             identityDbManager.Migrate();
+
+            identityDbManager.EnsureDatabaseCreated();
+            atutDbManager.EnsureDatabaseCreated();
         }
     }
 }

@@ -54,7 +54,7 @@ namespace Atut
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
             IDatabaseManager<IdentityDbContext> identityDbManager,
-            IDatabaseManager<IdentityDbContext> atutDbManager
+            IDatabaseManager<AtutDbContext> atutDbManager
             )
         {
 //            var cultureInfo = new CultureInfo("pl-PL");
@@ -92,8 +92,9 @@ namespace Atut
 
             identityDbManager.EnsureDatabaseCreated();
             atutDbManager.EnsureDatabaseCreated();
-            identityDbManager.Migrate();
+
             atutDbManager.Migrate();
+            identityDbManager.Migrate();
         }
     }
 }

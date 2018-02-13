@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Atut.Migrations.AtutDb
 {
-    public partial class CreateVehicles : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

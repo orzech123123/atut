@@ -11,8 +11,8 @@ using System;
 namespace Atut.Migrations.AtutDb
 {
     [DbContext(typeof(AtutDbContext))]
-    [Migration("20180213170407_CreateVehicles")]
-    partial class CreateVehicles
+    [Migration("20180213183401_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

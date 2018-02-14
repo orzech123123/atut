@@ -1,9 +1,11 @@
-﻿@{
-//    ViewData["Title"] = "Strona główna";
+﻿@model IEnumerable<Atut.ViewModels.VehicleViewModel> 
+
+@{
+    ViewData["Title"] = "Pojazdy";
 //    ViewData["Description"] = "Dodatkowy opis";
 }
 
-@model int
+@Model.Count()
 
 @Model
 

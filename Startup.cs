@@ -2,6 +2,7 @@
 using Atut.Identity;
 using Atut.Models;
 using Atut.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -39,6 +40,8 @@ namespace Atut
             services.AddScoped<IUserClaimsPrincipalFactory<User>, IdentityAppClaimsPrincipalFactory>();
             
             services.AddMvc();
+
+            services.AddAutoMapper();
 
             services.AddSingleton<INotificationManager, NotificationManager>();
             services.AddScoped<IDatabaseManager, DatabaseManager>();

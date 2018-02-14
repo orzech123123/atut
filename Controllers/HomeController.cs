@@ -9,21 +9,24 @@ namespace Atut.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly AtutDbContext _dbContext;
-        private readonly IDatabaseManager<AtutDbContext> _databaseManager;
+        private readonly DatabaseContext _databaseContext;
+        private readonly IDatabaseManager _databaseManager;
 
-        public HomeController(AtutDbContext dbContext, IDatabaseManager<AtutDbContext> databaseManager)
+        public HomeController(DatabaseContext databaseContext, IDatabaseManager databaseManager)
         {
-            _dbContext = dbContext;
+            _databaseContext = databaseContext;
             _databaseManager = databaseManager;
         }
 
         public IActionResult Index()
         {
-            _dbContext.Vehicles.Add(new Vehicle {Name = "asd", RegistrationNumber = "324"});
+            var user = _databaseContext.Users.Single(u => u.Email == User.Identity.Name);
+            var vehicle = _databaseContext.Vehicles.FirstOrDefault();
+
+            _databaseContext.Vehicles.Add(new Vehicle {Name = "asd", RegistrationNumber = "324", User = user });
             _databaseManager.Commit();
 
-            return View(_dbContext.Vehicles.Count());
+            return View(_databaseContext.Vehicles.Count());
         }
     }
 }

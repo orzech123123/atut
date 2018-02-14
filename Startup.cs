@@ -28,13 +28,11 @@ namespace Atut
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<IdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<AtutDbContext>(options =>
+            services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<IdentityDbContext>()
+                .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders()
                 .AddErrorDescriber<PolishIdentityErrorDescriber>();
 
@@ -43,7 +41,7 @@ namespace Atut
             services.AddMvc();
 
             services.AddSingleton<INotificationManager, NotificationManager>();
-            services.AddScoped(typeof(IDatabaseManager<>), typeof(DatabaseManager<>));
+            services.AddScoped<IDatabaseManager, DatabaseManager>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IEmailService, EmailLabsMailService>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
@@ -53,8 +51,7 @@ namespace Atut
             IApplicationBuilder app,
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
-            IDatabaseManager<IdentityDbContext> identityDbManager,
-            IDatabaseManager<AtutDbContext> atutDbManager
+            IDatabaseManager databaseManager
             )
         {
 //            var cultureInfo = new CultureInfo("pl-PL");
@@ -90,11 +87,8 @@ namespace Atut
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            atutDbManager.Migrate();
-            identityDbManager.Migrate();
-
-            identityDbManager.EnsureDatabaseCreated();
-            atutDbManager.EnsureDatabaseCreated();
+            databaseManager.Migrate();
+            databaseManager.EnsureDatabaseCreated();
         }
     }
 }

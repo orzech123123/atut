@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Atut.Services
+﻿namespace Atut.Services
 {
-    public interface IDatabaseManager<TContext> where TContext : DbContext
+    public interface IDatabaseManager
     {
         void EnsureDatabaseCreated();
         void Commit();

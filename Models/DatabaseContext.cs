@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Atut.Identity
+namespace Atut.Models
 {
-    public class IdentityDbContext : IdentityDbContext<User>
+    public class DatabaseContext : IdentityDbContext<User>
     {
-        public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base(options) { }
+        public DbSet<Vehicle> Vehicles { get; set; }
+
+        public DatabaseContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

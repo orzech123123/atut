@@ -9,5 +9,8 @@
   },
   "scripts": {
     "build:dev": "webpack --display-error-details --watch"
+  },
+  "dependencies": {
+    "vue": "^2.5.13"
   }
 }

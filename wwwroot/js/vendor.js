@@ -98,22 +98,22 @@
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/******/ ({
+
+/***/ 7:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-exports.__esModule = true;
-function Alerter(message) {
+/* harmony export (immutable) */ __webpack_exports__["a"] = Alerter;
+/* unused harmony export ConsoleLogger */
+﻿function Alerter(message) {
     alert("Alert from Utils: " + message);
 }
-exports.Alerter = Alerter;
+
 function ConsoleLogger(message) {
     console.log("Log from Utils: " + message);
 }
-exports.ConsoleLogger = ConsoleLogger;
-
 
 /***/ })
-/******/ ]);
+
+/******/ });

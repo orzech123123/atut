@@ -9,14 +9,27 @@ module.exports = {
         contact: './Scripts/contact/contact-page.ts'
     },
     resolve: {
-        extensions: [".ts"]
+        extensions: [".ts"],
+        alias: {
+            vue: 'vue/dist/vue.js'
+        }
     },
     module: {
         rules: [
+//            {
+//                test: /\.tsx?$/,
+//                loader: 'ts-loader',
+//                exclude: /node_modules/,
+//            }
             {
-                test: /\.tsx?$/,
-                loader: 'ts-loader',
-                exclude: /node_modules/,
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
             }
         ]
     },

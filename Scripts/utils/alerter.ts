@@ -1,7 +1,7 @@
-﻿export function Alerter(message: string) {
+﻿export function Alerter(message) {
     alert("Alert from Utils: " + message);
 }
 
-export function ConsoleLogger(message: string) {
+export function ConsoleLogger(message) {
     console.log("Log from Utils: " + message);
 }

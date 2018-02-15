@@ -34,7 +34,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		2: 0
+/******/ 		1: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -98,22 +98,4 @@
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 13:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = Alerter;
-/* unused harmony export ConsoleLogger */
-﻿function Alerter(message) {
-    alert("Alert from Utils: " + message);
-}
-
-function ConsoleLogger(message) {
-    console.log("Log from Utils: " + message);
-}
-
-/***/ })
-
-/******/ });
+/******/ ([]);

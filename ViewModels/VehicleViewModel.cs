@@ -12,9 +12,11 @@ namespace Atut.ViewModels
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Nazwa")]
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "Numer rejestracyjny")]
         public string RegistrationNumber { get; set; }
     }
 }

@@ -48,6 +48,7 @@ namespace Atut
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IEmailService, EmailLabsMailService>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddTransient<VehicleService>();
         }
         
         public void Configure(

@@ -1,5 +1,26 @@
-"use strict";
-exports.__esModule = true;
-var alerter_1 = require("../utils/alerter");
-alerter_1.Alerter("You've reached the homepage");
-//# sourceMappingURL=home-page.js.map
+﻿import { Alerter } from "../utils/alerter";
+//
+//Alerter("You've reached the homepage");
+
+import Vue from "vue";
+import { ClientTable } from "vue-tables-2";
+Vue.use(ClientTable); 
+
+var viewModel = new Vue({
+    el: "#test",
+    data: {
+        message: "assaa",
+        columns: ['id', 'name', 'age'],
+        tableData: [
+            { id: 1, name: "John", age: "20" },
+            { id: 2, name: "Jane", age: "24" },
+            { id: 3, name: "Susan", age: "16" },
+            { id: 4, name: "Chris", age: "55" },
+            { id: 5, name: "Dan", age: "40" }
+        ],
+        options: {
+            // see the options API
+        
+        }
+    }
+});

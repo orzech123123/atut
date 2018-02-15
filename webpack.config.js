@@ -4,14 +4,15 @@ var webpack = require("webpack");
 module.exports = {
     entry: {
         // Output a "home.js" file from the "home-page.ts" file
-        home: './Scripts/home/home-page.ts',
+        home: './Scripts/home/home-page.js',
         // Output a "contact.js" file from the "contact-page.ts" file
-        contact: './Scripts/contact/contact-page.ts'
+        contact: './Scripts/contact/contact-page.js'
     },
     resolve: {
-        extensions: [".ts"],
+        extensions: [".js"],
         alias: {
-            vue: 'vue/dist/vue.js'
+            vue: 'vue/dist/vue.js',
+//            "vue-tables-2": 'vue-tables-2/dist/vue-tables-2.min.js'
         }
     },
     module: {
@@ -22,7 +23,7 @@ module.exports = {
 //                exclude: /node_modules/,
 //            }
             {
-                test: /\.js$/,
+                test: /\.(js)$ /,
                 exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'babel-loader',

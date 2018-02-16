@@ -7,9 +7,20 @@
 }
 
 <div id="VehicleIndex">
-    <v-client-table :data="data" :columns="columns" :options="options"></v-client-table>
+    <v-client-table :data="data" :columns="columns" :options="options">
+        <template slot="actions" scope="props">
+            <div>
+                <a :href="'/Vehicle/Edit/'+ props.row.id" class="btn btn-primary">Edytuj</a>
+                <a :href="'/Vehicle/Delete/'+ props.row.id" class="btn btn-danger">Usuń</a>
+            </div>
+        </template>
+    </v-client-table>
 </div>
 
+@section Buttons
+{
+    <a href="@Url.Action("Create")" class="btn btn-success">Dodaj</a>
+}
 
 @section Scripts {
     <script type="text/javascript">

@@ -27,6 +27,27 @@ namespace Atut.Controllers
         }
 
         [HttpGet]
+        public IActionResult Create()
+        {
+            var viewModel = _vehicleService.Create();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Create(VehicleViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _vehicleService.Save(viewModel);
+                _databaseManager.Commit();
+                return RedirectToAction("Index");
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             var viewModel = _vehicleService.GetOneById(id);
@@ -41,10 +62,20 @@ namespace Atut.Controllers
             {
                 _vehicleService.Save(viewModel);
                 _databaseManager.Commit();
+
                 return RedirectToAction("Index");
             }
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            _vehicleService.Delete(id);
+            _databaseManager.Commit();
+
+            return RedirectToAction("Index");
         }
     }
 }

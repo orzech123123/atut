@@ -1,5 +1,5 @@
-﻿.VueTables.VueTables--client:first-child {
-    /*    display: none;*/
+﻿.VueTables__search, .VueTables__limit, .VuePagination__count {
+    display: none;
 }
 
 .callout.callout-danger > ul {

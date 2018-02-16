@@ -9,22 +9,17 @@ var vehicleIndexViewModel = function (model) {
         data: {
             message: "assaa",
             columns:
-            ["name", "registrationNumber"
-//                {
-//                    name: "name",
-//                    title: "Nazwa"
-//                },
-//                {
-//                    name: "registrationNumber",
-//                    title: "Numer rejestracyjny"
-//                }
-            ],
+            ["name", "registrationNumber", "actions"],
             options: {
                 headings: {
                     name: 'Nazwa',
-                    registrationNumber: 'Numer rejestracyjny'
+                    registrationNumber: 'Numer rejestracyjny',
+                    actions: 'Akcje'
                 },
-                perPage: 20
+                perPage: 20,
+//                templates: {
+//                    actions: "akcje"
+//                }
             },
             data: model
         }

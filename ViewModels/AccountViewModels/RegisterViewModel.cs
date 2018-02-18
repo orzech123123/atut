@@ -4,31 +4,31 @@ namespace Atut.ViewModels.AccountViewModels
 {
     public class RegisterViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "E-mail jest wymagany")]
+        [EmailAddress(ErrorMessage = "Niepoprawny e-mail")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Hasło jest wymagane")]
+        [StringLength(100, ErrorMessage = "Hasło musi zawierać co najmniej {2} znaków", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "Potwierdzenie hasła nie odpowiada wprowadzonemu hasłu")]
         public string ConfirmPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Imię jest wymagane")]
         [Display(Name = "Imię")]
         public string FirstName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Nazwisko jest wymagane")]
         [Display(Name = "Nazwisko")]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Nr telefonu jest wymagany")]
         [Phone]
         [Display(Name = "Nr telefonu")]
         public string PhoneNumber { get; set; }

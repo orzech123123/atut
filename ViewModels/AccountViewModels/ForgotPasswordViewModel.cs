@@ -4,8 +4,8 @@ namespace Atut.ViewModels.AccountViewModels
 {
     public class ForgotPasswordViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "E-mail jest wymagany")]
+        [EmailAddress(ErrorMessage = "Niepoprawny e-mail")]
         public string Email { get; set; }
 
         public string TitleText { get; set; }

@@ -11,11 +11,11 @@ namespace Atut.ViewModels
         [Required]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Nazwa jest wymagana")]
         [Display(Name = "Nazwa")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Numer rejestracyjny jest wymagany")]
         [Display(Name = "Numer rejestracyjny")]
         public string RegistrationNumber { get; set; }
     }

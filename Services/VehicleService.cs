@@ -4,6 +4,7 @@ using Atut.Models;
 using Atut.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Atut.Services
 {
@@ -29,13 +30,15 @@ namespace Atut.Services
         public IEnumerable<VehicleViewModel> GetAll()
         {
             return _databaseContext.Vehicles
+                .Include(v => v.User)
+                .Where(v => v.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name)
                 .Select(v => _mapper.Map<Vehicle, VehicleViewModel>(v))
                 .ToList();
         }
 
         public VehicleViewModel GetOneById(int id)
         {
-            var vehicle = _databaseContext.Vehicles.Find(id);
+            var vehicle = _databaseContext.Vehicles.Include(v => v.User).SingleOrDefault(v => v.Id == id);
             var viewModel = _mapper.Map<Vehicle, VehicleViewModel>(vehicle);
 
             return viewModel;
@@ -56,7 +59,7 @@ namespace Atut.Services
 
             _mapper.Map(viewModel, vehicle);
 
-            vehicle.User = _databaseContext.Users.Single(u => u.Email == _httpContextAccessor.HttpContext.User.Identity.Name);
+            vehicle.User = _databaseContext.Users.Single(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
 
             if (vehicle.Id <= 0)
             {

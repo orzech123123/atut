@@ -4,11 +4,11 @@ namespace Atut.ViewModels.AccountViewModels
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "E-mail jest wymagany")]
         [EmailAddress(ErrorMessage = "Niepoprawny e-mail")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Hasło jest wymagane")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

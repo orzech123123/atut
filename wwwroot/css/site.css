@@ -2,6 +2,15 @@
     display: none;
 }
 
+.VueTables__sort-icon {
+    float: inherit !important;
+    margin-left: 10px;
+}
+
+.VueTables__sortable {
+    cursor: pointer;
+}
+
 .callout.callout-danger > ul {
     list-style-type: none;
     padding: 0;

@@ -4,6 +4,7 @@ using Atut.Models;
 using Atut.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
 namespace Atut.Services
@@ -42,6 +43,22 @@ namespace Atut.Services
             var viewModel = _mapper.Map<Vehicle, VehicleViewModel>(vehicle);
 
             return viewModel;
+        }
+
+        public void ValidateSave(VehicleViewModel viewModel, ModelStateDictionary modelState)
+        {
+            if (!string.IsNullOrWhiteSpace(viewModel.RegistrationNumber))
+            {
+                var sameRegisterNumberVehicle = _databaseContext.Vehicles
+                    .Where(v => v.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name)
+                    .Where(v => v.Id != viewModel.Id)
+                    .SingleOrDefault(v => v.RegistrationNumber.ToLower() == viewModel.RegistrationNumber.ToLower());
+
+                if (sameRegisterNumberVehicle != null)
+                {
+                    modelState.AddModelError(nameof(VehicleViewModel.RegistrationNumber), "Istnieje już pojazd z identycznym numerem rejestracyjnym.");
+                }
+            }
         }
 
         public void Save(VehicleViewModel viewModel)

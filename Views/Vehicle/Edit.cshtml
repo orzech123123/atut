@@ -7,11 +7,6 @@
     ViewData["Title"] = "Edycja pojazdu";
 }
 
-@if (!ViewData.ModelState.IsValid)
-{
-    <div asp-validation-summary="All" class="callout callout-danger"></div>
-}
-
 @{ Html.RenderPartial("VehicleModelEditor"); }
 
 @section Scripts

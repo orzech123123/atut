@@ -13,6 +13,8 @@ namespace Atut.Models
 
         [Required]
         public string RegistrationNumber { get; set; }
+        
+        public string UserId { get; set; }
 
         [Required]
         public virtual User User { get; set; }

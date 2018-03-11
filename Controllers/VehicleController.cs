@@ -37,6 +37,8 @@ namespace Atut.Controllers
         [HttpPost]
         public IActionResult Create(VehicleViewModel viewModel)
         {
+            _vehicleService.ValidateSave(viewModel, ModelState);
+
             if (ModelState.IsValid)
             {
                 _vehicleService.Save(viewModel);
@@ -58,6 +60,8 @@ namespace Atut.Controllers
         [HttpPost]
         public IActionResult Edit(VehicleViewModel viewModel)
         {
+            _vehicleService.ValidateSave(viewModel, ModelState);
+
             if (ModelState.IsValid)
             {
                 _vehicleService.Save(viewModel);

@@ -1,5 +1,4 @@
-﻿using Atut.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Atut.Models
@@ -12,6 +11,10 @@ namespace Atut.Models
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Vehicle>()
+                .HasIndex(v => new { v.RegistrationNumber, v.UserId })
+                .IsUnique();
+
             base.OnModelCreating(builder);
         }
     }

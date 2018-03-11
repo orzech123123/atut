@@ -7,14 +7,9 @@
     ViewData["Title"] = "Dodawanie pojazdu";
 }
 
-@if (!ViewData.ModelState.IsValid)
-{
-    <div asp-validation-summary="All" class="callout callout-danger"></div>
-}
-
 @{ Html.RenderPartial("VehicleModelEditor"); }
 
 @section Scripts
-    {
+{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

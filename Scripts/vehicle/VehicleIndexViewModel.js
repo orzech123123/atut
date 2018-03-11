@@ -17,10 +17,7 @@ var vehicleIndexViewModel = function (model) {
                     actions: 'Akcje'
                 },
                 sortable: ["name", "registrationNumber"],
-                perPage: 20,
-//                templates: {
-//                    actions: "akcje"
-//                }
+                perPage: 20
             },
             data: model
         }

@@ -6,6 +6,7 @@ namespace Atut.Models
     public class DatabaseContext : IdentityDbContext<User>
     {
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Journey> Journeys { get; set; }
 
         public DatabaseContext(DbContextOptions options) : base(options) { }
 

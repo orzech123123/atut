@@ -10,6 +10,9 @@ namespace Atut.Services
         {
             CreateMap<Vehicle, VehicleViewModel>();
             CreateMap<VehicleViewModel, Vehicle>();
+
+            CreateMap<Journey, JourneyViewModel>();
+            CreateMap<JourneyViewModel, Journey>();
         }
     }
 }

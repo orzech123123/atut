@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Atut.Filters;
 using Atut.Identity;
 using Atut.Models;
 using Atut.Services;
@@ -39,7 +40,10 @@ namespace Atut
 
             services.AddScoped<IUserClaimsPrincipalFactory<User>, IdentityAppClaimsPrincipalFactory>();
             
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<RouteHelperUpdateFilter>();
+            });
 
             services.AddAutoMapper();
 
@@ -49,6 +53,8 @@ namespace Atut
             services.AddTransient<IEmailService, EmailLabsMailService>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddTransient<VehicleService>();
+            services.AddTransient<JourneyService>();
+            services.AddScoped<RouteHelper>();
         }
         
         public void Configure(
@@ -58,10 +64,6 @@ namespace Atut
             IDatabaseManager databaseManager
             )
         {
-//            var cultureInfo = new CultureInfo("pl-PL");
-//            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-//            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

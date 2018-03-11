@@ -4,7 +4,8 @@
 
 @inject IHttpContextAccessor Context
 @inject INotificationManager NotificationManager
-
+@inject RouteHelper RouteHelper
+   
 @{
     var infos = NotificationManager.GeByTypeAndClear(NotificationType.Information);
     var warnings = NotificationManager.GeByTypeAndClear(NotificationType.Warning);
@@ -268,7 +269,10 @@ desired effect
                 <ul class="sidebar-menu" data-widget="tree">
                     @*<li class="header">HEADER</li>*@
                     <!-- Optionally, you can add icons to the links -->
-                    <li class="active"><a href="@Url.Action("Index", "Vehicle")"><i class="fa fa-link"></i> <span>Pojazdy</span></a></li>
+
+                    <li class="@(RouteHelper.Controller == "Vehicle" ? "active" : string.Empty)"><a href="@Url.Action("Index", "Vehicle")"><i class="fa fa-link"></i> <span>Pojazdy</span></a></li>
+                    <li class="@(RouteHelper.Controller == "Journey" ? "active" : string.Empty)"><a href="@Url.Action("Index", "Journey")"><i class="fa fa-link"></i> <span>Trasy</span></a></li>
+                    @RouteHelper.Controller
                     @*<li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
                         <li class="treeview">
                             <a href="#">
@@ -288,62 +292,62 @@ desired effect
             <!-- /.sidebar -->
         </aside>
         <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            
-            @if (errors.Any())
-            {
-                <div class="callout callout-danger">
-                    <ul>
-                        @foreach (var error in errors)
-                        {
-                            <li>@error.Content</li>
-                        }
-                    </ul>
-                </div>
-            }
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
 
-            @if (warnings.Any())
-            {
-                <div class="callout callout-warning">
-                    <ul>
-                        @foreach (var warning in warnings)
-                        {
-                            <li>@warning.Content</li>
-                        }
-                    </ul>
-                </div>
-            }
+                @if (errors.Any())
+                {
+                    <div class="callout callout-danger">
+                        <ul>
+                            @foreach (var error in errors)
+                            {
+                                <li>@error.Content</li>
+                            }
+                        </ul>
+                    </div>
+                }
 
-            @if (infos.Any())
-            {
-                <div class="callout callout-info">
-                    <ul>
-                        @foreach (var info in infos)
-                        {
-                            <li>@info.Content</li>
-                        }
-                    </ul>
-                </div>
-            }
+                @if (warnings.Any())
+                {
+                    <div class="callout callout-warning">
+                        <ul>
+                            @foreach (var warning in warnings)
+                            {
+                                <li>@warning.Content</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                @if (infos.Any())
+                {
+                    <div class="callout callout-info">
+                        <ul>
+                            @foreach (var info in infos)
+                            {
+                                <li>@info.Content</li>
+                            }
+                        </ul>
+                    </div>
+                }
 
 
-            <h1>
-                @ViewData["Title"]
-                @RenderSection("Buttons", required: false)
-            </h1>
-            @*<ol class="breadcrumb">
+                <h1>
+                    @ViewData["Title"]
+                    @RenderSection("Buttons", required: false)
+                </h1>
+                @*<ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
                         <li class="active">Here</li>
                     </ol>*@
-        </section>
-        <!-- Main content -->
-        <section class="content container-fluid">
-            @RenderBody()
-        </section>
-        <!-- /.content -->
-    </div>
+            </section>
+            <!-- Main content -->
+            <section class="content container-fluid">
+                @RenderBody()
+            </section>
+            <!-- /.content -->
+        </div>
         <!-- /.content-wrapper -->
         <!-- Main Footer -->
         <footer class="main-footer">

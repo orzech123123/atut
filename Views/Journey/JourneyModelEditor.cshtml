@@ -1,0 +1,33 @@
+﻿@using Atut.Helpers;
+@using Atut.ViewModels
+
+@model Atut.ViewModels.JourneyViewModel
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div asp-validation-summary="All" class="callout callout-danger"></div>
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Dane trasy</h3>
+    </div>
+    <form class="form-horizontal" method="post" role="form">
+        <div class="box-body">
+            <div class="form-group">
+                <label for="StartingPlace" class="col-sm-2 control-label">Miejsce wsiadania</label>
+
+                <div class="col-sm-10">
+                    <input asp-for="StartingPlace" type="text" class="form-control" id="StartingPlace" placeholder="Miejsce wsiadania">
+                    <span asp-validation-for="StartingPlace" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <a href="@Url.Action("Index")" class="btn btn-default">Anuluj</a>
+            <button type="submit" class="btn btn-primary pull-right">Zapisz</button>
+        </div>
+        <!-- /.box-footer -->
+    </form>
+</div>

@@ -1,0 +1,32 @@
+﻿@using Atut.Helpers;
+
+@model IEnumerable<Atut.ViewModels.JourneyViewModel>
+
+@{
+    ViewData["Title"] = "Trasy";
+}
+
+<div id="JourneyIndex">
+    <v-client-table :data="data" :columns="columns" :options="options">
+        <template slot="actions" scope="props">
+            <div>
+                <a :href="'/Journey/Edit/'+ props.row.id" class="btn btn-primary">Edytuj</a>
+                <a :href="'/Journey/Delete/'+ props.row.id" class="btn btn-danger">Usuń</a>
+            </div>
+        </template>
+    </v-client-table>
+</div>
+
+@section Buttons
+{
+    <a href="@Url.Action("Create")" class="btn btn-success">Dodaj</a>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        window.model = @Html.ToJson(Model);
+    </script>
+
+    <script src="~/js/vendor.js"></script>
+    <script src="~/js/journey.js"></script>
+}

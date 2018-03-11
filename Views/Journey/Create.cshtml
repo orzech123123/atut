@@ -1,0 +1,15 @@
+﻿@using Atut.Helpers;
+@using Atut.ViewModels
+
+@model Atut.ViewModels.JourneyViewModel
+
+@{
+    ViewData["Title"] = "Dodawanie trasy";
+}
+
+@{ Html.RenderPartial("JourneyModelEditor"); }
+
+@section Scripts
+{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

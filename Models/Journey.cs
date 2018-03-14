@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Atut.Models
 {
@@ -9,6 +10,21 @@ namespace Atut.Models
 
         [Required]
         public string StartingPlace { get; set; }
+
+        [Required]
+        public string ThroughPlace { get; set; }
+
+        [Required]
+        public string FinalPlace { get; set; }
+
+        [Required]
+        public int AmountOfPeople { get; set; }
+
+        [Required]
+        public DateTime StartDate { get; set; }
+
+        [Required]
+        public DateTime EndDate { get; set; }
         
         public string UserId { get; set; }
 

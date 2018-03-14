@@ -8,18 +8,34 @@
     <div asp-validation-summary="All" class="callout callout-danger"></div>
 }
 
-<div class="box box-primary">
+<div class="box box-primary" id="JourneyEdit">
     <div class="box-header with-border">
         <h3 class="box-title">Dane trasy</h3>
     </div>
-    <form class="form-horizontal" method="post" role="form">
+    <form class="form-horizontal" method="post" role="form" v-on:submit.prevent="validateBeforeSubmit">
         <div class="box-body">
             <div class="form-group">
                 <label for="StartingPlace" class="col-sm-2 control-label">Miejsce wsiadania</label>
 
                 <div class="col-sm-10">
-                    <input asp-for="StartingPlace" type="text" class="form-control" id="StartingPlace" placeholder="Miejsce wsiadania">
-                    <span asp-validation-for="StartingPlace" class="text-danger"></span>
+                    <input id="StartingPlace" name="StartingPlace" data-vv-name="startingPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejsce wsiadania">
+                    <span v-show="errors.has('startingPlace')" class="text-danger">{{ errors.first('startingPlace') }}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ThroughPlace" class="col-sm-2 control-label">Miejsce pośrednie</label>
+
+                <div class="col-sm-10">
+                    <input id="ThroughPlace" name="ThroughPlace" data-vv-name="throughPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejsce pośrednie">
+                    <span v-show="errors.has('throughPlace')" class="text-danger">{{ errors.first('throughPlace') }}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="FinalPlace" class="col-sm-2 control-label">Miejsce końcowe</label>
+
+                <div class="col-sm-10">
+                    <input id="FinalPlace" name="FinalPlace" data-vv-name="finalPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejsce końcowe">
+                    <span v-show="errors.has('finalPlace')" class="text-danger">{{ errors.first('finalPlace') }}</span>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-webpackJsonp([0],[
+webpackJsonp([1],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11790,7 +11790,10 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 190 */
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11804,20 +11807,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_tables_2__["ClientTable"]);
 
-var vehicleIndexViewModel = function (model) {
+var journeyIndexViewModel = function (model) {
     var vue = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-        el: "#VehicleIndex",
+        el: "#JourneyIndex",
         data: {
-            message: "assaa",
-            columns:
-            ["name", "registrationNumber", "actions"],
+            columns: ["startingPlace", "actions"],
             options: {
                 headings: {
-                    name: 'Nazwa',
-                    registrationNumber: 'Numer rejestracyjny',
+                    startingPlace: 'Miejsce wsiadania',
                     actions: 'Akcje'
                 },
-                sortable: ["name", "registrationNumber"],
+                sortable: ["startingPlace"],
                 perPage: 20
             },
             data: model
@@ -11825,7 +11825,7 @@ var vehicleIndexViewModel = function (model) {
     });
 }
 
-vehicleIndexViewModel(window.model);
+journeyIndexViewModel(window.model);
 
 /***/ })
-],[190]);
+],[193]);

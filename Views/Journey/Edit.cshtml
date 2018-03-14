@@ -9,7 +9,11 @@
 
 @{ Html.RenderPartial("JourneyModelEditor"); }
 
-@section Scripts
-{
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+@section Scripts {
+    <script type="text/javascript">
+        window.model = @Html.ToJson(Model);
+    </script>
+
+    <script src="~/js/vendor.js"></script>
+    <script src="~/js/journeyEdit.js"></script>
 }

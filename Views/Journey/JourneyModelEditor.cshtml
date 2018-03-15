@@ -12,13 +12,13 @@
     <div class="box-header with-border">
         <h3 class="box-title">Dane trasy</h3>
     </div>
-    <form class="form-horizontal" method="post" role="form" v-on:submit.prevent="validateBeforeSubmit">
+    <form ref="form" class="form-horizontal" method="post" role="form" v-on:submit.prevent="validateBeforeSubmit">
         <div class="box-body">
             <div class="form-group">
                 <label for="StartingPlace" class="col-sm-2 control-label">Miejsce wsiadania</label>
 
                 <div class="col-sm-10">
-                    <input id="StartingPlace" name="StartingPlace" data-vv-name="startingPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejsce wsiadania">
+                    <input id="StartingPlace" v-model="startingPlace" name="StartingPlace" data-vv-as="Miejsce wsiadania" data-vv-name="startingPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejsce wsiadania">
                     <span v-show="errors.has('startingPlace')" class="text-danger">{{ errors.first('startingPlace') }}</span>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <label for="ThroughPlace" class="col-sm-2 control-label">Miejsce pośrednie</label>
 
                 <div class="col-sm-10">
-                    <input id="ThroughPlace" name="ThroughPlace" data-vv-name="throughPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejsce pośrednie">
+                    <input id="ThroughPlace" v-model="throughPlace" name="ThroughPlace" data-vv-as="Miejsce pośrednie" data-vv-name="throughPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejsce pośrednie">
                     <span v-show="errors.has('throughPlace')" class="text-danger">{{ errors.first('throughPlace') }}</span>
                 </div>
             </div>
@@ -34,8 +34,26 @@
                 <label for="FinalPlace" class="col-sm-2 control-label">Miejsce końcowe</label>
 
                 <div class="col-sm-10">
-                    <input id="FinalPlace" name="FinalPlace" data-vv-name="finalPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejsce końcowe">
+                    <input id="FinalPlace" v-model="finalPlace" name="FinalPlace"  data-vv-as="Miejsce końcowe" data-vv-name="finalPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejsce końcowe">
                     <span v-show="errors.has('finalPlace')" class="text-danger">{{ errors.first('finalPlace') }}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="StartDate" class="col-sm-2 control-label">Data wyjazdu</label>
+
+                <div class="col-sm-10">
+                    <input id="StartDate" v-model="startDate" name="StartDate"  data-vv-as="Data wyjazdu" data-vv-name="startDate" v-validate="'required'" type="text" class="form-control" placeholder="Data wyjazdu">
+                    <span v-show="errors.has('startDate')" class="text-danger">{{ errors.first('startDate') }}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="EndDate" class="col-sm-2 control-label">Data powrotu</label>
+
+                <div class="col-sm-10">
+                    <datepicker ref="endDate" language="pl"></datepicker>
+                    @*<input id="EndDate" v-model="endDate" name="EndDate"  data-vv-as="Data powrotu" data-vv-name="endDate" v-validate="'required'" type="text" class="form-control" placeholder="Data powrotu">
+                    *@
+                    <span v-show="errors.has('endDate')" class="text-danger">{{ errors.first('endDate') }}</span>
                 </div>
             </div>
         </div>

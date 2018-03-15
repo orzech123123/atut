@@ -1,6 +1,9 @@
 ﻿import Vue from "vue";
-import VeeValidate from 'vee-validate';
+import VeeValidate, { Validator }  from 'vee-validate';
+import VeeValidatePolish from 'vee-validate/dist/locale/pl';
+import Datepicker from 'vuejs-datepicker';
 
+Validator.localize('pl', VeeValidatePolish);
 Vue.use(VeeValidate);
 
 var journeyEditViewModel = function (model) {
@@ -10,19 +13,20 @@ var journeyEditViewModel = function (model) {
         methods: {
             validateBeforeSubmit() {
                 this.$validator.validateAll().then((result) => {
-                    console.log(this.errors);
-                    console.log(this.errors.items.length);
-
-                    if (result) {
-                    // eslint-disable-next-line
-                    alert('Form Submitted!');
-                    return;
+                    if (result)
+                    {
+                        this.$refs.form.submit();
                     }
-
-                    alert('Correct them errors!');
-
                 });
             }
+        },
+        mounted: function () {
+            var $endDate = $(this.$refs.endDate.$el.children[0]).find("input");
+            $endDate.addClass("form-control");
+            $endDate.removeAttr("readonly");
+        },
+        components: {
+            Datepicker
         }
     });
 }

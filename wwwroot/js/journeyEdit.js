@@ -27,6 +27,7 @@ var journeyEditViewModel = function (model) {
         methods: {
             validateBeforeSubmit() {
                 this.$validator.validateAll().then((result) => {
+                    console.log(this.errors);
                     if (result)
                     {
                         this.$refs.form.submit();
@@ -37,7 +38,7 @@ var journeyEditViewModel = function (model) {
         mounted: function () {
             var $endDate = $(this.$refs.endDate.$el.children[0]).find("input");
             $endDate.addClass("form-control");
-            $endDate.removeAttr("readonly");
+//            $endDate.removeAttr("readonly");
         },
         components: {
             Datepicker: __WEBPACK_IMPORTED_MODULE_3_vuejs_datepicker___default.a

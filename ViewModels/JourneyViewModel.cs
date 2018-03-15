@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Builder;
 
 namespace Atut.ViewModels
 {
@@ -19,6 +20,11 @@ namespace Atut.ViewModels
         [Required(ErrorMessage = "Miejsce końcowe jest wymagane")]
         [Display(Name = "Miejsce końcowe")]
         public string FinalPlace { get; set; }
+
+        [Required(ErrorMessage = "Ilość osób jest wymagana")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Ilość osób musi być większa od zera")]
+        [Display(Name = "Ilość osób")]
+        public int AmountOfPeople { get; set; }
 
         [Required(ErrorMessage = "Data wyjazdu jest wymagana")]
         [Display(Name = "Data wyjazdu")]

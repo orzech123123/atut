@@ -11,6 +11,7 @@
     cursor: pointer;
 }
 
+
 .callout.callout-danger > ul {
     list-style-type: none;
     padding: 0;
@@ -25,4 +26,9 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
+}
+
+
+input[readonly] {
+    background-color: white !important;
 }

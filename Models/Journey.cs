@@ -38,5 +38,11 @@ namespace Atut.Models
         public virtual User User { get; set; }
 
         public List<Country> Countries { get; set; }
+
+        [Required]
+        public int TotalDistance { get; set; }
+
+        [Required]
+        public int OtherCountriesTotalDistance { get; set; }
     }
 }

@@ -11,6 +11,9 @@
     cursor: pointer;
 }
 
+.VueTables__table {
+    background-color: #dcf2ff;
+}
 
 .callout.callout-danger > ul {
     list-style-type: none;

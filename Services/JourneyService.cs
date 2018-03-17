@@ -48,6 +48,15 @@ namespace Atut.Services
 
         public void ValidateSave(JourneyViewModel viewModel, ModelStateDictionary modelState)
         {
+            if (viewModel.TotalDistance <= 0)
+            {
+                modelState.AddModelError("TotalDistance", "Całkowita długość trasy musi być większa niż 0");
+            }
+
+            if (viewModel.OtherCountriesTotalDistance < 0)
+            {
+                modelState.AddModelError("OtherCountriesTotalDistance", "Dystans pokonany w innych krajach musi być nie mniejszy niż 0");
+            }
         }
 
         public void Save(JourneyViewModel viewModel)

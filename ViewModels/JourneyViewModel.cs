@@ -41,5 +41,11 @@ namespace Atut.ViewModels
 
         [Required(ErrorMessage = "Kraje są wymagane")]
         public List<CountryViewModel> Countries { get; set; }
+
+        [Required(ErrorMessage = "Całkowita długość trasy jest wymagana")]
+        public int TotalDistance { get; set; }
+
+        [Required(ErrorMessage = "Dystans pokonany w innych krajach jest wymagany")]
+        public int OtherCountriesTotalDistance { get; set; }
     }
 }

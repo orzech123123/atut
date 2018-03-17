@@ -64,12 +64,36 @@
                     <span v-show="errors.has('endDate')" class="text-danger">{{ errors.first('endDate') }}</span>
                 </div>
             </div>
-        </div>
-        
-        <items-editor :items="countries"></items-editor>
-        <div v-for="(country, index) in countries">
-            <input type="hidden" :name="'Countries[' + index + '].Name'" :value="country.name" />
-            <input type="hidden" :name="'Countries[' + index + '].Distance'" :value="country.distance" />
+
+            <div class="form-group">
+                <label for="TotalDistance" class="col-sm-2 control-label">Całkowita długość [km]</label>
+
+                <div class="col-sm-10">
+                    <input id="TotalDistance" v-model="totalDistance" name="TotalDistance" data-vv-as="Całkowita długość" data-vv-name="totalDistance" v-validate="'required|min_value:1'" type="number" class="form-control">
+                    <span v-show="errors.has('totalDistance')" class="text-danger">{{ errors.first('totalDistance') }}</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="Countries" class="col-sm-2 control-label">Kraje</label>
+
+                <div class="col-sm-10">
+                    <items-editor :items="countries"></items-editor>
+                    <div v-for="(country, index) in countries">
+                        <input type="hidden" :name="'Countries[' + index + '].Name'" :value="country.name" />
+                        <input type="hidden" :name="'Countries[' + index + '].Distance'" :value="country.distance" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="OtherCountriesTotalDistance" class="col-sm-2 control-label">Dystans pokonany w innych krajach [km]</label>
+
+                <div class="col-sm-10">
+                    <span>{{ otherCountriesTotalDistance }}</span>
+                    <input type="hidden" name="OtherCountriesTotalDistance" :value="otherCountriesTotalDistance" />
+                </div>
+            </div>
         </div>
 
         <!-- /.box-body -->
@@ -86,17 +110,37 @@ http://vee-validate.logaretm.com/examples.html*@
 
 <script  type="text/x-template" id="items-editor-template">
     <div>
-        <div v-for="(item, index) in items">
-            {{ item.name}} - {{ item.distance }}
-            <button type="button" v-on:click="remove(index)">Usuń</button>
+        <v-client-table :data="items" :columns="columns" :options="options">
+            <template slot="actions" scope="props">
+                <div>
+                    <a v-on:click="remove(props.row.name)" class="btn btn-danger">Usuń</a>
+                </div>
+            </template>
+        </v-client-table>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Nazwa kraju</label>
+
+            <div class="col-sm-10">
+                <select v-model="nameToAdd" class="form-control">
+                    <option v-for="country in availableCountryNames">{{ country }}</option>
+                </select>
+            </div>
         </div>
-        
-        <div>
-            <select v-model="nameToAdd">
-                <option v-for="country in availableCountryNames">{{ country }}</option>
-            </select>
-            <input v-model="distanceToAdd" type="number"/>
-            <button type="button" v-on:click="add">Dodaj</button>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Dystans [km]</label>
+
+            <div class="col-sm-10">
+                <input v-model="distanceToAdd" type="number"  class="form-control"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+
+            <div class="col-sm-10">
+                <button type="button" class="btn btn-success" v-on:click="add">Dodaj</button>
+                <span v-show="showError" class="text-danger">Uzupełnij poprawnie Kraj oraz Dystans</span>
+            </div>
         </div>
     </div>
 </script>

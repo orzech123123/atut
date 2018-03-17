@@ -16659,11 +16659,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuejs_datepicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vuejs_datepicker__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_tables_2__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_tables_2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vue_tables_2__);
 ﻿
 
 
 
 
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5_vue_tables_2__["ClientTable"]);
 
 __WEBPACK_IMPORTED_MODULE_1_vee_validate__["a" /* Validator */].localize('pl', __WEBPACK_IMPORTED_MODULE_2_vee_validate_dist_locale_pl___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_validate__["b" /* default */]);
@@ -16678,9 +16683,21 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('items-editor', {
     template: '#items-editor-template',
     data() {
         return {
+            showError: false,
             countryNames: ["Francja", "Belgia", "Hiszpania"],
             nameToAdd: null,
-            distanceToAdd: 0
+            distanceToAdd: 0,
+
+            columns: ["name", "distance", "actions"],
+            options: {
+                headings: {
+                    name: 'Nazwa',
+                    distance: 'Dystans [km]',
+                    actions: 'Akcje'
+                },
+                sortable: ["name", "distance"],
+                perPage: 20
+            }
         }
     },
     computed: {
@@ -16691,16 +16708,18 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('items-editor', {
     methods: {
         add: function () {
             if (!this.nameToAdd || this.distanceToAdd <= 0) {
-                alert("Uzupełnij dane");
+                this.showError = true;
                 return;
             }
 
             this.items.push({ name: this.nameToAdd, distance: this.distanceToAdd });
             this.nameToAdd = null;
             this.distanceToAdd = 0;
+            this.showError = false;
         },
-        remove: function(index) {
-            this.items.splice(index, 1);
+        remove: function (name) {
+            var item = this.items.filter(i => i.name == name)[0];
+            this.items.splice(this.items.indexOf(item), 1);
         }
     }
 });
@@ -16718,6 +16737,9 @@ var journeyEditViewModel = function (model) {
                         this.$refs.form.submit();
                     }
                 });
+            },
+            recalculateOtherCountriesTotalDistance: function (totalDistance, countriesTotalDistance) {
+                this.otherCountriesTotalDistance = totalDistance - countriesTotalDistance;
             }
         },
         mounted: function () {
@@ -16735,6 +16757,17 @@ var journeyEditViewModel = function (model) {
             },
             endDateDisplayModel: function () {
                 return !!this.endDate ? __WEBPACK_IMPORTED_MODULE_4_moment___default()(this.endDate).format('YYYY-MM-DD') : null;
+            },
+            countriesTotalDistance: function () {
+                return this.countries.length > 1 ? this.countries.map(item => item.distance).reduce((prev, next) => Number(prev) + Number(next)) : this.countries.length > 0 ? this.countries[0].distance : 0;
+            }
+        },
+        watch: {
+            totalDistance: function (val) {
+                this.recalculateOtherCountriesTotalDistance(val, this.countriesTotalDistance);
+            },
+            countriesTotalDistance: function (val) {
+                this.recalculateOtherCountriesTotalDistance(this.totalDistance, val);
             }
         }
     });

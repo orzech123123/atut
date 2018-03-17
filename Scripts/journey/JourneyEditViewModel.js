@@ -7,6 +7,44 @@ import moment from 'moment';
 Validator.localize('pl', VeeValidatePolish);
 Vue.use(VeeValidate);
 
+Vue.component('items-editor', {
+    props: {
+        items: {
+            type: Array,
+            required: true
+        },  
+    },
+    template: '#items-editor-template',
+    data() {
+        return {
+            countryNames: ["Francja", "Belgia", "Hiszpania"],
+            nameToAdd: null,
+            distanceToAdd: 0
+        }
+    },
+    computed: {
+        availableCountryNames : function() {
+            return this.countryNames.filter(name => this.items.map(item => item.name).indexOf(name) < 0);
+        }
+    },
+    methods: {
+        add: function () {
+            if (!this.nameToAdd || this.distanceToAdd <= 0) {
+                alert("Uzupełnij dane");
+                return;
+            }
+
+            this.items.push({ name: this.nameToAdd, distance: this.distanceToAdd });
+            this.nameToAdd = null;
+            this.distanceToAdd = 0;
+        },
+        remove: function(index) {
+            this.items.splice(index, 1);
+        }
+    }
+});
+
+
 var journeyEditViewModel = function (model) {
     var vue = new Vue({
         el: "#JourneyEdit",
@@ -35,7 +73,7 @@ var journeyEditViewModel = function (model) {
                 return !!this.startDate ? moment(this.startDate).format('YYYY-MM-DD') : null;
             },
             endDateDisplayModel: function () {
-                return this.endDate ? moment(this.endDate).format('YYYY-MM-DD') : null;
+                return !!this.endDate ? moment(this.endDate).format('YYYY-MM-DD') : null;
             }
         }
     });

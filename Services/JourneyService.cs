@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Atut.Models;
 using Atut.ViewModels;
@@ -39,9 +40,9 @@ namespace Atut.Services
 
         public JourneyViewModel GetOneById(int id)
         {
-            var journey = _databaseContext.Journeys.Include(v => v.User).SingleOrDefault(v => v.Id == id);
+            var journey = _databaseContext.Journeys.Include(j => j.User).Include(j => j.Countries).SingleOrDefault(v => v.Id == id);
             var viewModel = _mapper.Map<Journey, JourneyViewModel>(journey);
-
+            
             return viewModel;
         }
 
@@ -55,7 +56,7 @@ namespace Atut.Services
 
             if (viewModel.Id > 0)
             {
-                journey = _databaseContext.Journeys.Find(viewModel.Id);
+                journey = _databaseContext.Journeys.Include(j => j.Countries).Single(j => j.Id == viewModel.Id);
             }
             else
             {
@@ -75,6 +76,12 @@ namespace Atut.Services
             {
                 _notificationManager.Add(NotificationType.Information, "Trasa została zmodyfikowana.");
             }
+            
+//            //TODO test remove!!!
+//            var country = new Country {Name = "Xxx", Distance = new Random(DateTime.Now.Second).Next(100, 100000)};
+//            _databaseContext.Attach(country);
+////            journey.Countries.Clear();
+//            journey.Countries.Add(country);
         }
 
         public JourneyViewModel Create()

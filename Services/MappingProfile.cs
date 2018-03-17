@@ -13,6 +13,9 @@ namespace Atut.Services
 
             CreateMap<Journey, JourneyViewModel>();
             CreateMap<JourneyViewModel, Journey>();
+
+            CreateMap<Country, CountryViewModel>();
+            CreateMap<CountryViewModel, Country>();
         }
     }
 }

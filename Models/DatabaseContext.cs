@@ -7,6 +7,7 @@ namespace Atut.Models
     {
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Journey> Journeys { get; set; }
+        public DbSet<Country> Countries { get; set; }
 
         public DatabaseContext(DbContextOptions options) : base(options) { }
 
@@ -15,6 +16,10 @@ namespace Atut.Models
             builder.Entity<Vehicle>()
                 .HasIndex(v => new { v.RegistrationNumber, v.UserId })
                 .IsUnique();
+
+            builder.Entity<Country>()
+                .HasOne(c => c.Journey)
+                .WithMany(j => j.Countries);
 
             base.OnModelCreating(builder);
         }

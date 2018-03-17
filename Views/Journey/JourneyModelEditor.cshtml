@@ -65,6 +65,13 @@
                 </div>
             </div>
         </div>
+        
+        <items-editor :items="countries"></items-editor>
+        <div v-for="(country, index) in countries">
+            <input type="hidden" :name="'Countries[' + index + '].Name'" :value="country.name" />
+            <input type="hidden" :name="'Countries[' + index + '].Distance'" :value="country.distance" />
+        </div>
+
         <!-- /.box-body -->
         <div class="box-footer">
             <a href="@Url.Action("Index")" class="btn btn-default">Anuluj</a>
@@ -76,3 +83,20 @@
 
 @*https://jsfiddle.net/r0Le9g6v/
 http://vee-validate.logaretm.com/examples.html*@
+
+<script  type="text/x-template" id="items-editor-template">
+    <div>
+        <div v-for="(item, index) in items">
+            {{ item.name}} - {{ item.distance }}
+            <button type="button" v-on:click="remove(index)">Usuń</button>
+        </div>
+        
+        <div>
+            <select v-model="nameToAdd">
+                <option v-for="country in availableCountryNames">{{ country }}</option>
+            </select>
+            <input v-model="distanceToAdd" type="number"/>
+            <button type="button" v-on:click="add">Dodaj</button>
+        </div>
+    </div>
+</script>

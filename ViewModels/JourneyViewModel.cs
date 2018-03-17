@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Builder;
 
 namespace Atut.ViewModels
 {
     public class JourneyViewModel
     {
+        public JourneyViewModel()
+        {
+            Countries = new List<CountryViewModel>();
+        }
+
         [Required]
         public int Id { get; set; }
 
@@ -33,5 +38,8 @@ namespace Atut.ViewModels
         [Required(ErrorMessage = "Data powrotu jest wymagana")]
         [Display(Name = "Data powrotu")]
         public DateTime? EndDate { get; set; }
+
+        [Required(ErrorMessage = "Kraje są wymagane")]
+        public List<CountryViewModel> Countries { get; set; }
     }
 }

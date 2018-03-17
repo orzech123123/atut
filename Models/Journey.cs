@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Atut.Models
 {
     public class Journey
     {
+        public Journey()
+        {
+            Countries = new List<Country>();
+        }
+
         [Key]
         public int Id { get; set; }
 
@@ -30,5 +36,7 @@ namespace Atut.Models
 
         [Required]
         public virtual User User { get; set; }
+
+        public List<Country> Countries { get; set; }
     }
 }

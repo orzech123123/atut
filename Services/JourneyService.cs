@@ -115,10 +115,11 @@ namespace Atut.Services
 
         public void Delete(int id)
         {
-            var journey = _databaseContext.Journeys.Find(id);
+            var journey = _databaseContext.Journeys.Include(j => j.JourneyVehicles).Single(j => j.Id == id);
 
             //TODO czy ten user???
 
+            journey.JourneyVehicles.Clear();
             _databaseContext.Journeys.Remove(journey);
             _notificationManager.Add(NotificationType.Information, "Trasa została usunięta.");
         }

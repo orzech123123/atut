@@ -16657,15 +16657,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vee_validate_dist_locale_pl___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vee_validate_dist_locale_pl__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuejs_datepicker__ = __webpack_require__(321);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuejs_datepicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vuejs_datepicker__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_multiselect__ = __webpack_require__(322);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_multiselect___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vue_multiselect__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_resource__ = __webpack_require__(323);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_multiselect_dist_vue_multiselect_min_css__ = __webpack_require__(325);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_multiselect_dist_vue_multiselect_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_vue_multiselect_dist_vue_multiselect_min_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vue_tables_2__ = __webpack_require__(130);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vue_tables_2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_vue_tables_2__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_tables_2__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_tables_2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_tables_2__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_moment__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_multiselect__ = __webpack_require__(322);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_multiselect___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_vue_multiselect__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_resource__ = __webpack_require__(323);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vue_multiselect_dist_vue_multiselect_min_css__ = __webpack_require__(325);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vue_multiselect_dist_vue_multiselect_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_vue_multiselect_dist_vue_multiselect_min_css__);
 ﻿
 
 
@@ -16676,8 +16676,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_8_vue_tables_2__["ClientTable"]);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_6_vue_resource__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_5_moment___default.a.locale('pl');
+window.moment = __WEBPACK_IMPORTED_MODULE_5_moment___default.a;
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_vue_tables_2__["ClientTable"]);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_7_vue_resource__["a" /* default */]);
 
 __WEBPACK_IMPORTED_MODULE_1_vee_validate__["a" /* Validator */].localize('pl', __WEBPACK_IMPORTED_MODULE_2_vee_validate_dist_locale_pl___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_validate__["b" /* default */]);
@@ -16704,7 +16707,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('countries-editor', {
                     distance: 'Dystans [km]',
                     actions: 'Akcje'
                 },
-                sortable: ["name", "distance"],
+                sortable: [],
                 perPage: 20
             }
         }
@@ -16733,6 +16736,63 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('countries-editor', {
     }
 });
 
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('invoices-editor', {
+    props: {
+        items: {
+            type: Array,
+            required: true
+        } 
+    },
+    template: '#invoices-editor-template',
+    components: {
+        Datepicker: __WEBPACK_IMPORTED_MODULE_3_vuejs_datepicker___default.a
+    },
+    data() {
+        return {
+            showError: false,
+            types: ["Brutto", "Netto"],
+            dateToAdd: null,
+            typeToAdd: null,
+            amountToAdd: 0,
+
+            columns: ["dateColumn", "type", "amount", "actions"],
+            options: {
+//TODO nie dziala:                dateColumns: ["date"],
+//                toMomentFormat: true,
+//                dateFormat: "ll",
+                headings: {
+                    dateColumn: 'Data',
+                    type: 'Typ',
+                    amount: 'Kwota [zł]',
+                    actions: 'Akcje'
+                },
+                sortable: [],
+                perPage: 20
+            }
+        }
+    },
+    methods: {
+        add: function () {
+            if (!this.dateToAdd || !this.typeToAdd || this.amountToAdd <= 0) {
+                this.showError = true;
+                return;
+            }
+
+            this.items.push({ date: this.dateToAdd, type: this.typeToAdd, amount: this.amountToAdd });
+            this.dateToAdd = null;
+            this.typeToAdd = null;
+            this.amountToAdd = 0;
+            this.showError = false;
+        },
+        remove: function (index) {
+            this.items.splice(index - 1, 1);
+        },
+        moment: function (date) {
+            return __WEBPACK_IMPORTED_MODULE_5_moment___default()(date).format("ll");
+        }
+    }
+});
+
 var JourneyEditViewModel = function (model) {
     model.availableVehicles = [];
 
@@ -16750,28 +16810,28 @@ var JourneyEditViewModel = function (model) {
             },
             recalculateOtherCountriesTotalDistance: function (totalDistance, countriesTotalDistance) {
                 this.otherCountriesTotalDistance = totalDistance - countriesTotalDistance;
+            },
+            momentYyyyMmDd: function (date) {
+                return __WEBPACK_IMPORTED_MODULE_5_moment___default()(date).format("YYYY-MM-DD");
             }
         },
         mounted: function () {
-            var $startDate = $(this.$refs.startDate.$el.children[0]).find("input");
-            var $endDate = $(this.$refs.endDate.$el.children[0]).find("input");
-            $startDate.addClass("form-control");
-            $endDate.addClass("form-control");
-            
+            $(".vdp-datepicker").find("input").addClass("form-control");
+
             this.$http.get('/Vehicle/GetAllForAuthorizedUser').then(response => {
                 this.availableVehicles = response.body;
             });
         },
         components: {
             Datepicker: __WEBPACK_IMPORTED_MODULE_3_vuejs_datepicker___default.a,
-            Multiselect: __WEBPACK_IMPORTED_MODULE_5_vue_multiselect___default.a
+            Multiselect: __WEBPACK_IMPORTED_MODULE_6_vue_multiselect___default.a
         },
         computed: {
             startDateDisplayModel: function () {
-                return !!this.startDate ? __WEBPACK_IMPORTED_MODULE_4_moment___default()(this.startDate).format('YYYY-MM-DD') : null;
+                return !!this.startDate ? __WEBPACK_IMPORTED_MODULE_5_moment___default()(this.startDate).format('YYYY-MM-DD') : null;
             },
             endDateDisplayModel: function () {
-                return !!this.endDate ? __WEBPACK_IMPORTED_MODULE_4_moment___default()(this.endDate).format('YYYY-MM-DD') : null;
+                return !!this.endDate ? __WEBPACK_IMPORTED_MODULE_5_moment___default()(this.endDate).format('YYYY-MM-DD') : null;
             },
             countriesTotalDistance: function () {
                 return this.countries.length > 1 ? this.countries.map(item => item.distance).reduce((prev, next) => Number(prev) + Number(next)) : this.countries.length > 0 ? this.countries[0].distance : 0;

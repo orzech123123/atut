@@ -22,6 +22,9 @@ namespace Atut.Services
 
             CreateMap<Country, CountryViewModel>();
             CreateMap<CountryViewModel, Country>();
+
+            CreateMap<Invoice, InvoiceViewModel>();
+            CreateMap<InvoiceViewModel, Invoice>();
         }
     }
 }

@@ -36,6 +36,10 @@ namespace Atut.Models
                 .WithMany(v => v.JourneyVehicles)
                 .HasForeignKey(jv => jv.VehicleId);
 
+            builder.Entity<Invoice>()
+                .HasOne(c => c.Journey)
+                .WithMany(j => j.Invoices);
+
             base.OnModelCreating(builder);
         }
     }

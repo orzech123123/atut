@@ -66,6 +66,19 @@
             </div>
 
             <div class="form-group">
+                <label class="col-sm-2 control-label">Faktury</label>
+
+                <div class="col-sm-10">
+                    <invoices-editor :items="invoices"></invoices-editor>
+                    <div v-for="(invoice, index) in invoices">
+                        <input type="hidden" :name="'Invoices[' + index + '].Date'" :value="momentYyyyMmDd(invoice.date)" />
+                        <input type="hidden" :name="'Invoices[' + index + '].Type'" :value="invoice.type" />
+                        <input type="hidden" :name="'Invoices[' + index + '].Amount'" :value="invoice.amount.toString().replace('.', ',')" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label for="TotalDistance" class="col-sm-2 control-label">Całkowita długość [km]</label>
 
                 <div class="col-sm-10">
@@ -75,7 +88,7 @@
             </div>
 
             <div class="form-group">
-                <label for="Countries" class="col-sm-2 control-label">Kraje</label>
+                <label class="col-sm-2 control-label">Kraje</label>
 
                 <div class="col-sm-10">
                     <countries-editor :items="countries"></countries-editor>
@@ -150,6 +163,54 @@
             <div class="col-sm-10">
                 <button type="button" class="btn btn-success" v-on:click="add">Dodaj</button>
                 <span v-show="showError" class="text-danger">Uzupełnij poprawnie Kraj oraz Dystans</span>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="invoices-editor-template">
+    <div>
+        <v-client-table :data="items" :columns="columns" :options="options">
+            <template slot="dateColumn" scope="props">
+                {{ moment(props.row.date) }}
+            </template>
+            <template slot="actions" scope="props">
+                <div>
+                    <a v-on:click="remove(props.index)" class="btn btn-danger">Usuń</a>
+                </div>
+            </template>
+        </v-client-table>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Data faktury</label>
+
+            <div class="col-sm-10">
+                <datepicker v-model="dateToAdd" language="pl"></datepicker>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Typ faktury</label>
+
+            <div class="col-sm-10">
+                <select v-model="typeToAdd" class="form-control">
+                    <option>Brutto</option>
+                    <option>Netto</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Kwota faktury</label>
+
+            <div class="col-sm-10">
+                <input v-model="amountToAdd" min="0" step="0.01" type="number" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+
+            <div class="col-sm-10">
+                <button type="button" class="btn btn-success" v-on:click="add">Dodaj</button>
+                <span v-show="showError" class="text-danger">Uzupełnij poprawnie Datę, Typ oraz Kwotę faktury</span>
             </div>
         </div>
     </div>

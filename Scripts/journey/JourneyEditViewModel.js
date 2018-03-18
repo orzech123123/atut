@@ -2,11 +2,14 @@
 import VeeValidate, { Validator }  from 'vee-validate';
 import VeeValidatePolish from 'vee-validate/dist/locale/pl';
 import Datepicker from 'vuejs-datepicker';
+import { ClientTable } from "vue-tables-2";
 import moment from 'moment';
 import Multiselect from 'vue-multiselect';
 import VueResource from 'vue-resource';
 import MultiselectCss from 'vue-multiselect/dist/vue-multiselect.min.css';
-import { ClientTable } from "vue-tables-2";
+
+moment.locale('pl');
+window.moment = moment;
 
 Vue.use(ClientTable);
 Vue.use(VueResource);
@@ -36,7 +39,7 @@ Vue.component('countries-editor', {
                     distance: 'Dystans [km]',
                     actions: 'Akcje'
                 },
-                sortable: ["name", "distance"],
+                sortable: [],
                 perPage: 20
             }
         }
@@ -65,6 +68,63 @@ Vue.component('countries-editor', {
     }
 });
 
+Vue.component('invoices-editor', {
+    props: {
+        items: {
+            type: Array,
+            required: true
+        } 
+    },
+    template: '#invoices-editor-template',
+    components: {
+        Datepicker
+    },
+    data() {
+        return {
+            showError: false,
+            types: ["Brutto", "Netto"],
+            dateToAdd: null,
+            typeToAdd: null,
+            amountToAdd: 0,
+
+            columns: ["dateColumn", "type", "amount", "actions"],
+            options: {
+//TODO nie dziala:                dateColumns: ["date"],
+//                toMomentFormat: true,
+//                dateFormat: "ll",
+                headings: {
+                    dateColumn: 'Data',
+                    type: 'Typ',
+                    amount: 'Kwota [zł]',
+                    actions: 'Akcje'
+                },
+                sortable: [],
+                perPage: 20
+            }
+        }
+    },
+    methods: {
+        add: function () {
+            if (!this.dateToAdd || !this.typeToAdd || this.amountToAdd <= 0) {
+                this.showError = true;
+                return;
+            }
+
+            this.items.push({ date: this.dateToAdd, type: this.typeToAdd, amount: this.amountToAdd });
+            this.dateToAdd = null;
+            this.typeToAdd = null;
+            this.amountToAdd = 0;
+            this.showError = false;
+        },
+        remove: function (index) {
+            this.items.splice(index - 1, 1);
+        },
+        moment: function (date) {
+            return moment(date).format("ll");
+        }
+    }
+});
+
 var JourneyEditViewModel = function (model) {
     model.availableVehicles = [];
 
@@ -82,14 +142,14 @@ var JourneyEditViewModel = function (model) {
             },
             recalculateOtherCountriesTotalDistance: function (totalDistance, countriesTotalDistance) {
                 this.otherCountriesTotalDistance = totalDistance - countriesTotalDistance;
+            },
+            momentYyyyMmDd: function (date) {
+                return moment(date).format("YYYY-MM-DD");
             }
         },
         mounted: function () {
-            var $startDate = $(this.$refs.startDate.$el.children[0]).find("input");
-            var $endDate = $(this.$refs.endDate.$el.children[0]).find("input");
-            $startDate.addClass("form-control");
-            $endDate.addClass("form-control");
-            
+            $(".vdp-datepicker").find("input").addClass("form-control");
+
             this.$http.get('/Vehicle/GetAllForAuthorizedUser').then(response => {
                 this.availableVehicles = response.body;
             });

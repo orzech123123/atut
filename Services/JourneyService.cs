@@ -43,6 +43,7 @@ namespace Atut.Services
             var journey = _databaseContext.Journeys
                 .Include(j => j.User)
                 .Include(j => j.Countries)
+                .Include(j => j.Invoices)
                 .Include(j => j.JourneyVehicles)
                 .ThenInclude(jv => jv.Vehicle)
                 .SingleOrDefault(v => v.Id == id);
@@ -69,6 +70,11 @@ namespace Atut.Services
                 modelState.AddModelError("_FORM", "Trasa musi mieć przypisany co najmniej jeden Kraj");
             }
 
+            if (!viewModel.Invoices.Any())
+            {
+                modelState.AddModelError("_FORM", "Trasa musi mieć przypisaną co najmniej jedną Fakturę");
+            }
+
             if (!viewModel.Vehicles.Any())
             {
                 modelState.AddModelError("_FORM", "Trasa musi mieć przypisany co najmniej jeden Pojazd");
@@ -83,6 +89,7 @@ namespace Atut.Services
             {
                 journey = _databaseContext.Journeys
                     .Include(j => j.Countries)
+                    .Include(j => j.Invoices)
                     .Include(j => j.JourneyVehicles)
                     .Single(j => j.Id == viewModel.Id);
             }
@@ -121,6 +128,7 @@ namespace Atut.Services
 
             journey.JourneyVehicles.Clear();
             _databaseContext.Journeys.Remove(journey);
+
             _notificationManager.Add(NotificationType.Information, "Trasa została usunięta.");
         }
 

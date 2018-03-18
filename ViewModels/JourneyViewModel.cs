@@ -9,6 +9,7 @@ namespace Atut.ViewModels
         public JourneyViewModel()
         {
             Countries = new List<CountryViewModel>();
+            Invoices = new List<InvoiceViewModel>();
             Vehicles = new List<KeyValueViewModel>();
         }
 
@@ -51,5 +52,8 @@ namespace Atut.ViewModels
 
         [Required(ErrorMessage = "Pojazdy są wymagane")]
         public List<KeyValueViewModel> Vehicles { get; set; }
+
+        [Required(ErrorMessage = "Faktury są wymagane")]
+        public List<InvoiceViewModel> Invoices { get; set; }
     }
 }

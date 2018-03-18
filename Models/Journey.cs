@@ -9,6 +9,7 @@ namespace Atut.Models
         public Journey()
         {
             Countries = new List<Country>();
+            Invoices = new List<Invoice>();
             JourneyVehicles = new List<JourneyVehicle>();
         }
 
@@ -47,5 +48,7 @@ namespace Atut.Models
         public int OtherCountriesTotalDistance { get; set; }
 
         public virtual ICollection<JourneyVehicle> JourneyVehicles { get; set; }
+
+        public List<Invoice> Invoices { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Atut.Services;
 using Atut.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace Atut.Controllers
 {
@@ -80,6 +81,12 @@ namespace Atut.Controllers
             _databaseManager.Commit();
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult GetAllForAuthorizedUser()
+        {
+            return Json(_vehicleService.GetAllKeyValue());
         }
     }
 }

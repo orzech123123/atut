@@ -49,8 +49,6 @@ namespace Atut.Services
 
             var viewModel = _mapper.Map<Journey, JourneyViewModel>(journey);
 
-            BindDictionaries(viewModel);
-
             return viewModel;
         }
 
@@ -64,6 +62,16 @@ namespace Atut.Services
             if (viewModel.OtherCountriesTotalDistance < 0)
             {
                 modelState.AddModelError("OtherCountriesTotalDistance", "Dystans pokonany w innych krajach musi być nie mniejszy niż 0");
+            }
+
+            if (!viewModel.Countries.Any())
+            {
+                modelState.AddModelError("_FORM", "Trasa musi mieć przypisany co najmniej jeden Kraj");
+            }
+
+            if (!viewModel.Vehicles.Any())
+            {
+                modelState.AddModelError("_FORM", "Trasa musi mieć przypisany co najmniej jeden Pojazd");
             }
         }
 
@@ -98,43 +106,9 @@ namespace Atut.Services
             }
         }
 
-        private void UpdateUser(Journey journey)
-        {
-            journey.User = _databaseContext.Users.Single(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
-        }
-
-        public void BindDictionaries(JourneyViewModel viewModel)
-        {
-            _mapper.Map(_databaseContext.Vehicles, viewModel.AvailableVehicles);
-        }
-
-        private void UpdateVehicles(JourneyViewModel viewModel, Journey journey)
-        {
-            foreach (var journeyVehicle in journey.JourneyVehicles.ToList())
-            {
-                if (viewModel.Vehicles.Any(v => v.Id != journeyVehicle.VehicleId))
-                {
-                    journey.JourneyVehicles.Remove(journeyVehicle);
-                }
-            }
-
-            foreach (var vehicle in viewModel.Vehicles)
-            {
-                if (journey.JourneyVehicles.All(jv => jv.VehicleId != vehicle.Id))
-                {
-                    journey.JourneyVehicles.Add(new JourneyVehicle
-                    {
-                        Journey = journey,
-                        Vehicle = _databaseContext.Vehicles.Single(v => v.Id == vehicle.Id)
-                    });
-                }
-            }
-        }
-
         public JourneyViewModel Create()
         {
             var viewModel = new JourneyViewModel();
-            BindDictionaries(viewModel);
 
             return viewModel;
         }
@@ -147,6 +121,34 @@ namespace Atut.Services
 
             _databaseContext.Journeys.Remove(journey);
             _notificationManager.Add(NotificationType.Information, "Trasa została usunięta.");
+        }
+
+        private void UpdateUser(Journey journey)
+        {
+            journey.User = _databaseContext.Users.Single(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
+        }
+
+        private void UpdateVehicles(JourneyViewModel viewModel, Journey journey)
+        {
+            foreach (var journeyVehicle in journey.JourneyVehicles.ToList())
+            {
+                if (!viewModel.Vehicles.Any() || viewModel.Vehicles.All(v => v.Key != journeyVehicle.VehicleId))
+                {
+                    journey.JourneyVehicles.Remove(journeyVehicle);
+                }
+            }
+
+            foreach (var vehicle in viewModel.Vehicles)
+            {
+                if (journey.JourneyVehicles.All(jv => jv.VehicleId != vehicle.Key))
+                {
+                    journey.JourneyVehicles.Add(new JourneyVehicle
+                    {
+                        Journey = journey,
+                        Vehicle = _databaseContext.Vehicles.Single(v => v.Id == vehicle.Key)
+                    });
+                }
+            }
         }
     }
 }

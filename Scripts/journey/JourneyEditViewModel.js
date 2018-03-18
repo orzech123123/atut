@@ -4,9 +4,12 @@ import VeeValidatePolish from 'vee-validate/dist/locale/pl';
 import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 import Multiselect from 'vue-multiselect';
+import VueResource from 'vue-resource';
+import MultiselectCss from 'vue-multiselect/dist/vue-multiselect.min.css';
 import { ClientTable } from "vue-tables-2";
 
 Vue.use(ClientTable);
+Vue.use(VueResource);
 
 Validator.localize('pl', VeeValidatePolish);
 Vue.use(VeeValidate);
@@ -63,6 +66,8 @@ Vue.component('countries-editor', {
 });
 
 var JourneyEditViewModel = function (model) {
+    model.availableVehicles = [];
+
     var vue = new Vue({
         el: "#JourneyEdit",
         data: model,
@@ -84,6 +89,10 @@ var JourneyEditViewModel = function (model) {
             var $endDate = $(this.$refs.endDate.$el.children[0]).find("input");
             $startDate.addClass("form-control");
             $endDate.addClass("form-control");
+            
+            this.$http.get('/Vehicle/GetAllForAuthorizedUser').then(response => {
+                this.availableVehicles = response.body;
+            });
         },
         components: {
             Datepicker,

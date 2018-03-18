@@ -95,14 +95,17 @@
                 </div>
             </div>
 
-            <multiselect v-model="vehicles" label="value" track-by="key" placeholder="Type to search" open-direction="bottom" :options="availableVehicles" :multiple="true" :searchable="true" :internal-search="false" :clear-on-select="false" :close-on-select="false" :options-limit="300" :limit="3" :max-height="600" :show-no-results="false" :hide-selected="true">
-                <template slot="clear" slot-scope="props">
-                    <div class="multiselect__clear" v-if="vehicles.length"> </div>
-                </template><span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
-            </multiselect>
-            <div v-for="(vehicle, index) in vehicles">
-                <input type="hidden" :name="'Vehicles[' + index + '].Id'" :value="vehicle.id" />
-                <input type="hidden" :name="'Vehicles[' + index + '].Value'" :value="vehicle.value" />
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Pojazdy</label>
+
+                <div class="col-sm-10">
+                    <multiselect v-model="vehicles" label="value" track-by="key" :options="availableVehicles" :multiple="true">
+                    </multiselect>
+                    <div v-for="(vehicle, index) in vehicles">
+                        <input type="hidden" :name="'Vehicles[' + index + '].Key'" :value="vehicle.key" />
+                        <input type="hidden" :name="'Vehicles[' + index + '].Value'" :value="vehicle.value" />
+                    </div>
+                </div>
             </div>
         </div>
 

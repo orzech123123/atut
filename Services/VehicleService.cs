@@ -37,6 +37,15 @@ namespace Atut.Services
                 .ToList();
         }
 
+        public IEnumerable<KeyValueViewModel> GetAllKeyValue()
+        {
+            return _databaseContext.Vehicles
+                .Include(v => v.User)
+                .Where(v => v.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name)
+                .Select(v => _mapper.Map<Vehicle, KeyValueViewModel>(v))
+                .ToList();
+        }
+
         public VehicleViewModel GetOneById(int id)
         {
             var vehicle = _databaseContext.Vehicles.Include(v => v.User).SingleOrDefault(v => v.Id == id);
@@ -96,12 +105,17 @@ namespace Atut.Services
 
         public void Delete(int id)
         {
-            var vehicle = _databaseContext.Vehicles.Find(id);
+            var vehicle = _databaseContext.Vehicles.Include(v => v.JourneyVehicles).Single(v => v.Id == id);
 
-            //TODO czy ten user???
-
-            _databaseContext.Vehicles.Remove(vehicle);
-            _notificationManager.Add(NotificationType.Information, "Pojazd został usunięty.");
+            if (vehicle.JourneyVehicles.Any())
+            {
+                _notificationManager.Add(NotificationType.Error, "Pojazd nie może zostać usunięty, gdyż jest przypisany do co najmniej jednej Trasy.");
+            }
+            else
+            {
+                _databaseContext.Vehicles.Remove(vehicle);
+                _notificationManager.Add(NotificationType.Information, "Pojazd został usunięty.");
+            }
         }
     }
 }

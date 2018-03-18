@@ -10,7 +10,7 @@ namespace Atut.Services
         public MappingProfile()
         {
             CreateMap<Vehicle, KeyValueViewModel>()
-                .ForMember(v => v.Id, member => member.MapFrom(v => v.Id))
+                .ForMember(v => v.Key, member => member.MapFrom(v => v.Id))
                 .ForMember(v => v.Value, member => member.MapFrom(v => v.Name));
 
             CreateMap<Vehicle, VehicleViewModel>();

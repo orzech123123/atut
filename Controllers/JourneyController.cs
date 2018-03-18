@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Atut.Models;
-using Atut.Services;
+﻿using Atut.Services;
 using Atut.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -37,7 +35,6 @@ namespace Atut.Controllers
         [HttpPost]
         public IActionResult Create(JourneyViewModel viewModel)
         {
-            _journeyService.BindDictionaries(viewModel);
             _journeyService.ValidateSave(viewModel, ModelState);
 
             if (ModelState.IsValid)
@@ -61,7 +58,6 @@ namespace Atut.Controllers
         [HttpPost]
         public IActionResult Edit(JourneyViewModel viewModel)
         {
-            _journeyService.BindDictionaries(viewModel);
             _journeyService.ValidateSave(viewModel, ModelState);
 
             if (ModelState.IsValid)

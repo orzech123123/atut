@@ -73,7 +73,7 @@
                     <span v-show="errors.has('totalDistance')" class="text-danger">{{ errors.first('totalDistance') }}</span>
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <label for="Countries" class="col-sm-2 control-label">Kraje</label>
 
@@ -94,11 +94,16 @@
                     <input type="hidden" name="OtherCountriesTotalDistance" :value="otherCountriesTotalDistance" />
                 </div>
             </div>
-            
-                <div v-for="(vehicle, index) in vehicles">
-                    <input type="hidden" :name="'Vehicles[' + index + '].Id'" :value="vehicle.id" />
-                    <input type="hidden" :name="'Vehicles[' + index + '].Value'" :value="vehicle.value" />
-                </div>
+
+            <multiselect v-model="vehicles" label="value" track-by="key" placeholder="Type to search" open-direction="bottom" :options="availableVehicles" :multiple="true" :searchable="true" :internal-search="false" :clear-on-select="false" :close-on-select="false" :options-limit="300" :limit="3" :max-height="600" :show-no-results="false" :hide-selected="true">
+                <template slot="clear" slot-scope="props">
+                    <div class="multiselect__clear" v-if="vehicles.length"> </div>
+                </template><span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
+            </multiselect>
+            <div v-for="(vehicle, index) in vehicles">
+                <input type="hidden" :name="'Vehicles[' + index + '].Id'" :value="vehicle.id" />
+                <input type="hidden" :name="'Vehicles[' + index + '].Value'" :value="vehicle.value" />
+            </div>
         </div>
 
         <!-- /.box-body -->
@@ -110,7 +115,7 @@
     </form>
 </div>
 
-<script  type="text/x-template" id="countries-editor-template">
+<script type="text/x-template" id="countries-editor-template">
     <div>
         <v-client-table :data="items" :columns="columns" :options="options">
             <template slot="actions" scope="props">
@@ -133,7 +138,7 @@
             <label class="col-sm-2 control-label">Dystans [km]</label>
 
             <div class="col-sm-10">
-                <input v-model="distanceToAdd" type="number"  class="form-control"/>
+                <input v-model="distanceToAdd" type="number" class="form-control" />
             </div>
         </div>
         <div class="form-group">

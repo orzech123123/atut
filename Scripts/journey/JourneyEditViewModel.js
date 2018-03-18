@@ -3,6 +3,7 @@ import VeeValidate, { Validator }  from 'vee-validate';
 import VeeValidatePolish from 'vee-validate/dist/locale/pl';
 import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
+import Multiselect from 'vue-multiselect';
 import { ClientTable } from "vue-tables-2";
 
 Vue.use(ClientTable);
@@ -85,7 +86,8 @@ var JourneyEditViewModel = function (model) {
             $endDate.addClass("form-control");
         },
         components: {
-            Datepicker
+            Datepicker,
+            Multiselect
         },
         computed: {
             startDateDisplayModel: function () {

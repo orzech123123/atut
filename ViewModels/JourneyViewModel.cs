@@ -10,6 +10,7 @@ namespace Atut.ViewModels
         {
             Countries = new List<CountryViewModel>();
             Vehicles = new List<KeyValueViewModel>();
+            AvailableVehicles = new List<KeyValueViewModel>();
         }
 
         [Required]
@@ -51,5 +52,7 @@ namespace Atut.ViewModels
 
         [Required(ErrorMessage = "Pojazdy są wymagane")]
         public List<KeyValueViewModel> Vehicles { get; set; }
+        
+        public List<KeyValueViewModel> AvailableVehicles { get; set; }
     }
 }

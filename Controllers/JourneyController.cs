@@ -37,6 +37,7 @@ namespace Atut.Controllers
         [HttpPost]
         public IActionResult Create(JourneyViewModel viewModel)
         {
+            _journeyService.BindDictionaries(viewModel);
             _journeyService.ValidateSave(viewModel, ModelState);
 
             if (ModelState.IsValid)
@@ -60,6 +61,7 @@ namespace Atut.Controllers
         [HttpPost]
         public IActionResult Edit(JourneyViewModel viewModel)
         {
+            _journeyService.BindDictionaries(viewModel);
             _journeyService.ValidateSave(viewModel, ModelState);
 
             if (ModelState.IsValid)

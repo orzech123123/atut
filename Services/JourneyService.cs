@@ -71,7 +71,10 @@ namespace Atut.Services
 
             if (viewModel.Id > 0)
             {
-                journey = _databaseContext.Journeys.Include(j => j.Countries).Single(j => j.Id == viewModel.Id);
+                journey = _databaseContext.Journeys
+                    .Include(j => j.Countries)
+                    .Include(j => j.JourneyVehicles)
+                    .Single(j => j.Id == viewModel.Id);
             }
             else
             {
@@ -92,10 +95,37 @@ namespace Atut.Services
                 _notificationManager.Add(NotificationType.Information, "Trasa została zmodyfikowana.");
             }
 
-//            journey.JourneyVehicles.Add(new JourneyVehicle { Journey = journey, Vehicle = _databaseContext.Vehicles.First() });
+            //            journey.JourneyVehicles.Add(new JourneyVehicle { Journey = journey, Vehicle = _databaseContext.Vehicles.First() });
+            //            journey.JourneyVehicles.Clear();
+
+//            foreach (var journeyJourneyVehicle in journey.JourneyVehicles.ToList())
+//            {
+//                _databaseContext.Entry(journeyJourneyVehicle).State = EntityState.Deleted;
+//            }
 //            journey.JourneyVehicles.Clear();
+//            _databaseContext.JourneyVehicles.RemoveRange(journey.JourneyVehicles.ToList());
+//
 //            viewModel.Vehicles.ForEach(v => journey.JourneyVehicles.Add(new JourneyVehicle { Journey = journey, Vehicle = _databaseContext.Vehicles.Single(v2 => v2.Id == v.Id) }));
 
+            foreach (var journeyVehicle in journey.JourneyVehicles.ToList())
+            {
+                if (viewModel.Vehicles.Any(v => v.Id != journeyVehicle.VehicleId))
+                {
+                    journey.JourneyVehicles.Remove(journeyVehicle);
+                }
+            }
+
+            foreach (var vehicle in viewModel.Vehicles)
+            {
+                if (journey.JourneyVehicles.All(jv => jv.VehicleId != vehicle.Id))
+                {
+                    journey.JourneyVehicles.Add(new JourneyVehicle
+                    {
+                        Journey = journey,
+                        Vehicle = _databaseContext.Vehicles.Single(v => v.Id == vehicle.Id)
+                    });
+                }
+            }
 
 //            //TODO test remove!!!
 //            var country = new Country {Name = "Xxx", Distance = new Random(DateTime.Now.Second).Next(100, 100000)};

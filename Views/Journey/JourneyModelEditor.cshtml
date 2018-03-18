@@ -94,6 +94,11 @@
                     <input type="hidden" name="OtherCountriesTotalDistance" :value="otherCountriesTotalDistance" />
                 </div>
             </div>
+            
+                <div v-for="(vehicle, index) in vehicles">
+                    <input type="hidden" :name="'Vehicles[' + index + '].Id'" :value="vehicle.id" />
+                    <input type="hidden" :name="'Vehicles[' + index + '].Value'" :value="vehicle.value" />
+                </div>
         </div>
 
         <!-- /.box-body -->

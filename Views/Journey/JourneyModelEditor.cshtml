@@ -189,12 +189,12 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">Typ faktury</label>
+            <label class="col-sm-2 control-label">Waluta</label>
 
             <div class="col-sm-10">
                 <select v-model="typeToAdd" class="form-control">
-                    <option>Brutto</option>
-                    <option>Netto</option>
+                    <option>PLN</option>
+                    <option>Euro</option>
                 </select>
             </div>
         </div>
@@ -210,7 +210,7 @@
 
             <div class="col-sm-10">
                 <button type="button" class="btn btn-success" v-on:click="add">Dodaj</button>
-                <span v-show="showError" class="text-danger">Uzupełnij poprawnie Datę, Typ oraz Kwotę faktury</span>
+                <span v-show="showError" class="text-danger">Uzupełnij poprawnie Datę, Walutę oraz Kwotę faktury</span>
             </div>
         </div>
     </div>

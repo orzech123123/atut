@@ -16750,7 +16750,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('invoices-editor', {
     data() {
         return {
             showError: false,
-            types: ["Brutto", "Netto"],
             dateToAdd: null,
             typeToAdd: null,
             amountToAdd: 0,
@@ -16762,8 +16761,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('invoices-editor', {
 //                dateFormat: "ll",
                 headings: {
                     dateColumn: 'Data',
-                    type: 'Typ',
-                    amount: 'Kwota [zł]',
+                    type: 'Waluta',
+                    amount: 'Kwota',
                     actions: 'Akcje'
                 },
                 sortable: [],

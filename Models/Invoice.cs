@@ -28,7 +28,7 @@ namespace Atut.Models
 
     public enum InvoiceType
     {
-        Brutto,
-        Netto
+        PLN,
+        Euro
     }
 }

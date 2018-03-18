@@ -78,7 +78,7 @@
                 <label for="Countries" class="col-sm-2 control-label">Kraje</label>
 
                 <div class="col-sm-10">
-                    <items-editor :items="countries"></items-editor>
+                    <countries-editor :items="countries"></countries-editor>
                     <div v-for="(country, index) in countries">
                         <input type="hidden" :name="'Countries[' + index + '].Name'" :value="country.name" />
                         <input type="hidden" :name="'Countries[' + index + '].Distance'" :value="country.distance" />
@@ -87,10 +87,10 @@
             </div>
 
             <div class="form-group">
-                <label for="OtherCountriesTotalDistance" class="col-sm-2 control-label">Dystans pokonany w innych krajach [km]</label>
+                <label for="OtherCountriesTotalDistance" class="col-sm-2 control-label">Dystans przebyty w innych krajach [km]</label>
 
                 <div class="col-sm-10">
-                    <span>{{ otherCountriesTotalDistance }}</span>
+                    <p class="form-control-static">{{ otherCountriesTotalDistance }}</p>
                     <input type="hidden" name="OtherCountriesTotalDistance" :value="otherCountriesTotalDistance" />
                 </div>
             </div>
@@ -105,10 +105,7 @@
     </form>
 </div>
 
-@*https://jsfiddle.net/r0Le9g6v/
-http://vee-validate.logaretm.com/examples.html*@
-
-<script  type="text/x-template" id="items-editor-template">
+<script  type="text/x-template" id="countries-editor-template">
     <div>
         <v-client-table :data="items" :columns="columns" :options="options">
             <template slot="actions" scope="props">

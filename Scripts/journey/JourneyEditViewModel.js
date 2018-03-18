@@ -10,14 +10,14 @@ Vue.use(ClientTable);
 Validator.localize('pl', VeeValidatePolish);
 Vue.use(VeeValidate);
 
-Vue.component('items-editor', {
+Vue.component('countries-editor', {
     props: {
         items: {
             type: Array,
             required: true
         },  
     },
-    template: '#items-editor-template',
+    template: '#countries-editor-template',
     data() {
         return {
             showError: false,
@@ -61,8 +61,7 @@ Vue.component('items-editor', {
     }
 });
 
-
-var journeyEditViewModel = function (model) {
+var JourneyEditViewModel = function (model) {
     var vue = new Vue({
         el: "#JourneyEdit",
         data: model,
@@ -110,4 +109,4 @@ var journeyEditViewModel = function (model) {
     });
 }
 
-journeyEditViewModel(window.model);
+JourneyEditViewModel(window.model);

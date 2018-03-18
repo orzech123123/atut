@@ -9,6 +9,7 @@ namespace Atut.ViewModels
         public JourneyViewModel()
         {
             Countries = new List<CountryViewModel>();
+            Vehicles = new List<KeyValueViewModel>();
         }
 
         [Required]
@@ -47,5 +48,8 @@ namespace Atut.ViewModels
 
         [Required(ErrorMessage = "Dystans pokonany w innych krajach jest wymagany")]
         public int OtherCountriesTotalDistance { get; set; }
+
+        [Required(ErrorMessage = "Pojazdy są wymagane")]
+        public List<KeyValueViewModel> Vehicles { get; set; }
     }
 }

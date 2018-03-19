@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
 using Atut.Filters;
 using Atut.Identity;
 using Atut.Models;
@@ -64,6 +65,8 @@ namespace Atut
             IDatabaseManager databaseManager
             )
         {
+            SetupCulture();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -76,7 +79,7 @@ namespace Atut
             loggerFactory.AddFile("Logs/logs-{Date}.txt", LogLevel.Error);
 
             app.UseStaticFiles();
-            
+
             app.UseFileServer(new FileServerOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "AdminLTE-2.4.3")),
@@ -95,6 +98,14 @@ namespace Atut
 
             databaseManager.Migrate();
             databaseManager.EnsureDatabaseCreated();
+        }
+
+        private static void SetupCulture()
+        {
+            var cultureInfo = new CultureInfo("pl-PL");
+
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         }
     }
 }

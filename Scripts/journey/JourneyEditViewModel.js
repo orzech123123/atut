@@ -28,14 +28,14 @@ Vue.component('countries-editor', {
     data() {
         return {
             showError: false,
-            countryNames: ["Francja", "Belgia", "Hiszpania"],
+            countryNames: ["Polska [PL]", "Niemcy [D]", "Dania [DK]", "Słowenia [SI]", "Chorwacja [HR]", "Austria [A]", "Belgia [B]", "Holandia [NL]"],
             nameToAdd: null,
             distanceToAdd: 0,
 
             columns: ["name", "distance", "actions"],
             options: {
                 headings: {
-                    name: 'Nazwa',
+                    name: 'Nazwa kraju',
                     distance: 'Dystans [km]',
                     actions: 'Akcje'
                 },
@@ -92,7 +92,7 @@ Vue.component('invoices-editor', {
 //                toMomentFormat: true,
 //                dateFormat: "ll",
                 headings: {
-                    dateColumn: 'Data',
+                    dateColumn: 'Data wystawienia',
                     type: 'Waluta',
                     amount: 'Kwota',
                     actions: 'Akcje'

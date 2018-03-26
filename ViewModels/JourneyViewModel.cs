@@ -16,16 +16,15 @@ namespace Atut.ViewModels
         [Required]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Miejsce wsiadania jest wymagane")]
-        [Display(Name = "Miejsce wsiadania")]
+        [Required(ErrorMessage = "Miejscowość wsiadania jest wymagana")]
+        [Display(Name = "Miejscowość wsiadania")]
         public string StartingPlace { get; set; }
-
-        [Required(ErrorMessage = "Miejsce pośrednie jest wymagane")]
-        [Display(Name = "Miejsce pośrednie")]
+        
+        [Display(Name = "Miejscowość pośrednia")]
         public string ThroughPlace { get; set; }
 
-        [Required(ErrorMessage = "Miejsce końcowe jest wymagane")]
-        [Display(Name = "Miejsce końcowe")]
+        [Required(ErrorMessage = "Miejscowość docelowa + kraj jest wymagana")]
+        [Display(Name = "Miejscowość docelowa + kraj")]
         public string FinalPlace { get; set; }
 
         [Required(ErrorMessage = "Ilość osób jest wymagana")]
@@ -44,10 +43,10 @@ namespace Atut.ViewModels
         [Required(ErrorMessage = "Kraje są wymagane")]
         public List<CountryViewModel> Countries { get; set; }
 
-        [Required(ErrorMessage = "Całkowita długość trasy jest wymagana")]
+        [Required(ErrorMessage = "Trasa ogółem [km] jest wymagana")]
         public int TotalDistance { get; set; }
 
-        [Required(ErrorMessage = "Dystans pokonany w innych krajach jest wymagany")]
+        [Required(ErrorMessage = "Inne kraje [km] są wymagane")]
         public int OtherCountriesTotalDistance { get; set; }
 
         [Required(ErrorMessage = "Pojazdy są wymagane")]

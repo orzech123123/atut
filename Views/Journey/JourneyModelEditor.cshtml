@@ -8,33 +8,40 @@
     <div asp-validation-summary="All" class="callout callout-danger"></div>
 }
 
-<div class="box box-primary" id="JourneyEdit">
-    <div class="box-header with-border">
-        <h3 class="box-title">Dane trasy</h3>
-    </div>
-    <form ref="form" class="form-horizontal" method="post" role="form" v-on:submit.prevent="validateBeforeSubmit">
+<form ref="form" class="form-horizontal" method="post" role="form" id="JourneyEdit" v-on:submit.prevent="validateBeforeSubmit">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Dane ogólne</h3>
+        </div>
         <div class="box-body">
+            <div class="callout callout-info">
+                <ul>
+                    <li>+ Podatek VAT w prawodawstwie UE należy do najbardziej restrykcyjnych podatków, a nieprawidłowości, bałagan w rozliczeniach, unikanie płatności VAT podlega ściąganiu nawet do 10 lat Niemcy i Chorwacja czy 8 lat Austria przy skorzystaniu z pomocy prawnej polskich Urzędów Skarbowych.</li>
+                    <li>+ Przed wypełnianiem formularza przygotuj faktury, karty drogowe, wydruki z tachografu, Książkę formularzy podróży, gdzie są dane o granicach, kilometrach operacji transportowej, ilości pasażerów, kwocie i dacie faktury.</li>
+                </ul>
+            </div>
+
             <div class="form-group">
-                <label for="StartingPlace" class="col-sm-2 control-label">Miejsce wsiadania</label>
+                <label for="StartingPlace" class="col-sm-2 control-label">Miejscowość wsiadania</label>
 
                 <div class="col-sm-10">
-                    <input id="StartingPlace" v-model="startingPlace" name="StartingPlace" data-vv-as="Miejsce wsiadania" data-vv-name="startingPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejsce wsiadania">
+                    <input id="StartingPlace" v-model="startingPlace" name="StartingPlace" data-vv-as="Miejscowość wsiadania" data-vv-name="startingPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejscowość wsiadania">
                     <span v-show="errors.has('startingPlace')" class="text-danger">{{ errors.first('startingPlace') }}</span>
                 </div>
             </div>
             <div class="form-group">
-                <label for="ThroughPlace" class="col-sm-2 control-label">Miejsce pośrednie</label>
+                <label for="ThroughPlace" class="col-sm-2 control-label">Miejscowość pośrednia</label>
 
                 <div class="col-sm-10">
-                    <input id="ThroughPlace" v-model="throughPlace" name="ThroughPlace" data-vv-as="Miejsce pośrednie" data-vv-name="throughPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejsce pośrednie">
+                    <input id="ThroughPlace" v-model="throughPlace" name="ThroughPlace" data-vv-as="Miejscowość pośrednia" data-vv-name="throughPlace" type="text" class="form-control" placeholder="Miejscowość pośrednia">
                     <span v-show="errors.has('throughPlace')" class="text-danger">{{ errors.first('throughPlace') }}</span>
                 </div>
             </div>
             <div class="form-group">
-                <label for="FinalPlace" class="col-sm-2 control-label">Miejsce końcowe</label>
+                <label for="FinalPlace" class="col-sm-2 control-label">Miejscowość docelowa + kraj</label>
 
                 <div class="col-sm-10">
-                    <input id="FinalPlace" v-model="finalPlace" name="FinalPlace" data-vv-as="Miejsce końcowe" data-vv-name="finalPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejsce końcowe">
+                    <input id="FinalPlace" v-model="finalPlace" name="FinalPlace" data-vv-as="Miejscowość docelowa + kraj" data-vv-name="finalPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejscowość docelowa + kraj">
                     <span v-show="errors.has('finalPlace')" class="text-danger">{{ errors.first('finalPlace') }}</span>
                 </div>
             </div>
@@ -51,7 +58,7 @@
 
                 <div class="col-sm-10">
                     <datepicker v-validate="'required'" data-vv-value-path="formattedValue" v-model="startDate" data-vv-as="Data wyjazdu" data-vv-name="startDate" ref="startDate" language="pl"></datepicker>
-                    <input type="hidden" name="StartDate" :value="startDateDisplayModel" />
+                    <input type="hidden" name="StartDate" :value="startDateDisplayModel"/>
                     <span v-show="errors.has('startDate')" class="text-danger">{{ errors.first('startDate') }}</span>
                 </div>
             </div>
@@ -60,15 +67,28 @@
 
                 <div class="col-sm-10">
                     <datepicker v-validate="'required'" data-vv-value-path="formattedValue" v-model="endDate" data-vv-as="Data powrotu" data-vv-name="endDate" ref="endDate" language="pl"></datepicker>
-                    <input type="hidden" name="EndDate" :value="endDateDisplayModel" />
+                    <input type="hidden" name="EndDate" :value="endDateDisplayModel"/>
                     <span v-show="errors.has('endDate')" class="text-danger">{{ errors.first('endDate') }}</span>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Faktury</h3>
+        </div>
+        <div class="box-body">
+            <div class="callout callout-info">
+                <ul>
+                    <li>+ Podawaj tylko kwotę brutto faktury -całkowitą- swojej faktury lub paragonu. Jazdy sponsorowane w transporcie międzynarodowym są niedozwolone.</li>
+                    <li>+ Jeżeli masz 2 faktury/ paragony, faktury zaliczkowe, faktury korygujące, podaj ich końcowa kwotę wraz z datą wystawienia uważając, aby nie obciążać się w wyższej kwocie niż to wynika z wpłat.</li>
+                    <li>+ Zachowaj faktury/ paragony  sprzedaży oraz kosztów do kontroli przez 10 lat.</li>
+                    <li>+ Scany rachunków/ faktur/paragonów  kosztowych sprawdź i wyślij  mailem na adres: biuro@atut.com.pl  z dopiskiem jakiego kraju i okresu rozliczeniowego mają dotyczyć. Każdy paragon ponumeruj, umieść na stronie A4 tak, aby nie było pustych miejsc.</li>
+                </ul>
+            </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label">Faktury</label>
-
-                <div class="col-sm-10">
+                <div class="col-sm-12">
                     <invoices-editor :items="invoices"></invoices-editor>
                     <div v-for="(invoice, index) in invoices">
                         <input type="hidden" :name="'Invoices[' + index + '].Date'" :value="momentYyyyMmDd(invoice.date)" />
@@ -77,20 +97,21 @@
                     </div>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label for="TotalDistance" class="col-sm-2 control-label">Całkowita długość [km]</label>
-
-                <div class="col-sm-10">
-                    <input id="TotalDistance" v-model="totalDistance" name="TotalDistance" data-vv-as="Całkowita długość" data-vv-name="totalDistance" v-validate="'required|min_value:1'" type="number" class="form-control">
-                    <span v-show="errors.has('totalDistance')" class="text-danger">{{ errors.first('totalDistance') }}</span>
-                </div>
+        </div>
+    </div>
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Trasa przejazdu</h3>
+        </div>
+        <div class="box-body">
+            <div class="callout callout-info">
+                <ul>
+                    <li>+ Jeżeli zaniżysz ilości kilometrów ogółem, nieprawidłowo policzysz kilometry,  to może zwiększyć się udział podatku VAT w kraju, w którym się rozliczasz.</li>
+                </ul>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label">Kraje</label>
-
-                <div class="col-sm-10">
+                <div class="col-sm-12">
                     <countries-editor :items="countries"></countries-editor>
                     <div v-for="(country, index) in countries">
                         <input type="hidden" :name="'Countries[' + index + '].Name'" :value="country.name" />
@@ -99,13 +120,28 @@
                 </div>
             </div>
 
+            <div class="box-footer">
+            </div>
+
             <div class="form-group">
-                <label for="OtherCountriesTotalDistance" class="col-sm-2 control-label">Dystans przebyty w innych krajach [km]</label>
+                <label for="TotalDistance" class="col-sm-2 control-label">Trasa ogółem [km] </label>
+
+                <div class="col-sm-10">
+                    <input id="TotalDistance" v-model="totalDistance" name="TotalDistance" data-vv-as="Trasa ogółem" data-vv-name="totalDistance" v-validate="'required|min_value:1'" type="number" class="form-control">
+                    <span v-show="errors.has('totalDistance')" class="text-danger">{{ errors.first('totalDistance') }}</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="OtherCountriesTotalDistance" class="col-sm-2 control-label">Inne kraje [km]</label>
 
                 <div class="col-sm-10">
                     <p class="form-control-static">{{ otherCountriesTotalDistance }}</p>
                     <input type="hidden" name="OtherCountriesTotalDistance" :value="otherCountriesTotalDistance" />
                 </div>
+            </div>
+
+            <div class="box-footer">
             </div>
 
             <div class="form-group">
@@ -128,8 +164,8 @@
             <button type="submit" class="btn btn-primary pull-right">Zapisz</button>
         </div>
         <!-- /.box-footer -->
-    </form>
-</div>
+    </div>
+</form>
 
 <script type="text/x-template" id="countries-editor-template">
     <div>
@@ -161,7 +197,7 @@
             <label class="col-sm-2 control-label"></label>
 
             <div class="col-sm-10">
-                <button type="button" class="btn btn-success" v-on:click="add">Dodaj</button>
+                <button type="button" class="btn btn-success" v-on:click="add">Dodaj nowy kraj</button>
                 <span v-show="showError" class="text-danger">Uzupełnij poprawnie Kraj oraz Dystans</span>
             </div>
         </div>
@@ -182,7 +218,7 @@
         </v-client-table>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">Data faktury</label>
+            <label class="col-sm-2 control-label">Data wystawienia faktury</label>
 
             <div class="col-sm-10">
                 <datepicker v-model="dateToAdd" language="pl"></datepicker>
@@ -209,8 +245,8 @@
             <label class="col-sm-2 control-label"></label>
 
             <div class="col-sm-10">
-                <button type="button" class="btn btn-success" v-on:click="add">Dodaj</button>
-                <span v-show="showError" class="text-danger">Uzupełnij poprawnie Datę, Walutę oraz Kwotę faktury</span>
+                <button type="button" class="btn btn-success" v-on:click="add">Dodaj nową fakturę</button>
+                <span v-show="showError" class="text-danger">Uzupełnij poprawnie Datę wystawienia, Walutę oraz Kwotę faktury</span>
             </div>
         </div>
     </div>

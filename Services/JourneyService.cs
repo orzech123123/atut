@@ -33,6 +33,8 @@ namespace Atut.Services
         {
             return _databaseContext.Journeys
                 .Include(v => v.User)
+                .Include(v => v.JourneyVehicles)
+                .ThenInclude(jv => jv.Vehicle)
                 .Where(v => v.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name)
                 .Select(v => _mapper.Map<Journey, JourneyViewModel>(v))
                 .ToList();

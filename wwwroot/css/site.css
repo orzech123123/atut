@@ -12,7 +12,15 @@
 }
 
 .VueTables__table {
-    background-color: #dcf2ff;
+    background-color: rgb(60,141,188);
+}
+
+.VueTables__table th {
+    color: white
+}
+
+.VueTables__table td {
+    background-color: rgb(245,245,245)
 }
 
 .callout.callout-danger > ul {

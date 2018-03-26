@@ -18,8 +18,7 @@ namespace Atut.Models
 
         [Required]
         public string StartingPlace { get; set; }
-
-        [Required]
+        
         public string ThroughPlace { get; set; }
 
         [Required]

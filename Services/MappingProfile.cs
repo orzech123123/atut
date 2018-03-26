@@ -11,7 +11,7 @@ namespace Atut.Services
         {
             CreateMap<Vehicle, KeyValueViewModel>()
                 .ForMember(v => v.Key, member => member.MapFrom(v => v.Id))
-                .ForMember(v => v.Value, member => member.MapFrom(v => v.Name));
+                .ForMember(v => v.Value, member => member.MapFrom(v => $"{v.RegistrationNumber} - {v.Name}"));
 
             CreateMap<Vehicle, VehicleViewModel>();
             CreateMap<VehicleViewModel, Vehicle>();

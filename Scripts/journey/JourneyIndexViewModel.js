@@ -11,14 +11,15 @@ var journeyIndexViewModel = function (model) {
     var vue = new Vue({
         el: "#JourneyIndex",
         data: {
-            columns: ["startingPlace", "finalPlace", "startDate", "endDate", "actions"],
+            columns: ["vehiclesColumn", "startingPlace", "finalPlace", "startDate", "endDate", "actions"],
             options: {
                 dateColumns: ["startDate", "endDate"], 
                 toMomentFormat: true,
                 dateFormat: "ll",
                 headings: {
-                    startingPlace: 'Miejsce wsiadania',
-                    finalPlace: 'Miejsce końcowe',
+                    vehiclesColumn: 'Pojazdy',
+                    startingPlace: 'Miejscowość wsiadania',
+                    finalPlace: 'Miejscowość docelowa + kraj',
                     startDate: 'Data wyjazdu',
                     endDate: 'Data powrotu',
                     actions: 'Akcje'

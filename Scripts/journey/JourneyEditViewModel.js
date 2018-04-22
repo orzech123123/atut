@@ -51,7 +51,7 @@ Vue.component('countries-editor', {
     },
     methods: {
         add: function () {
-            if (!this.nameToAdd || this.distanceToAdd <= 0) {
+            if (!this.nameToAdd || this.distanceToAdd <= 0 || this.distanceToAdd % 1 != 0) {
                 this.showError = true;
                 return;
             }
@@ -104,7 +104,7 @@ Vue.component('invoices-editor', {
     },
     methods: {
         add: function () {
-            if (!this.dateToAdd || !this.typeToAdd || this.amountToAdd <= 0) {
+            if (!this.dateToAdd || !this.typeToAdd || this.amountToAdd <= 0 || new Date(this.dateToAdd) > new Date()) {
                 this.showError = true;
                 return;
             }

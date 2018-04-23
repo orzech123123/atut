@@ -270,8 +270,8 @@ desired effect
                     @*<li class="header">HEADER</li>*@
                     <!-- Optionally, you can add icons to the links -->
 
-                    <li class="@(RouteHelper.Controller == "Vehicle" ? "active" : string.Empty)"><a href="@Url.Action("Index", "Vehicle")"><i class="fa fa-link"></i> <span>Pojazdy</span></a></li>
-                    <li class="@(RouteHelper.Controller == "Journey" ? "active" : string.Empty)"><a href="@Url.Action("Index", "Journey")"><i class="fa fa-link"></i> <span>Trasy</span></a></li>
+                    <li class="@(RouteHelper.Controller == "Vehicle" ? "active" : string.Empty)"><a href="@Url.Action("Index", "Vehicle")"><i class="fa fa-bus"></i> <span>Pojazdy</span></a></li>
+                    <li class="@(RouteHelper.Controller == "Journey" ? "active" : string.Empty)"><a href="@Url.Action("Index", "Journey")"><i class="fa fa-road"></i> <span>Trasy</span></a></li>
                     @*<li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
                         <li class="treeview">
                             <a href="#">

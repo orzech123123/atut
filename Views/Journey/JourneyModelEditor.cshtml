@@ -8,7 +8,7 @@
     <div asp-validation-summary="All" class="callout callout-danger"></div>
 }
 
-<form ref="form" class="form-horizontal" method="post" role="form" id="JourneyEdit" v-on:submit.prevent="validateBeforeSubmit">
+<form ref="form" class="form-horizontal" method="post" role="form" id="JourneyEdit" style="display: none" v-on:submit.prevent="validateBeforeSubmit">
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">Dane ogólne</h3>
@@ -101,13 +101,30 @@
     </div>
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">Trasa przejazdu</h3>
+            <h3 class="box-title">Trasa przejazdu i pojazdy</h3>
         </div>
         <div class="box-body">
             <div class="callout callout-info">
                 <ul>
                     <li>+ Jeżeli zaniżysz ilości kilometrów ogółem, nieprawidłowo policzysz kilometry,  to może zwiększyć się udział podatku VAT w kraju, w którym się rozliczasz.</li>
+                    <li>+ Podając ilość kilometrów zawsze wpisuj sumaryczną ilość kilometrów dla wszystkich pojazdów wybranych w polu Pojazdy.</li>
                 </ul>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Pojazdy</label>
+
+                <div class="col-sm-10">
+                    <multiselect v-model="vehicles" label="value" track-by="key" :options="availableVehicles" :multiple="true">
+                    </multiselect>
+                    <div v-for="(vehicle, index) in vehicles">
+                        <input type="hidden" :name="'Vehicles[' + index + '].Key'" :value="vehicle.key" />
+                        <input type="hidden" :name="'Vehicles[' + index + '].Value'" :value="vehicle.value" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-footer">
             </div>
 
             <div class="form-group">
@@ -138,22 +155,6 @@
                 <div class="col-sm-10">
                     <p class="form-control-static">{{ otherCountriesTotalDistance }}</p>
                     <input type="hidden" name="OtherCountriesTotalDistance" :value="otherCountriesTotalDistance" />
-                </div>
-            </div>
-
-            <div class="box-footer">
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Pojazdy</label>
-
-                <div class="col-sm-10">
-                    <multiselect v-model="vehicles" label="value" track-by="key" :options="availableVehicles" :multiple="true">
-                    </multiselect>
-                    <div v-for="(vehicle, index) in vehicles">
-                        <input type="hidden" :name="'Vehicles[' + index + '].Key'" :value="vehicle.key" />
-                        <input type="hidden" :name="'Vehicles[' + index + '].Value'" :value="vehicle.value" />
-                    </div>
                 </div>
             </div>
         </div>

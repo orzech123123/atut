@@ -16794,6 +16794,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('invoices-editor', {
 
 var JourneyEditViewModel = function (model) {
     model.availableVehicles = [];
+    model.errorElement = null;
 
     var vue = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
         el: "#JourneyEdit",
@@ -16801,9 +16802,12 @@ var JourneyEditViewModel = function (model) {
         methods: {
             validateBeforeSubmit() {
                 this.$validator.validateAll().then((result) => {
-                    if (result)
-                    {
+                    if (result) {
                         this.$refs.form.submit();
+                    } else {
+                        this.errorElement = document.querySelectorAll('[data-vv-name="' +
+                            this.$validator.errors.items[0].field + '"]')[0];
+                        this.$forceUpdate();
                     }
                 });
             },
@@ -16812,9 +16816,20 @@ var JourneyEditViewModel = function (model) {
             },
             momentYyyyMmDd: function (date) {
                 return __WEBPACK_IMPORTED_MODULE_5_moment___default()(date).format("YYYY-MM-DD");
+            },
+            scrollDownToErrorElement: function () {
+                this.errorElement.scrollIntoView(true);
+            }
+        },
+        updated: function () {
+            if (!!this.errorElement) {
+                this.scrollDownToErrorElement();
+                this.errorElement = null;
             }
         },
         mounted: function () {
+            this.$refs.form.style.display = "block";
+
             $(".vdp-datepicker").find("input").addClass("form-control");
 
             this.$http.get('/Vehicle/GetAllForAuthorizedUser').then(response => {

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 
@@ -55,7 +56,9 @@ namespace Atut
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddTransient<VehicleService>();
             services.AddTransient<JourneyService>();
+            services.AddTransient<RoleService>();
             services.AddScoped<RouteHelper>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
         
         public void Configure(

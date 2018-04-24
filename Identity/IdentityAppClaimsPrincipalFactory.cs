@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Atut.Models;
 using Microsoft.AspNetCore.Identity;
@@ -39,6 +40,10 @@ namespace Atut.Identity
                     new Claim(UserClaimTypes.Address, user.Address)
                 });
             }
+
+            ((ClaimsIdentity)principal.Identity).AddClaims(new[] {
+                new Claim(UserClaimTypes.IsAdmin, Convert.ToString(user.IsAdmin))
+            });
 
             return principal;
         }

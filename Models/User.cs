@@ -13,5 +13,8 @@ namespace Atut.Models
 
         [Required]
         public string Address { get; set; }
+
+        [Required]
+        public bool IsAdmin { get; set; }
     }
 }

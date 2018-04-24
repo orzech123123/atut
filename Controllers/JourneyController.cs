@@ -11,10 +11,12 @@ namespace Atut.Controllers
         private readonly JourneyService _journeyService;
         private readonly IDatabaseManager _databaseManager;
 
-        public JourneyController(JourneyService journeyService, IDatabaseManager databaseManager)
+        public JourneyController(JourneyService journeyService, IDatabaseManager databaseManager, RoleService roleService)
         {
             _journeyService = journeyService;
             _databaseManager = databaseManager;
+
+            var isAdmin = roleService.IsAdmin;
         }
 
         public IActionResult Index()

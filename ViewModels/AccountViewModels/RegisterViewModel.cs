@@ -20,17 +20,16 @@ namespace Atut.ViewModels.AccountViewModels
         [Compare("Password", ErrorMessage = "Potwierdzenie hasła nie odpowiada wprowadzonemu hasłu")]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessage = "Imię jest wymagane")]
-        [Display(Name = "Imię")]
-        public string FirstName { get; set; }
+        [Required(ErrorMessage = "Nazwa firmy jest wymagana")]
+        [Display(Name = "Nazwa firmy")]
+        public string CompanyName { get; set; }
 
-        [Required(ErrorMessage = "Nazwisko jest wymagane")]
-        [Display(Name = "Nazwisko")]
-        public string LastName { get; set; }
+        [Required(ErrorMessage = "Nazwa firmy skrócona jest wymagana")]
+        [Display(Name = "Nazwa firmy skrócona")]
+        public string CompanyNameShort { get; set; }
 
-        [Required(ErrorMessage = "Nr telefonu jest wymagany")]
-        [Phone]
-        [Display(Name = "Nr telefonu")]
-        public string PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Miejscowość jest wymagana")]
+        [Display(Name = "Miejscowość")]
+        public string Address { get; set; }
     }
 }

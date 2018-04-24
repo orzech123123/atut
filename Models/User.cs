@@ -6,9 +6,12 @@ namespace Atut.Models
     public class User : IdentityUser
     {
         [Required]
-        public string FirstName { get; set; }
+        public string CompanyName { get; set; }
 
         [Required]
-        public string LastName { get; set; }
+        public string CompanyNameShort { get; set; }
+
+        [Required]
+        public string Address { get; set; }
     }
 }

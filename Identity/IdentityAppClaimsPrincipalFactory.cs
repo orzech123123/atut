@@ -19,17 +19,24 @@ namespace Atut.Identity
         {
             var principal = await base.CreateAsync(user);
 
-            if (!string.IsNullOrWhiteSpace(user.FirstName))
+            if (!string.IsNullOrWhiteSpace(user.CompanyName))
             {
                 ((ClaimsIdentity)principal.Identity).AddClaims(new[] {
-                    new Claim(ClaimTypes.GivenName, user.FirstName)
+                    new Claim(UserClaimTypes.CompanyName, user.CompanyName)
                 });
             }
 
-            if (!string.IsNullOrWhiteSpace(user.LastName))
+            if (!string.IsNullOrWhiteSpace(user.CompanyNameShort))
             {
                 ((ClaimsIdentity)principal.Identity).AddClaims(new[] {
-                    new Claim(ClaimTypes.Surname, user.LastName),
+                    new Claim(UserClaimTypes.CompanyNameShort, user.CompanyNameShort)
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(user.Address))
+            {
+                ((ClaimsIdentity)principal.Identity).AddClaims(new[] {
+                    new Claim(UserClaimTypes.Address, user.Address)
                 });
             }
 

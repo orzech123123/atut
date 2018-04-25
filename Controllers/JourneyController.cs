@@ -1,4 +1,5 @@
-﻿using Atut.Services;
+﻿using Atut.Filters;
+using Atut.Services;
 using Atut.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -11,14 +12,13 @@ namespace Atut.Controllers
         private readonly JourneyService _journeyService;
         private readonly IDatabaseManager _databaseManager;
 
-        public JourneyController(JourneyService journeyService, IDatabaseManager databaseManager, RoleService roleService)
+        public JourneyController(JourneyService journeyService, IDatabaseManager databaseManager)
         {
             _journeyService = journeyService;
             _databaseManager = databaseManager;
-
-            var isAdmin = roleService.IsAdmin;
         }
 
+        [RequestModel(typeof(JourneyFilterModel))]
         public IActionResult Index()
         {
             var viewModel = _journeyService.GetAll();

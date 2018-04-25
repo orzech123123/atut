@@ -16,23 +16,29 @@ namespace Atut.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly INotificationManager _notificationManager;
         private readonly RoleService _roleService;
+        private readonly RequestModelService _requestModelService;
 
         public JourneyService(
             DatabaseContext databaseContext,
             IMapper mapper,
             IHttpContextAccessor httpContextAccessor,
             INotificationManager notificationManager,
-            RoleService roleService)
+            RoleService roleService,
+            RequestModelService requestModelService
+            )
         {
             _databaseContext = databaseContext;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _notificationManager = notificationManager;
             _roleService = roleService;
+            _requestModelService = requestModelService;
         }
 
         public IEnumerable<JourneyViewModel> GetAll()
         {
+            var filterModel = _requestModelService.GetModel<JourneyFilterModel>();
+
             IQueryable<Journey> query = _databaseContext.Journeys
                 .Include(j => j.User)
                 .Include(j => j.JourneyVehicles)

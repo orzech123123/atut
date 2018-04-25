@@ -51,6 +51,7 @@ namespace Atut
 
             services.AddSingleton<INotificationManager, NotificationManager>();
             services.AddScoped<IDatabaseManager, DatabaseManager>();
+            services.AddScoped<RequestModelService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IEmailService, EmailLabsMailService>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));

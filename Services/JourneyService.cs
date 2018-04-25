@@ -15,26 +15,36 @@ namespace Atut.Services
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly INotificationManager _notificationManager;
+        private readonly RoleService _roleService;
 
         public JourneyService(
             DatabaseContext databaseContext,
             IMapper mapper,
             IHttpContextAccessor httpContextAccessor,
-            INotificationManager notificationManager)
+            INotificationManager notificationManager,
+            RoleService roleService)
         {
             _databaseContext = databaseContext;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _notificationManager = notificationManager;
+            _roleService = roleService;
         }
 
         public IEnumerable<JourneyViewModel> GetAll()
         {
-            return _databaseContext.Journeys
-                .Include(v => v.User)
-                .Include(v => v.JourneyVehicles)
-                .ThenInclude(jv => jv.Vehicle)
-                .Where(v => v.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name)
+            IQueryable<Journey> query = _databaseContext.Journeys
+                .Include(j => j.User)
+                .Include(j => j.JourneyVehicles)
+                .ThenInclude(jv => jv.Vehicle);
+
+            if (!_roleService.IsAdmin)
+            {
+                query = query
+                    .Where(v => v.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
+            }
+
+            return query
                 .Select(v => _mapper.Map<Journey, JourneyViewModel>(v))
                 .ToList();
         }

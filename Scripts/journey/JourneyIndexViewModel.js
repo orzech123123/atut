@@ -8,15 +8,22 @@ window.moment = moment;
 Vue.use(ClientTable);
 
 var journeyIndexViewModel = function (model) {
+    var columns = ["vehiclesColumn", "startingPlace", "finalPlace", "startDate", "endDate", "actions"];
+
+    if (!!model.isAdmin) {
+        columns.splice(0, 0, "companyNameShort");
+    }
+
     var vue = new Vue({
         el: "#JourneyIndex",
         data: {
-            columns: ["vehiclesColumn", "startingPlace", "finalPlace", "startDate", "endDate", "actions"],
+            columns: columns,
             options: {
                 dateColumns: ["startDate", "endDate"], 
                 toMomentFormat: true,
                 dateFormat: "ll",
                 headings: {
+                    companyNameShort: "Firma",
                     vehiclesColumn: 'Pojazdy',
                     startingPlace: 'Miejscowość wsiadania',
                     finalPlace: 'Miejscowość docelowa + kraj',
@@ -24,7 +31,7 @@ var journeyIndexViewModel = function (model) {
                     endDate: 'Data powrotu',
                     actions: 'Akcje'
                 },
-                sortable: ["startingPlace", "finalPlace", "startDate", "endDate"],
+                sortable: ["companyNameShort", "startingPlace", "finalPlace", "startDate", "endDate"],
                 perPage: 20
             },
             data: model

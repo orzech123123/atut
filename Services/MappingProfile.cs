@@ -17,7 +17,8 @@ namespace Atut.Services
             CreateMap<VehicleViewModel, Vehicle>();
 
             CreateMap<Journey, JourneyViewModel>()
-                .ForMember(j => j.Vehicles, member => member.MapFrom(s => s.JourneyVehicles.Select(jv => jv.Vehicle)));
+                .ForMember(j => j.Vehicles, member => member.MapFrom(s => s.JourneyVehicles.Select(jv => jv.Vehicle)))
+                .ForMember(j => j.CompanyNameShort, member => member.MapFrom(s => s.User.CompanyNameShort));
             CreateMap<JourneyViewModel, Journey>();
 
             CreateMap<Country, CountryViewModel>();

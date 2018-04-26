@@ -164,7 +164,7 @@ var JourneyEditViewModel = function (model) {
 
             $(".vdp-datepicker").find("input").addClass("form-control");
 
-            this.$http.get('/Vehicle/GetAllForAuthorizedUser').then(response => {
+            this.$http.get('/Vehicle/GetAllForJourney/' + model.id).then(response => {
                 this.availableVehicles = response.body;
             });
         },

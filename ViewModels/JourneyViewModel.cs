@@ -54,5 +54,8 @@ namespace Atut.ViewModels
 
         [Required(ErrorMessage = "Faktury są wymagane")]
         public List<InvoiceViewModel> Invoices { get; set; }
+
+
+        public string CompanyNameShort { get; set; }
     }
 }

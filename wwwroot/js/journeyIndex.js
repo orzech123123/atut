@@ -16665,15 +16665,22 @@ window.moment = __WEBPACK_IMPORTED_MODULE_2_moment___default.a;
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_tables_2__["ClientTable"]);
 
 var journeyIndexViewModel = function (model) {
+    var columns = ["vehiclesColumn", "startingPlace", "finalPlace", "startDate", "endDate", "actions"];
+
+    if (!!model.isAdmin) {
+        columns.splice(0, 0, "companyNameShort");
+    }
+
     var vue = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
         el: "#JourneyIndex",
         data: {
-            columns: ["vehiclesColumn", "startingPlace", "finalPlace", "startDate", "endDate", "actions"],
+            columns: columns,
             options: {
                 dateColumns: ["startDate", "endDate"], 
                 toMomentFormat: true,
                 dateFormat: "ll",
                 headings: {
+                    companyNameShort: "Firma",
                     vehiclesColumn: 'Pojazdy',
                     startingPlace: 'Miejscowość wsiadania',
                     finalPlace: 'Miejscowość docelowa + kraj',
@@ -16681,7 +16688,7 @@ var journeyIndexViewModel = function (model) {
                     endDate: 'Data powrotu',
                     actions: 'Akcje'
                 },
-                sortable: ["startingPlace", "finalPlace", "startDate", "endDate"],
+                sortable: ["companyNameShort", "startingPlace", "finalPlace", "startDate", "endDate"],
                 perPage: 20
             },
             data: model

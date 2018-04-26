@@ -37,11 +37,14 @@ namespace Atut.Services
                 .ToList();
         }
 
-        public IEnumerable<KeyValueViewModel> GetAllKeyValue()
+        public IEnumerable<KeyValueViewModel> GetAllKeyValueForJourney(int journeyId)
         {
+            var journey = _databaseContext.Journeys.Include(j => j.User).SingleOrDefault(j => j.Id == journeyId);
+            var userName = (journey?.User?.UserName ?? _httpContextAccessor.HttpContext.User.Identity.Name);
+
             return _databaseContext.Vehicles
                 .Include(v => v.User)
-                .Where(v => v.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name)
+                .Where(v => v.User.UserName == userName)
                 .Select(v => _mapper.Map<Vehicle, KeyValueViewModel>(v))
                 .ToList();
         }
@@ -76,7 +79,7 @@ namespace Atut.Services
 
             if (viewModel.Id > 0)
             {
-                vehicle = _databaseContext.Vehicles.Find(viewModel.Id);
+                vehicle = _databaseContext.Vehicles.Include(v => v.User).SingleOrDefault(v => v.Id == viewModel.Id);
             }
             else
             {
@@ -84,8 +87,7 @@ namespace Atut.Services
             }
 
             _mapper.Map(viewModel, vehicle);
-
-            vehicle.User = _databaseContext.Users.Single(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
+            UpdateUser(vehicle);
 
             if (vehicle.Id <= 0)
             {
@@ -96,6 +98,11 @@ namespace Atut.Services
             {
                 _notificationManager.Add(NotificationType.Information, "Pojazd został zmodyfikowany.");
             }
+        }
+
+        private void UpdateUser(Vehicle vehicle)
+        {
+            vehicle.User = vehicle.User ?? _databaseContext.Users.Single(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
         }
 
         public VehicleViewModel Create()

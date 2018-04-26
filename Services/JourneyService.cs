@@ -105,6 +105,7 @@ namespace Atut.Services
             if (viewModel.Id > 0)
             {
                 journey = _databaseContext.Journeys
+                    .Include(j => j.User)
                     .Include(j => j.Countries)
                     .Include(j => j.Invoices)
                     .Include(j => j.JourneyVehicles)
@@ -140,9 +141,7 @@ namespace Atut.Services
         public void Delete(int id)
         {
             var journey = _databaseContext.Journeys.Include(j => j.JourneyVehicles).Single(j => j.Id == id);
-
-            //TODO czy ten user???
-
+            
             journey.JourneyVehicles.Clear();
             _databaseContext.Journeys.Remove(journey);
 
@@ -151,7 +150,7 @@ namespace Atut.Services
 
         private void UpdateUser(Journey journey)
         {
-            journey.User = _databaseContext.Users.Single(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
+            journey.User = journey.User ?? _databaseContext.Users.Single(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
         }
 
         private void UpdateVehicles(JourneyViewModel viewModel, Journey journey)

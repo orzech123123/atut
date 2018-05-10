@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Atut.Models;
 using Atut.ViewModels;
 using AutoMapper;
@@ -18,7 +19,11 @@ namespace Atut.Services
 
             CreateMap<Journey, JourneyViewModel>()
                 .ForMember(j => j.Vehicles, member => member.MapFrom(s => s.JourneyVehicles.Select(jv => jv.Vehicle)))
-                .ForMember(j => j.CompanyNameShort, member => member.MapFrom(s => s.User.CompanyNameShort));
+                .ForMember(j => j.Company, member => member.MapFrom(s => new KeyValueViewModel
+                {
+                    Key = s.User.Id,
+                    Value = s.User.CompanyNameShort
+                }));
             CreateMap<JourneyViewModel, Journey>();
 
             CreateMap<Country, CountryViewModel>();

@@ -1,5 +1,5 @@
 ﻿import Vue from "vue";
-import { ClientTable } from "vue-tables-2";
+import { ClientTable, Event } from "vue-tables-2";
 import moment from 'moment';
 import Datepicker from 'vuejs-datepicker';
 
@@ -12,7 +12,7 @@ var journeyIndexViewModel = function (model) {
     var columns = ["vehiclesColumn", "startingPlace", "finalPlace", "startDate", "endDate", "actions"];
     
     if (!!model.isAdmin) {
-        columns.splice(0, 0, "companyNameShort");
+        columns.splice(0, 0, "companyColumn");
     }
 
     var vue = new Vue({
@@ -20,14 +20,42 @@ var journeyIndexViewModel = function (model) {
         components: {
             Datepicker
         },
+        mounted: function() {
+            for (var company of model.map(m => m.company)) {
+                if (this.companies.filter(m => m.key === company.key).length == 0) {
+                    this.companies.push(company);
+                }
+            }
+            for (var country of model.map(m => m.countries).reduce((a, b) => a.concat(b))) {
+                if (this.countries.filter(m => m.name === country.name).length == 0) {
+                    this.countries.push(country);
+                }
+            }
+        },
+        watch: {
+            filterCompany: function() {
+                Event.$emit('vue-tables.filter::company', this.filterCompany);
+            },  
+            filterCountry: function() {
+                Event.$emit('vue-tables.filter::country', this.filterCountry);
+            },
+            filterFromDate: function() {
+                Event.$emit('vue-tables.filter::dateFrom', this.filterFromDate);
+            }, 
+            filterToDate: function() {
+                Event.$emit('vue-tables.filter::dateTo', this.filterToDate);
+            }  
+        },
         data: {
+            countries: [],
+            companies: [],
             columns: columns,
             options: {
                 dateColumns: ["startDate", "endDate"], 
                 toMomentFormat: true,
                 dateFormat: "ll",
                 headings: {
-                    companyNameShort: "Firma",
+                    companyColumn: "Firma",
                     vehiclesColumn: 'Pojazdy',
                     startingPlace: 'Miejscowość wsiadania',
                     finalPlace: 'Miejscowość docelowa + kraj',
@@ -35,14 +63,56 @@ var journeyIndexViewModel = function (model) {
                     endDate: 'Data powrotu',
                     actions: 'Akcje'
                 },
-                sortable: ["companyNameShort", "startingPlace", "finalPlace", "startDate", "endDate"],
-                perPage: 20
+                sortable: ["companyColumn", "startingPlace", "finalPlace", "startDate", "endDate"],
+                perPage: 20,
+                customFilters: [{
+                    name: 'company',
+                    callback: function (row, key) {
+                        if (key == "null") {
+                            return true;
+                        }
+                        
+                        return row.company.key == key;
+                    }
+                },
+                {
+                    name: 'country',
+                    callback: function (row, key) {
+                        if (key == "null") {
+                            return true;
+                        }
+
+                        return row.countries.filter(m => m.name == key).length > 0;
+                    }
+                    },
+                    {
+                        name: 'dateFrom',
+                        callback: function (row, key) {
+                            if (key == "null") {
+                                return true;
+                            }
+
+                            key.setHours(0, 0, 0, 0);
+                            return row.startDate >= moment(key);
+                        }
+                    },
+                    {
+                        name: 'dateTo',
+                        callback: function (row, key) {
+                            if (key == "null") {
+                                return true;
+                            }
+
+                            key.setHours(0, 0, 0, 0);
+                            return row.startDate <= moment(key);
+                        }
+                    }]
             },
             data: model,
             filterCompany: null,
             filterFromDate: null,
             filterToDate: null,
-            filterCountry: null,
+            filterCountry: null
         }
     });
 }

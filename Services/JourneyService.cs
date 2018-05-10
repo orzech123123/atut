@@ -41,6 +41,7 @@ namespace Atut.Services
 
             IQueryable<Journey> query = _databaseContext.Journeys
                 .Include(j => j.User)
+                .Include(j => j.Countries)
                 .Include(j => j.JourneyVehicles)
                 .ThenInclude(jv => jv.Vehicle);
 
@@ -157,7 +158,7 @@ namespace Atut.Services
         {
             foreach (var journeyVehicle in journey.JourneyVehicles.ToList())
             {
-                if (!viewModel.Vehicles.Any() || viewModel.Vehicles.All(v => v.Key != journeyVehicle.VehicleId))
+                if (!viewModel.Vehicles.Any() || viewModel.Vehicles.All(v => v.Key != journeyVehicle.VehicleId.ToString()))
                 {
                     journey.JourneyVehicles.Remove(journeyVehicle);
                 }
@@ -165,12 +166,12 @@ namespace Atut.Services
 
             foreach (var vehicle in viewModel.Vehicles)
             {
-                if (journey.JourneyVehicles.All(jv => jv.VehicleId != vehicle.Key))
+                if (journey.JourneyVehicles.All(jv => jv.VehicleId.ToString() != vehicle.Key))
                 {
                     journey.JourneyVehicles.Add(new JourneyVehicle
                     {
                         Journey = journey,
-                        Vehicle = _databaseContext.Vehicles.Single(v => v.Id == vehicle.Key)
+                        Vehicle = _databaseContext.Vehicles.Single(v => v.Id.ToString() == vehicle.Key)
                     });
                 }
             }

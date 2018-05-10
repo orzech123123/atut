@@ -5,7 +5,7 @@ namespace Atut.ViewModels
     public class KeyValueViewModel
     {
         [Required]
-        public int Key { get; set; }
+        public string Key { get; set; }
 
         [Required]
         public string Value { get; set; }

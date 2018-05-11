@@ -16768,7 +16768,7 @@ var journeyIndexViewModel = function (model) {
                                 return true;
                             }
 
-                            key.setHours(0, 0, 0, 0);
+                            key.setHours(23, 59, 59, 0);
                             return row.startDate <= __WEBPACK_IMPORTED_MODULE_2_moment___default()(key);
                         }
                     }]

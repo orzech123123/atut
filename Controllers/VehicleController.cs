@@ -84,9 +84,9 @@ namespace Atut.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllForJourney(int id)
+        public IActionResult GetAllForUser([FromQuery] string id)
         {
-            return Json(_vehicleService.GetAllKeyValueForJourney(id));
+            return Json(_vehicleService.GetAllKeyValueForUser(id));
         }
     }
 }

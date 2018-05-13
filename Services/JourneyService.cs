@@ -118,7 +118,7 @@ namespace Atut.Services
             }
 
             _mapper.Map(viewModel, journey);
-            UpdateUser(journey);
+            UpdateUser(viewModel, journey);
             UpdateVehicles(viewModel, journey);
 
             if (journey.Id <= 0)
@@ -136,6 +136,10 @@ namespace Atut.Services
         {
             var viewModel = new JourneyViewModel();
 
+            var user = _databaseContext.Users.Single(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
+            var company = new KeyValueViewModel {Key = user.Id, Value = user.CompanyNameShort};
+            viewModel.Company = company;
+
             return viewModel;
         }
 
@@ -149,9 +153,9 @@ namespace Atut.Services
             _notificationManager.Add(NotificationType.Information, "Trasa została usunięta.");
         }
 
-        private void UpdateUser(Journey journey)
+        private void UpdateUser(JourneyViewModel viewModel, Journey journey)
         {
-            journey.User = journey.User ?? _databaseContext.Users.Single(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
+            journey.User = _databaseContext.Users.Single(u => u.Id == viewModel.Company.Key);
         }
 
         private void UpdateVehicles(JourneyViewModel viewModel, Journey journey)

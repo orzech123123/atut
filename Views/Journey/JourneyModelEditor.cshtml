@@ -1,7 +1,9 @@
 ﻿@using Atut.Helpers;
+@using Atut.Services
 @using Atut.ViewModels
 
 @model Atut.ViewModels.JourneyViewModel
+@inject RoleService RoleService;
 
 @if (!ViewData.ModelState.IsValid)
 {
@@ -20,6 +22,26 @@
                     <li>+ Przed wypełnianiem formularza przygotuj faktury, karty drogowe, wydruki z tachografu, Książkę formularzy podróży, gdzie są dane o granicach, kilometrach operacji transportowej, ilości pasażerów, kwocie i dacie faktury.</li>
                 </ul>
             </div>
+
+            @if (RoleService.IsAdmin)
+            {
+                <div class="form-group">
+                    <label for="Company" class="col-sm-2 control-label">Firma</label>
+
+                    <div class="col-sm-10">
+                        <select id="Company" class="form-control" v-model="selectedCompany" data-vv-as="Firma" data-vv-name="company" v-validate="'requireNotNull'">
+                            <option value="null">-- Wybierz firmę -- </option>
+                            <option v-for="company in availableCompanies"
+                                    v-bind:value="company.key">
+                                {{ company.value }}
+                            </option>
+                        </select>
+                        <span v-show="errors.has('company')" class="text-danger">{{ errors.first('company') }}</span>
+                    </div>
+                </div>
+            }
+            <input v-if="!!company" type="hidden" :name="'Company.Key'" :value="company.key" />
+            <input v-if="!!company" type="hidden" :name="'Company.Value'" :value="company.value" />
 
             <div class="form-group">
                 <label for="StartingPlace" class="col-sm-2 control-label">Miejscowość wsiadania</label>

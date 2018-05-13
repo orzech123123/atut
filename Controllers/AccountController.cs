@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Atut.Models;
 using Atut.Services;
+using Atut.ViewModels;
 using Atut.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -34,6 +35,16 @@ namespace Atut.Controllers
             _emailService = emailService;
             _notificationManager = notificationManager;
             _logger = loggerFactory.CreateLogger<AccountController>();
+        }
+        
+        [HttpGet]
+        public IActionResult GetAllCompanies()
+        {
+            var companies = _userManager.Users
+                .Select(u => new KeyValueViewModel {Key = u.Id, Value = u.CompanyNameShort})
+                .ToList();
+
+            return Json(companies);
         }
 
         //
@@ -596,3 +607,4 @@ namespace Atut.Controllers
         #endregion
     }
 }
+

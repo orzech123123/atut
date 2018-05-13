@@ -16688,8 +16688,23 @@ window.moment = __WEBPACK_IMPORTED_MODULE_5_moment___default.a;
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_vue_tables_2__["ClientTable"]);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_7_vue_resource__["a" /* default */]);
 
+__WEBPACK_IMPORTED_MODULE_1_vee_validate__["a" /* Validator */].extend('requireNotNull', {
+    getMessage: field => '',
+    validate: value => value != "null"
+});
 __WEBPACK_IMPORTED_MODULE_1_vee_validate__["a" /* Validator */].localize('pl', __WEBPACK_IMPORTED_MODULE_2_vee_validate_dist_locale_pl___default.a);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_validate__["b" /* default */]);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_validate__["b" /* default */], {
+    fieldsBagName: 'vFields',
+    dictionary: {
+        pl: {
+            custom: {
+                company: {
+                    requireNotNull: (field) => 'Pole Firma jest wymagane.'
+                }
+            }
+        }
+    }
+});
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('countries-editor', {
     props: {
@@ -16800,6 +16815,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('invoices-editor', {
 
 var JourneyEditViewModel = function (model) {
     model.availableVehicles = [];
+    model.availableCompanies = [];
     model.errorElement = null;
 
     var vue = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
@@ -16812,34 +16828,50 @@ var JourneyEditViewModel = function (model) {
                         this.$refs.form.submit();
                     } else {
                         this.errorElement = document.querySelectorAll('[data-vv-name="' +
-                            this.$validator.errors.items[0].field + '"]')[0];
+                            this.$validator.errors.items[0].field +
+                            '"]')[0];
                         this.$forceUpdate();
                     }
                 });
             },
-            recalculateOtherCountriesTotalDistance: function (totalDistance, countriesTotalDistance) {
+            recalculateOtherCountriesTotalDistance: function(totalDistance, countriesTotalDistance) {
                 this.otherCountriesTotalDistance = totalDistance - countriesTotalDistance;
             },
-            momentYyyyMmDd: function (date) {
+            momentYyyyMmDd: function(date) {
                 return __WEBPACK_IMPORTED_MODULE_5_moment___default()(date).format("YYYY-MM-DD");
             },
-            scrollDownToErrorElement: function () {
+            scrollDownToErrorElement: function() {
                 this.errorElement.scrollIntoView(true);
+            },
+            refreshVehicles: function (company, withoutVehiclesClear) {
+                if (!!company) {
+                    this.$http.get('/Vehicle/GetAllForUser?id=' + company.key).then(response => {
+                        this.availableVehicles = response.body;
+                    });
+                } else {
+                    this.availableVehicles = [];
+                }
+
+                if (!withoutVehiclesClear) {
+                    this.vehicles = [];
+                }
             }
         },
-        updated: function () {
+        updated: function() {
             if (!!this.errorElement) {
                 this.scrollDownToErrorElement();
                 this.errorElement = null;
             }
         },
-        mounted: function () {
+        mounted: function() {
             this.$refs.form.style.display = "block";
 
             $(".vdp-datepicker").find("input").addClass("form-control");
 
-            this.$http.get('/Vehicle/GetAllForJourney/' + model.id).then(response => {
-                this.availableVehicles = response.body;
+            this.refreshVehicles(this.company, true);
+
+            this.$http.get('/Account/GetAllCompanies').then(response => {
+                this.availableCompanies = response.body;
             });
         },
         components: {
@@ -16847,22 +16879,47 @@ var JourneyEditViewModel = function (model) {
             Multiselect: __WEBPACK_IMPORTED_MODULE_6_vue_multiselect___default.a
         },
         computed: {
-            startDateDisplayModel: function () {
+            startDateDisplayModel: function() {
                 return !!this.startDate ? __WEBPACK_IMPORTED_MODULE_5_moment___default()(this.startDate).format('YYYY-MM-DD') : null;
             },
-            endDateDisplayModel: function () {
+            endDateDisplayModel: function() {
                 return !!this.endDate ? __WEBPACK_IMPORTED_MODULE_5_moment___default()(this.endDate).format('YYYY-MM-DD') : null;
             },
-            countriesTotalDistance: function () {
-                return this.countries.length > 1 ? this.countries.map(item => item.distance).reduce((prev, next) => Number(prev) + Number(next)) : this.countries.length > 0 ? this.countries[0].distance : 0;
+            countriesTotalDistance: function() {
+                return this.countries.length > 1
+                    ? this.countries.map(item => item.distance).reduce((prev, next) => Number(prev) + Number(next))
+                    : this.countries.length > 0
+                    ? this.countries[0].distance
+                    : 0;
+            },
+            selectedCompany: {
+                get: function() {
+                    if (!this.company) {
+                        return "null";
+                    }
+
+                    let company = this.availableCompanies.find(c => c.key == this.company.key);
+                    return !!company ? company.key : null;
+                },
+                set: function(newValue) {
+                    if (newValue == "null") {
+                        this.company = null;
+                    } else {
+                        let company = this.availableCompanies.find(c => c.key == newValue);
+                        this.company = { key: company.key, value: company.value };
+                    }
+                }
             }
         },
         watch: {
-            totalDistance: function (val) {
+            totalDistance: function(val) {
                 this.recalculateOtherCountriesTotalDistance(val, this.countriesTotalDistance);
             },
-            countriesTotalDistance: function (val) {
+            countriesTotalDistance: function(val) {
                 this.recalculateOtherCountriesTotalDistance(this.totalDistance, val);
+            },
+            company: function(val) {
+                this.refreshVehicles(val);
             }
         }
     });

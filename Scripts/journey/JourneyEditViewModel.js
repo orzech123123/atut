@@ -14,8 +14,23 @@ window.moment = moment;
 Vue.use(ClientTable);
 Vue.use(VueResource);
 
+Validator.extend('requireNotNull', {
+    getMessage: field => '',
+    validate: value => value != "null"
+});
 Validator.localize('pl', VeeValidatePolish);
-Vue.use(VeeValidate);
+Vue.use(VeeValidate, {
+    fieldsBagName: 'vFields',
+    dictionary: {
+        pl: {
+            custom: {
+                company: {
+                    requireNotNull: (field) => 'Pole Firma jest wymagane.'
+                }
+            }
+        }
+    }
+});
 
 Vue.component('countries-editor', {
     props: {
@@ -126,6 +141,7 @@ Vue.component('invoices-editor', {
 
 var JourneyEditViewModel = function (model) {
     model.availableVehicles = [];
+    model.availableCompanies = [];
     model.errorElement = null;
 
     var vue = new Vue({
@@ -138,34 +154,50 @@ var JourneyEditViewModel = function (model) {
                         this.$refs.form.submit();
                     } else {
                         this.errorElement = document.querySelectorAll('[data-vv-name="' +
-                            this.$validator.errors.items[0].field + '"]')[0];
+                            this.$validator.errors.items[0].field +
+                            '"]')[0];
                         this.$forceUpdate();
                     }
                 });
             },
-            recalculateOtherCountriesTotalDistance: function (totalDistance, countriesTotalDistance) {
+            recalculateOtherCountriesTotalDistance: function(totalDistance, countriesTotalDistance) {
                 this.otherCountriesTotalDistance = totalDistance - countriesTotalDistance;
             },
-            momentYyyyMmDd: function (date) {
+            momentYyyyMmDd: function(date) {
                 return moment(date).format("YYYY-MM-DD");
             },
-            scrollDownToErrorElement: function () {
+            scrollDownToErrorElement: function() {
                 this.errorElement.scrollIntoView(true);
+            },
+            refreshVehicles: function (company, withoutVehiclesClear) {
+                if (!!company) {
+                    this.$http.get('/Vehicle/GetAllForUser?id=' + company.key).then(response => {
+                        this.availableVehicles = response.body;
+                    });
+                } else {
+                    this.availableVehicles = [];
+                }
+
+                if (!withoutVehiclesClear) {
+                    this.vehicles = [];
+                }
             }
         },
-        updated: function () {
+        updated: function() {
             if (!!this.errorElement) {
                 this.scrollDownToErrorElement();
                 this.errorElement = null;
             }
         },
-        mounted: function () {
+        mounted: function() {
             this.$refs.form.style.display = "block";
 
             $(".vdp-datepicker").find("input").addClass("form-control");
 
-            this.$http.get('/Vehicle/GetAllForJourney/' + model.id).then(response => {
-                this.availableVehicles = response.body;
+            this.refreshVehicles(this.company, true);
+
+            this.$http.get('/Account/GetAllCompanies').then(response => {
+                this.availableCompanies = response.body;
             });
         },
         components: {
@@ -173,22 +205,47 @@ var JourneyEditViewModel = function (model) {
             Multiselect
         },
         computed: {
-            startDateDisplayModel: function () {
+            startDateDisplayModel: function() {
                 return !!this.startDate ? moment(this.startDate).format('YYYY-MM-DD') : null;
             },
-            endDateDisplayModel: function () {
+            endDateDisplayModel: function() {
                 return !!this.endDate ? moment(this.endDate).format('YYYY-MM-DD') : null;
             },
-            countriesTotalDistance: function () {
-                return this.countries.length > 1 ? this.countries.map(item => item.distance).reduce((prev, next) => Number(prev) + Number(next)) : this.countries.length > 0 ? this.countries[0].distance : 0;
+            countriesTotalDistance: function() {
+                return this.countries.length > 1
+                    ? this.countries.map(item => item.distance).reduce((prev, next) => Number(prev) + Number(next))
+                    : this.countries.length > 0
+                    ? this.countries[0].distance
+                    : 0;
+            },
+            selectedCompany: {
+                get: function() {
+                    if (!this.company) {
+                        return "null";
+                    }
+
+                    let company = this.availableCompanies.find(c => c.key == this.company.key);
+                    return !!company ? company.key : null;
+                },
+                set: function(newValue) {
+                    if (newValue == "null") {
+                        this.company = null;
+                    } else {
+                        let company = this.availableCompanies.find(c => c.key == newValue);
+                        this.company = { key: company.key, value: company.value };
+                    }
+                }
             }
         },
         watch: {
-            totalDistance: function (val) {
+            totalDistance: function(val) {
                 this.recalculateOtherCountriesTotalDistance(val, this.countriesTotalDistance);
             },
-            countriesTotalDistance: function (val) {
+            countriesTotalDistance: function(val) {
                 this.recalculateOtherCountriesTotalDistance(this.totalDistance, val);
+            },
+            company: function(val) {
+                this.refreshVehicles(val);
             }
         }
     });

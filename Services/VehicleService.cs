@@ -37,14 +37,11 @@ namespace Atut.Services
                 .ToList();
         }
 
-        public IEnumerable<KeyValueViewModel> GetAllKeyValueForJourney(int journeyId)
+        public IEnumerable<KeyValueViewModel> GetAllKeyValueForUser(string userId)
         {
-            var journey = _databaseContext.Journeys.Include(j => j.User).SingleOrDefault(j => j.Id == journeyId);
-            var userName = (journey?.User?.UserName ?? _httpContextAccessor.HttpContext.User.Identity.Name);
-
             return _databaseContext.Vehicles
                 .Include(v => v.User)
-                .Where(v => v.User.UserName == userName)
+                .Where(v => v.User.Id == userId)
                 .Select(v => _mapper.Map<Vehicle, KeyValueViewModel>(v))
                 .ToList();
         }

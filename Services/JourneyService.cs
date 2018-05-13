@@ -37,8 +37,8 @@ namespace Atut.Services
 
         public IEnumerable<JourneyViewModel> GetAll()
         {
-            var filterModel = _requestModelService.GetModel<JourneyFilterModel>();
-
+//            var filterModel = _requestModelService.GetModel<JourneyFilterModel>();
+            
             IQueryable<Journey> query = _databaseContext.Journeys
                 .Include(j => j.User)
                 .Include(j => j.Countries)

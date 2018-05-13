@@ -20,7 +20,9 @@ var journeyIndexViewModel = function (model) {
         components: {
             Datepicker
         },
-        mounted: function() {
+        mounted: function () {
+            $(".vdp-datepicker").find("input").addClass("form-control");
+
             for (var company of model.map(m => m.company)) {
                 if (this.companies.filter(m => m.key === company.key).length == 0) {
                     this.companies.push(company);

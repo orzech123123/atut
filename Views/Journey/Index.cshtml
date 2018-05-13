@@ -11,11 +11,57 @@
 <div id="JourneyIndex">
         <div class="row">
             <div class="col-md-12">
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Bordered Table</h3>
-                    </div>
+                <div class="box box-primary">
                     <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-3 col-xs-6">
+                                <div class="description-block">
+                                    <p>Firma</p>
+                                    <select class="form-control" v-model="filterCompany">
+                                        <option value="null">-- Wybierz firmę -- </option>
+                                        <option v-for="company in companies"
+                                                v-bind:value="company.key">
+                                            {{ company.value }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-3 col-xs-6">
+                                <div class="description-block">
+                                    <p>Data wyjazdu od</p>
+                                    <datepicker v-model="filterFromDate" ref="endDate" language="pl"></datepicker>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-3 col-xs-6">
+                                <div class="description-block">
+                                    <p>Data wyjazdu do</p>
+                                    <datepicker v-model="filterToDate" ref="endDate" language="pl"></datepicker>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-3 col-xs-6">
+                                <div class="description-block">
+                                    <p>Kraj</p>
+                                    <select class="form-control" v-model="filterCountry">
+                                        <option value="null">-- Wybierz kraj -- </option>
+                                        <option v-for="country in countries"
+                                                v-bind:value="country.name">
+                                            {{ country.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                        </div>
+
+                        <div class="box-footer">
+                        </div>
+
                         <v-client-table :data="data" :columns="columns" :options="options">
                             <template slot="companyColumn" scope="props">
                                 {{ props.row.company.value }}
@@ -34,33 +80,6 @@
                 </div>
             </div>
         </div>
-
-    <div class="row">
-        <div class="column">
-            <select v-model="filterCompany">
-                <option value="null">-- Wybierz firmę -- </option>
-                <option v-for="company in companies"
-                        v-bind:value="company.key">
-                    {{ company.value }}
-                </option>
-            </select>
-        </div>
-        <div class="column">
-            <datepicker v-model="filterFromDate" ref="endDate" language="pl"></datepicker>
-        </div>
-        <div class="column">
-            <datepicker v-model="filterToDate" ref="endDate" language="pl"></datepicker>
-        </div>
-        <div class="column">
-            <select v-model="filterCountry">
-                <option value="null">-- Wybierz kraj -- </option>
-                <option v-for="country in countries"
-                        v-bind:value="country.name">
-                    {{ country.name }}
-                </option>
-            </select>
-        </div>
-    </div>
 </div>
 
 @section Buttons

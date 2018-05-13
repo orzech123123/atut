@@ -7,14 +7,22 @@
 }
 
 <div id="VehicleIndex">
-    <v-client-table :data="data" :columns="columns" :options="options">
-        <template slot="actions" scope="props">
-            <div>
-                <a :href="'/Vehicle/Edit/'+ props.row.id" class="btn btn-primary">Edytuj</a>
-                <a :href="'/Vehicle/Delete/'+ props.row.id" class="btn btn-danger">Usuń</a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <v-client-table :data="data" :columns="columns" :options="options">
+                        <template slot="actions" scope="props">
+                            <div>
+                                <a :href="'/Vehicle/Edit/'+ props.row.id" class="btn btn-primary">Edytuj</a>
+                                <a :href="'/Vehicle/Delete/'+ props.row.id" class="btn btn-danger">Usuń</a>
+                            </div>
+                        </template>
+                    </v-client-table>
+                </div>
             </div>
-        </template>
-    </v-client-table>
+        </div>
+    </div>
 </div>
 
 @section Buttons

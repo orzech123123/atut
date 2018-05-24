@@ -1,4 +1,5 @@
 ﻿@using Atut.Helpers;
+@using Atut.Services
 @using Atut.ViewModels
 
 @model Atut.ViewModels.JourneyViewModel
@@ -12,6 +13,7 @@
 @section Scripts {
     <script type="text/javascript">
         window.model = @Html.ToJson(Model);
+        window.availableCountries = @Html.ToJson(CountriesProvider.Countries);
     </script>
 
     <script src="~/js/vendor.js"></script>

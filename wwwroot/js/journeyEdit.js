@@ -16712,12 +16712,16 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('countries-editor', {
             type: Array,
             required: true
         },  
+        availableItems: {
+            type: Array,
+            required: true
+        }
     },
     template: '#countries-editor-template',
     data() {
         return {
             showError: false,
-            countryNames: ["Polska [PL]", "Niemcy [D]", "Dania [DK]", "Słowenia [SI]", "Chorwacja [HR]", "Austria [A]", "Belgia [B]", "Holandia [NL]"],
+            countryNames: this.availableItems,
             nameToAdd: null,
             distanceToAdd: 0,
 
@@ -16813,9 +16817,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('invoices-editor', {
     }
 });
 
-var JourneyEditViewModel = function (model) {
+var JourneyEditViewModel = function (model, availableCountries) {
     model.availableVehicles = [];
     model.availableCompanies = [];
+    model.availableCountries = availableCountries;
     model.errorElement = null;
 
     var vue = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
@@ -16863,7 +16868,7 @@ var JourneyEditViewModel = function (model) {
                 this.errorElement = null;
             }
         },
-        mounted: function() {
+        mounted: function () {
             this.$refs.form.style.display = "block";
 
             $(".vdp-datepicker").find("input").addClass("form-control");
@@ -16925,7 +16930,7 @@ var JourneyEditViewModel = function (model) {
     });
 }
 
-JourneyEditViewModel(window.model);
+JourneyEditViewModel(window.model, window.availableCountries);
 
 /***/ }),
 /* 320 */

@@ -16687,6 +16687,10 @@ var journeyIndexViewModel = function (model) {
         },
         mounted: function () {
             $(".vdp-datepicker").find("input").addClass("form-control");
+            
+            $("#generateReport").on("click", () => {
+                alert(this.filterCountry);
+            });
 
             for (var company of model.map(m => m.company)) {
                 if (this.companies.filter(m => m.key === company.key).length == 0) {

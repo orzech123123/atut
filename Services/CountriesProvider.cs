@@ -4,9 +4,25 @@ namespace Atut.Services
 {
     public class CountriesProvider
     {
+        public static string Poland = "Polska [PL]";
+        public static string Germany = "Niemcy [D]";
+        public static string Denmark = "Dania [DK]";
+        public static string Slovenia = "Słowenia [SI]";
+        public static string Croatia = "Chorwacja [HR]";
+        public static string Austria = "Austria [A]";
+        public static string Belgium = "Belgia [B]";
+        public static string Netherlands = "Holandia [NL]";
+
         public static IEnumerable<string> Countries => new List<string>
         {
-            "Polska [PL]", "Niemcy [D]", "Dania [DK]", "Słowenia [SI]", "Chorwacja [HR]", "Austria [A]", "Belgia [B]", "Holandia [NL]"
+            Poland,
+            Germany,
+            Denmark,
+            Slovenia,
+            Croatia,
+            Austria,
+            Belgium,
+            Netherlands
         };
     }
 }

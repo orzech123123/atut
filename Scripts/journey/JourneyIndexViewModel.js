@@ -24,7 +24,14 @@ var journeyIndexViewModel = function (model) {
             $(".vdp-datepicker").find("input").addClass("form-control");
             
             $("#generateReport").on("click", () => {
-                alert(this.filterCountry);
+                let journeyIds = this.$children
+                    .filter(ch => ch.$el.className == "VueTables VueTables--client")[0]
+                    .filteredData
+                    .map(row => row.id);
+
+                let journeyIdsString = "journeyIds=" + journeyIds.join("&journeyIds=");
+
+                window.open("/Report/GenerateReport?" + journeyIdsString);
             });
 
             for (var company of model.map(m => m.company)) {

@@ -60,6 +60,7 @@ namespace Atut
             services.AddTransient<RoleService>();
             services.AddScoped<RouteHelper>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<ReportService>();
         }
         
         public void Configure(

@@ -90,7 +90,11 @@
 @section Buttons
 {
     <a href="@Url.Action("Create")" class="btn btn-success">Dodaj</a>
-    <button class="btn btn-success" id="generateReport">Generuj raport</button>
+    
+    @if (RoleService.IsAdmin)
+    {
+        <button class="btn btn-success" id="generateReport">Generuj raport</button>
+    }
 }
 
 @section Scripts {

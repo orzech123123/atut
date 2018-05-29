@@ -16694,7 +16694,12 @@ var journeyIndexViewModel = function (model) {
                     .filteredData
                     .map(row => row.id);
 
-                let journeyIdsString = "journeyIds=" + journeyIds.join("&journeyIds=");
+                if (!this.filterCountry || journeyIds.length == 0) {
+                    alert("Wybierz Kraj oraz upewnij się, że masz na liście co najmniej jedną Trasę");
+                    return;
+                }
+
+                let journeyIdsString = "country=" + this.filterCountry + "&journeyIds=" + journeyIds.join("&journeyIds=");
 
                 window.open("/Report/GenerateReport?" + journeyIdsString);
             });

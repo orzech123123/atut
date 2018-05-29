@@ -1,4 +1,4 @@
-nr rejestracyjny
+﻿nr rejestracyjny
 cel wyjazdu
 data wyjazdu z polski
 data powrotu do polski
@@ -7,5 +7,6 @@ km [KRAJ]
 liczba osob
 faktura ogółem kwota [PLN]
 udział [KRAJU] w kwocie faktury ogółem [PLN]
+data wyst fakury
 kurs [WALUTY KRAJU]
 udział [KRAJU] w kwocie faktury ogółem wyrażony w [WALUCIE KRAJU]

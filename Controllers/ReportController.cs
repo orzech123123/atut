@@ -17,9 +17,9 @@ namespace Atut.Controllers
         }
         
         [HttpGet]
-        public IActionResult GenerateReport(int[] journeyIds)
+        public IActionResult GenerateReport(int[] journeyIds, string country)
         {
-            var report = _reportService.GenerateReport(journeyIds);
+            var report = _reportService.GenerateReport(journeyIds, country);
 
             return View("Report", report);
         }

@@ -16709,7 +16709,7 @@ var journeyIndexViewModel = function (model) {
                     this.companies.push(company);
                 }
             }
-            for (var country of model.map(m => m.countries).reduce((a, b) => a.concat(b))) {
+            for (var country of model.map(m => m.countries).reduce((a, b) => a.concat(b), [])) {
                 if (this.countries.filter(m => m.name === country.name).length == 0) {
                     this.countries.push(country);
                 }

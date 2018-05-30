@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Atut.Models;
 
 namespace Atut.ViewModels
 {
@@ -19,8 +20,8 @@ namespace Atut.ViewModels
         public int AmountOfPeople { get; set; }
         public decimal InvoicesAmount { get; set; }
         public decimal PartOfCountryInInvoicesAmount { get; set; }
-        public string Currency { get; set; }
-        public decimal PartOfCountryInInvoicesAmountInCurrency { get; set; }
+        public CurrencyType CountryCurrency { get; set; }
+        public decimal PartOfCountryInInvoicesAmountInCurrencyAndWithTax { get; set; }
         public string InvoicesDates { get; set; }
     }
 }

@@ -24,5 +24,24 @@ namespace Atut.Services
             Belgium,
             Netherlands
         };
+
+        public static IEnumerable<string> EuroCurrencyCountries => new List<string>
+        {
+            Germany,
+            Slovenia,
+            Austria,
+            Belgium,
+            Netherlands
+        };
+
+        public static IEnumerable<string> HrkCurrencyCountries => new List<string>
+        {
+            Croatia
+        };
+
+        public static IEnumerable<string> DkkCurrencyCountries => new List<string>
+        {
+            Denmark
+        };
     }
 }

@@ -13,7 +13,7 @@ namespace Atut.ViewModels
 
         [Required(ErrorMessage = "Typ faktury jest wymagany")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public InvoiceType Type { get; set; }
+        public CurrencyType Type { get; set; }
 
         [Required(ErrorMessage = "Kwota faktury jest wymagana")]
         public decimal Amount { get; set; }

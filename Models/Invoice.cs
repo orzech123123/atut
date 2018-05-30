@@ -13,7 +13,7 @@ namespace Atut.Models
         public DateTime Date { get; set; }
 
         [Required]
-        public InvoiceType Type { get; set; }
+        public CurrencyType Type { get; set; }
 
         [Required]
         [DataType(DataType.Currency)]
@@ -26,9 +26,11 @@ namespace Atut.Models
         public virtual Journey Journey { get; set; }
     }
 
-    public enum InvoiceType
+    public enum CurrencyType
     {
         PLN,
-        Euro
+        EUR,
+        HRK,
+        DKK
     }
 }

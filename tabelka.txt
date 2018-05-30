@@ -5,8 +5,8 @@ data powrotu do polski
 km ogółem
 km [KRAJ]
 liczba osob
-faktura ogółem kwota [PLN]
-udział [KRAJU] w kwocie faktury ogółem [PLN]
+faktura ogółem kwota [EUR]
+udział [KRAJU] w kwocie faktury ogółem [EUR]
 data wyst fakury
 kurs [WALUTY KRAJU]
 udział [KRAJU] w kwocie faktury ogółem wyrażony w [WALUCIE KRAJU]

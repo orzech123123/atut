@@ -1,7 +1,66 @@
 ﻿@model Atut.ViewModels.ReportViewModel
 
+@using Atut.Services
+
+@inject EnglishReportLabelDictionary EnglishReportLabelDictionary;
+@inject GermanReportLabelDictionary GermanReportLabelDictionary;
+
 @{
     Layout = null;
+    var labels = Model.Country == CountriesProvider.Germany ? (IReportLabelDictionary) GermanReportLabelDictionary : EnglishReportLabelDictionary;
 }
 
-@Model
+<html>
+    <head>
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+
+            table, th, td {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+<body>
+    
+    <table>
+        <thead>
+        <tr>
+            <th>@labels.RegistrationNumbers</th>
+            <th>@labels.FinalPlace</th>
+            <th>@labels.StartDate</th>
+            <th>@labels.EndDate</th>
+            <th>@labels.TotalDistance</th>
+            <th>@labels.CountryDistance(Model.Country)</th>
+            <th>@labels.AmountOfPeople</th>
+            <th>@labels.InvoicesAmount</th>
+            <th>@labels.PartOfCountryInInvoicesAmount(Model.Country)</th>
+            <th>@labels.InvoicesDates</th>
+            <th>@labels.ExchangeRate</th>
+            <th>@labels.PartOfCountryInInvoicesAmountInCurrencyAndWithTax(Model.Country, Model.CountryCurrency)</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var row in Model.Rows)
+        {
+            <tr>
+                <td>@row.RegistratioNumber</td>
+                <td>@row.FinalPlace</td>
+                <td>@row.StartDate</td>
+                <td>@row.EndDate</td>
+                <td>@row.TotalDistance</td>
+                <td>@row.CountryDistance</td>
+                <td>@row.AmountOfPeople</td>
+                <td>@row.InvoicesAmount</td>
+                <td>@row.PartOfCountryInInvoicesAmount</td>
+                <td>@row.InvoicesDates</td>
+                <td>@row.ExchangeRate</td>
+                <td>@row.PartOfCountryInInvoicesAmountInCurrencyAndWithTax</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+</body>
+</html>

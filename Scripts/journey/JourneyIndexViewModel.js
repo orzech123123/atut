@@ -28,7 +28,7 @@ var journeyIndexViewModel = function (model) {
                     .filter(ch => ch.$el.className == "VueTables VueTables--client")[0]
                     .filteredData
                     .map(row => row.id);
-
+                
                 if (!this.filterCountry || journeyIds.length == 0) {
                     alert("Wybierz Kraj oraz upewnij się, że masz na liście co najmniej jedną Trasę");
                     return;
@@ -86,7 +86,7 @@ var journeyIndexViewModel = function (model) {
                 customFilters: [{
                     name: 'company',
                     callback: function (row, key) {
-                        if (key == "null") {
+                        if (!key) {
                             return true;
                         }
                         
@@ -96,7 +96,7 @@ var journeyIndexViewModel = function (model) {
                 {
                     name: 'country',
                     callback: function (row, key) {
-                        if (key == "null") {
+                        if (!key) {
                             return true;
                         }
 
@@ -106,7 +106,7 @@ var journeyIndexViewModel = function (model) {
                     {
                         name: 'dateFrom',
                         callback: function (row, key) {
-                            if (key == "null") {
+                            if (!key) {
                                 return true;
                             }
 
@@ -117,7 +117,7 @@ var journeyIndexViewModel = function (model) {
                     {
                         name: 'dateTo',
                         callback: function (row, key) {
-                            if (key == "null") {
+                            if (!key) {
                                 return true;
                             }
 

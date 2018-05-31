@@ -33,7 +33,11 @@ namespace Atut.Services
                 throw new Exception("Amount of Journeys on backend is not equal to journeyIds count");
             }
 
-            var report = new ReportViewModel();
+            var report = new ReportViewModel
+            {
+                Country = country,
+                CountryCurrency = GetCurrencyForCountry(country)
+            };
 
             foreach (var journey in journeys)
             {
@@ -55,17 +59,16 @@ namespace Atut.Services
                 TotalDistance = journey.TotalDistance,
                 CountryDistance = journey.Countries.Single(c => c.Name == country).Distance,
                 InvoicesDates = string.Join(", ", journey.Invoices.Select(i => i.Date)),
-                InvoicesAmount = Math.Round(journey.Invoices.Sum(i => GetAmountForCurrency(i, CurrencyType.EUR)), 2),
-                CountryCurrency = GetCurrencyForCountry(country)
+                InvoicesAmount = Math.Round(journey.Invoices.Sum(i => GetAmountForCurrency(i, CurrencyType.PLN)), 2),
+                ExchangeRate = (decimal) Fixer.Rate(CurrencyType.PLN.ToString(), GetCurrencyForCountry(country).ToString(),journey.Invoices.First().Date).Rate
             };
 
-            var partOfCountryInInvoicesAmount = Math.Round(row.InvoicesAmount * row.CountryDistance / row.TotalDistance, 2);
-            row.PartOfCountryInInvoicesAmount = partOfCountryInInvoicesAmount;
+            var partOfCountryInInvoicesAmount = row.InvoicesAmount * row.CountryDistance / row.TotalDistance;
+            row.PartOfCountryInInvoicesAmount = Math.Round(partOfCountryInInvoicesAmount, 2);
 
-            var partOfCountryInInvoicesAmountInCurrency = partOfCountryInInvoicesAmount;
+            var partOfCountryInInvoicesAmountInCurrency = CalculateBetweenCurrencies(partOfCountryInInvoicesAmount, journey.Invoices.First().Date, CurrencyType.PLN, GetCurrencyForCountry(country));
             partOfCountryInInvoicesAmountInCurrency /= GetTaxFactorForCountry(country);
-            partOfCountryInInvoicesAmountInCurrency = Math.Round(CalculateBetweenCurrencies(partOfCountryInInvoicesAmountInCurrency, journey.Invoices.First().Date, CurrencyType.EUR, row.CountryCurrency), 2);
-            row.PartOfCountryInInvoicesAmountInCurrencyAndWithTax = partOfCountryInInvoicesAmountInCurrency;
+            row.PartOfCountryInInvoicesAmountInCurrencyAndWithTax = Math.Round(partOfCountryInInvoicesAmountInCurrency, 2);
 
             return row;
         }
@@ -128,7 +131,7 @@ namespace Atut.Services
                 return amount;
             }
 
-            //return amount / (decimal) 4.1695;
+//            return amount / (decimal) 4.1695;
 
             return (decimal) Fixer.Convert(sourceCurrency.ToString(), destCurrency.ToString(), (double) amount, date);
         }

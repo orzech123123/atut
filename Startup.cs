@@ -61,6 +61,8 @@ namespace Atut
             services.AddScoped<RouteHelper>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<ReportService>();
+            services.AddTransient<EnglishReportLabelDictionary>();
+            services.AddTransient<GermanReportLabelDictionary>();
         }
         
         public void Configure(

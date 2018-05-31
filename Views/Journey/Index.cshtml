@@ -22,7 +22,7 @@
                                     <div class="description-block">
                                         <p>Firma</p>
                                         <select class="form-control" v-model="filterCompany">
-                                            <option value="null">-- Wybierz firmę -- </option>
+                                            <option value="">-- Wybierz firmę -- </option>
                                             <option v-for="company in companies"
                                                     v-bind:value="company.key">
                                                 {{ company.value }}
@@ -53,7 +53,7 @@
                                 <div class="description-block">
                                     <p>Kraj</p>
                                     <select class="form-control" v-model="filterCountry">
-                                        <option value="null">-- Wybierz kraj -- </option>
+                                        <option value="">-- Wybierz kraj -- </option>
                                         <option v-for="country in countries"
                                                 v-bind:value="country.name">
                                             {{ country.name }}

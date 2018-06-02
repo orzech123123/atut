@@ -13,17 +13,34 @@
 <html>
     <head>
         <style>
+            body {
+                font-family: Arial
+            }
+
+            h3 {
+                text-align: center;
+                text-decoration: underline;
+                margin: 50px
+            }
+
             table {
                 border-collapse: collapse;
+                margin: auto;
+                width: 90%;
             }
 
             table, th, td {
                 border: 1px solid black;
+                padding: 10px;
+            }
+
+            .right-align {
+                text-align: right;
             }
         </style>
     </head>
 <body>
-    
+    <h3>@labels.Title</h3>
     <table>
         <thead>
         <tr>
@@ -47,16 +64,16 @@
             <tr>
                 <td>@row.RegistratioNumber</td>
                 <td>@row.FinalPlace</td>
-                <td>@row.StartDate</td>
-                <td>@row.EndDate</td>
-                <td>@row.TotalDistance</td>
-                <td>@row.CountryDistance</td>
-                <td>@row.AmountOfPeople</td>
-                <td>@row.InvoicesAmount</td>
-                <td>@row.PartOfCountryInInvoicesAmount</td>
-                <td>@row.InvoicesDates</td>
-                <td>@row.ExchangeRate</td>
-                <td>@row.PartOfCountryInInvoicesAmountInCurrencyAndWithTax</td>
+                <td>@row.StartDate.ToString("d MMM yyyy")</td>
+                <td>@row.EndDate.ToString("d MMM yyyy")</td>
+                <td class="right-align">@row.TotalDistance</td>
+                <td class="right-align">@row.CountryDistance</td>
+                <td class="right-align">@row.AmountOfPeople</td>
+                <td class="right-align">@row.InvoicesAmount</td>
+                <td >@row.PartOfCountryInInvoicesAmount</td>
+                <td>@string.Join(", ", row.InvoicesDates.Select(d => d.ToString("d MMM yyyy")))</td>
+                <td class="right-align">@Math.Round(row.ExchangeRate, 4)</td>
+                <td class="right-align">@row.PartOfCountryInInvoicesAmountInCurrencyAndWithTax</td>
             </tr>
         }
         </tbody>

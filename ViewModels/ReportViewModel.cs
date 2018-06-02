@@ -23,7 +23,7 @@ namespace Atut.ViewModels
         public decimal InvoicesAmount { get; set; }
         public decimal PartOfCountryInInvoicesAmount { get; set; }
         public decimal PartOfCountryInInvoicesAmountInCurrencyAndWithTax { get; set; }
-        public string InvoicesDates { get; set; }
+        public IEnumerable<DateTime> InvoicesDates { get; set; }
         public decimal ExchangeRate { get; set; }
     }
 }

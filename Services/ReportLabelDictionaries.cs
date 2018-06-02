@@ -4,6 +4,7 @@ namespace Atut.Services
 {
     public interface IReportLabelDictionary
     {
+        string Title { get; }
         string RegistrationNumbers { get; }
         string FinalPlace { get; }
         string StartDate { get; }
@@ -20,6 +21,7 @@ namespace Atut.Services
 
     public class EnglishReportLabelDictionary : IReportLabelDictionary
     {
+        public string Title => "Appendix Revenue calculation for the VAT annual declaration";
         public string RegistrationNumbers => "Registration";
         public string FinalPlace => "Destination";
         public string StartDate => "Date of arrival";
@@ -36,6 +38,7 @@ namespace Atut.Services
 
     public class GermanReportLabelDictionary : IReportLabelDictionary
     {
+        public string Title => "Anlage Umsatzermittlung zur Umsatzsteuerjahreserklärung";
         public string RegistrationNumbers => "KFZ - Kennzeichen";
         public string FinalPlace => "Reiseziel";
         public string StartDate => "Einreise Datum";
@@ -43,10 +46,10 @@ namespace Atut.Services
         public string TotalDistance => "Km insges";
         public string CountryDistance(string country) => $"Km in {country}";
         public string AmountOfPeople => "Anzahl Passagiere";
-        public string InvoicesAmount => "Beforderungsentgelt (PLN)";
-        public string PartOfCountryInInvoicesAmount(string country) => $"Anteil {country} in heimischer Wahrung (PLN)";
+        public string InvoicesAmount => "Beförderungsentgelt (PLN)";
+        public string PartOfCountryInInvoicesAmount(string country) => $"Anteil {country} in heimischer Währung (PLN)";
         public string InvoicesDates => "Rechnungsdatum";
-        public string ExchangeRate => "Umrechnungs - Kurs";
+        public string ExchangeRate => "Umrechnungskurs";
         public string PartOfCountryInInvoicesAmountInCurrencyAndWithTax(string country, CurrencyType currency) => $"Anteil {country} ({currency.ToString()})";
     }
 }

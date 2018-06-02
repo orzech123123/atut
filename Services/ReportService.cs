@@ -76,9 +76,9 @@ namespace Atut.Services
                 RegistratioNumber = string.Join(", ", journey.JourneyVehicles.Select(v => v.Vehicle.RegistrationNumber)),
                 TotalDistance = journey.TotalDistance,
                 CountryDistance = journey.Countries.Single(c => c.Name == country).Distance,
-                InvoicesDates = string.Join(", ", journey.Invoices.Select(i => i.Date)),
+                InvoicesDates = journey.Invoices.Select(i => i.Date),
                 InvoicesAmount = Math.Round(journey.Invoices.Sum(i => GetAmountForCurrency(i, CurrencyType.PLN)), 2),
-                ExchangeRate = (decimal) Fixer.Rate(CurrencyType.PLN.ToString(), GetCurrencyForCountry(country).ToString(),journey.Invoices.First().Date).Rate
+                ExchangeRate = (decimal) Fixer.Rate(CurrencyType.PLN.ToString(), GetCurrencyForCountry(country).ToString(), journey.Invoices.First().Date).Rate
             };
 
             var partOfCountryInInvoicesAmount = row.InvoicesAmount * row.CountryDistance / row.TotalDistance;

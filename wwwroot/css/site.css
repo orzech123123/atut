@@ -48,6 +48,7 @@ input[readonly] {
     margin-left: 7%;
     margin-right: 7%;
 }
+
 body {
     width: 100%;
     background: url("/images/Gradient-blue.jpg") no-repeat center center fixed !important;
@@ -55,4 +56,8 @@ body {
     -moz-background-size: cover !important;
     -o-background-size: cover !important;
     background-size: cover !important;
+}
+
+.col-sm-10 {
+    max-width: 350px
 }

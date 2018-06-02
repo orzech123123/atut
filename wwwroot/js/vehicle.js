@@ -1,6 +1,6 @@
 webpackJsonp([2],{
 
-/***/ 159:
+/***/ 161:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39,4 +39,4 @@ vehicleIndexViewModel(window.model);
 
 /***/ })
 
-},[159]);
+},[161]);

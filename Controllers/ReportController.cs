@@ -11,7 +11,8 @@ namespace Atut.Controllers
     {
         private readonly ReportService _reportService;
 
-        public ReportController(ReportService reportService)
+        public ReportController(
+            ReportService reportService)
         {
             _reportService = reportService;
         }
@@ -24,5 +25,12 @@ namespace Atut.Controllers
             return View("Report", report);
         }
         
+        [HttpPost]
+        public IActionResult NotifyAdmin(string country)
+        {
+            _reportService.NotifyAdmin(User, country);
+
+            return Ok();
+        }
     }
 }

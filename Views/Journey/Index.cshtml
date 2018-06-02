@@ -95,6 +95,10 @@
     {
         <button class="btn btn-success" id="generateReport">Generuj raport</button>
     }
+    @if (!RoleService.IsAdmin)
+    {
+        <button class="btn btn-success" id="notifyAdmin">Powiadom administratora</button>
+    }
 }
 
 @section Scripts {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Claims;
+using Atut.Identity;
 using Atut.Models;
 using Atut.ViewModels;
 using FixerSharp;
@@ -10,10 +12,26 @@ namespace Atut.Services
     public class ReportService
     {
         private readonly DatabaseContext _databaseContext;
+        private readonly IEmailService _emailService;
 
-        public ReportService(DatabaseContext databaseContext)
+        public ReportService(
+            DatabaseContext databaseContext,
+            IEmailService emailService)
         {
             _databaseContext = databaseContext;
+            _emailService = emailService;
+        }
+
+        public void NotifyAdmin(ClaimsPrincipal user, string country)
+        {
+            var companyName = user.Claims.Single(c => c.Type == UserClaimTypes.CompanyName).Value;
+
+            var admins = _databaseContext.Users.Where(u => u.IsAdmin).ToList();
+
+            admins.ForEach(u =>
+            {
+                _emailService.SendEmailAsync(u.Email, "Atut - powiadomienie o zakończeniu rozliczenia", $"Firma {companyName} zakończyła rozliczenie dla kraju {country}.");
+            });
         }
 
         public ReportViewModel GenerateReport(int[] journeyIds, string country)
@@ -47,7 +65,7 @@ namespace Atut.Services
             return report;
         }
 
-        public ReportRowViewModel GenerateRow(Journey journey, string country)
+        private ReportRowViewModel GenerateRow(Journey journey, string country)
         {
             var row = new ReportRowViewModel
             {

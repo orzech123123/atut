@@ -2,11 +2,13 @@
 import { ClientTable, Event } from "vue-tables-2";
 import moment from 'moment';
 import Datepicker from 'vuejs-datepicker';
+import VueResource from 'vue-resource';
 
 moment.locale('pl');
 window.moment = moment;
 
 Vue.use(ClientTable);
+Vue.use(VueResource);
 
 var journeyIndexViewModel = function (model) {
     var columns = ["vehiclesColumn", "startingPlace", "finalPlace", "startDate", "endDate", "actions"];
@@ -37,6 +39,17 @@ var journeyIndexViewModel = function (model) {
                 let journeyIdsString = "country=" + this.filterCountry + "&journeyIds=" + journeyIds.join("&journeyIds=");
 
                 window.open("/Report/GenerateReport?" + journeyIdsString);
+            });
+
+            $("#notifyAdmin").on("click", () => {
+                if (!this.filterCountry) {
+                    alert("Wybierz Kraj, aby poinformować administratora, którego kraju rozliczenie zakończyłeś.");
+                    return;
+                }
+                
+                this.$http.post('/Report/NotifyAdmin?country=' + this.filterCountry).then(() => {
+                    alert("Administrator został poinformowany o zakończeniu rozliczenia kraju " + this.filterCountry + ".");
+                });
             });
 
             for (var company of model.map(m => m.company)) {

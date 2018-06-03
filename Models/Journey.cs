@@ -49,5 +49,8 @@ namespace Atut.Models
         public virtual ICollection<JourneyVehicle> JourneyVehicles { get; set; }
 
         public List<Invoice> Invoices { get; set; }
+
+        [Required]
+        public bool IsNotified { get; set; }
     }
 }

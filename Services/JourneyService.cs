@@ -103,6 +103,8 @@ namespace Atut.Services
         {
             Journey journey;
 
+            viewModel.IsNotified = false;
+
             if (viewModel.Id > 0)
             {
                 journey = _databaseContext.Journeys

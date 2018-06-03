@@ -1,0 +1,20 @@
+- 1) w takim razie zmienie opisy na "Miejscowość początkowa, pośrednia i Miejscowość końcowa"
+
+- 2) Dodam w niebieskim polu "Przewoźnik w oparciu o podane miejscowości wypełnił Formularz jazdy oraz wystawił fakturę"
+
+- 3) Poprawię literówkę "Nazwa firmy skrócona"
+
+- 4) Wysyłanie powiadomienia do administratora przez zwykłego użytkownika:
+ *w mailu znajdzie sie informacja jaki użytkownik powiadamia, Data wyjazdu od, Data wyjazdu do i dla jakiego Kraju (czyli dane z filtrów w momencie kliknięcia "Powiadom administratora" - system wymusi wypełnienie tych filtrów przed wysłaniem maila)
+ *co do wyszarzania pól odnośnie których "poszło" już powiadomienie to nie mamy tego w tej chwilii ale moge tak zrobić że będzie inne tło pod trasami "powiadomionymi" żeby użytkownik sie nie pogubił o których zmianach powiadomił a o których jeszcze nie
+
+5) przy logowaniu dodam potwierdzenie RODO i link do tego załącznika przesłanego
+
+- 6) W formularzu końcowym pojawia się 2x jeśli do Trasy są dodane 2 faktury, jak "n" faktur to "n" dat się tam pojawi
+
+- 7) co do kursu to z PLN na EUR jest 0.2xxx, a z EUR na PLN faktycznie było by 4.2xxx. tutaj jest poprostu przeliczane z PLN na EUR, stąd taki kurs
+
+- 8) mogę zmienić format daty na cyfrowy-
+
+- 9) rozumiem, że mam dodać pod tabelką raportu "wiersz podsumowujący", w któym ostatnia komórka będzie zawierała
+sumę wszystkich wartości z ostatniej kolumny?

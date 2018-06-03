@@ -61,3 +61,7 @@ body {
 .col-sm-10 {
     max-width: 350px
 }
+
+.journey-is-notified td {
+    background-color: lightgray;
+}

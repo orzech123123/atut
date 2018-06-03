@@ -57,5 +57,7 @@ namespace Atut.ViewModels
         
 
         public KeyValueViewModel Company { get; set; }
+
+        public bool IsNotified { get; set; }
     }
 }

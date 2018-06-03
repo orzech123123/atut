@@ -31,23 +31,42 @@ var journeyIndexViewModel = function (model) {
                     .filteredData
                     .map(row => row.id);
                 
-                if (!this.filterCountry || journeyIds.length == 0) {
-                    alert("Wybierz Kraj oraz upewnij się, że masz na liście co najmniej jedną Trasę");
+                if (!this.filterCompany || !this.filterCountry || journeyIds.length == 0) {
+                    alert("Wybierz Firmę, Kraj oraz upewnij się, że masz na liście co najmniej jedną Trasę");
                     return;
                 }
 
-                let journeyIdsString = "country=" + this.filterCountry + "&journeyIds=" + journeyIds.join("&journeyIds=");
+                let url = "/Report/GenerateReport?" +
+                    "country=" +
+                    this.filterCountry +
+                    "&journeyIds=" +
+                    journeyIds.join("&journeyIds=");
 
-                window.open("/Report/GenerateReport?" + journeyIdsString);
-            });
+                window.open(url);
+            }); 
 
             $("#notifyAdmin").on("click", () => {
-                if (!this.filterCountry) {
-                    alert("Wybierz Kraj, aby poinformować administratora, którego kraju rozliczenie zakończyłeś.");
+                let journeyIds = this.$children
+                    .filter(ch => ch.$el.className == "VueTables VueTables--client")[0]
+                    .filteredData
+                    .map(row => row.id);
+
+                if (!this.filterCountry || !this.filterFromDate || !this.filterToDate || journeyIds.length == 0) {
+                    alert("Wybierz Datę wyjazdu od, Datę wyjazdu do oraz Kraj, aby poinformować administratora, którego kraju rozliczenie zakończyłeś.\n" +
+                        "Upewnij się także, że masz na liście co najmniej jedną Trasę.");
                     return;
                 }
-                
-                this.$http.post('/Report/NotifyAdmin?country=' + this.filterCountry).then(() => {
+
+                let url = '/Report/NotifyAdmin?country=' +
+                    this.filterCountry +
+                    "&dateFrom=" +
+                    moment(this.filterFromDate).format("YYYY-MM-DD") +
+                    "&dateTo=" +
+                    moment(this.filterToDate).format("YYYY-MM-DD") +
+                    "&journeyIds=" +
+                    journeyIds.join("&journeyIds=");
+
+                this.$http.post(url).then(() => {
                     alert("Administrator został poinformowany o zakończeniu rozliczenia kraju " + this.filterCountry + ".");
                 });
             });
@@ -82,6 +101,13 @@ var journeyIndexViewModel = function (model) {
             companies: [],
             columns: columns,
             options: {
+                rowClassCallback: function(row) {
+                    if (row.isNotified) {
+                        return "journey-is-notified";
+                    }
+
+                    return null;
+                },
                 dateColumns: ["startDate", "endDate"], 
                 toMomentFormat: true,
                 dateFormat: "ll",

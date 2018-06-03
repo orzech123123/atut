@@ -22,15 +22,21 @@ namespace Atut.Services
             _emailService = emailService;
         }
 
-        public void NotifyAdmin(ClaimsPrincipal user, string country)
+        public void NotifyAdmin(ClaimsPrincipal user, int[] journeyIds, string country, DateTime dateFrom, DateTime dateTo)
         {
+            var journeys = _databaseContext.Journeys
+                .Where(v => journeyIds.Contains(v.Id))
+                .ToList();
+
+            journeys.ForEach(j => j.IsNotified = true);
+
             var companyName = user.Claims.Single(c => c.Type == UserClaimTypes.CompanyName).Value;
 
             var admins = _databaseContext.Users.Where(u => u.IsAdmin).ToList();
 
             admins.ForEach(u =>
             {
-                _emailService.SendEmailAsync(u.Email, "Atut - powiadomienie o zakończeniu rozliczenia", $"Firma {companyName} zakończyła rozliczenie dla kraju {country}.");
+                _emailService.SendEmailAsync(u.Email, "Atut - powiadomienie o zakończeniu rozliczenia", $"Firma {companyName} zakończyła rozliczenie dla kraju {country} dla okresu {dateFrom:d MMM yyyy} - {dateTo:d MMM yyyy}.");
             });
         }
 

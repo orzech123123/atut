@@ -20,6 +20,7 @@
                 <ul>
                     <li>+ Podatek VAT w prawodawstwie UE należy do najbardziej restrykcyjnych podatków, a nieprawidłowości, bałagan w rozliczeniach, unikanie płatności VAT podlega ściąganiu nawet do 10 lat Niemcy i Chorwacja czy 8 lat Austria przy skorzystaniu z pomocy prawnej polskich Urzędów Skarbowych.</li>
                     <li>+ Przed wypełnianiem formularza przygotuj faktury, karty drogowe, wydruki z tachografu, Książkę formularzy podróży, gdzie są dane o granicach, kilometrach operacji transportowej, ilości pasażerów, kwocie i dacie faktury.</li>
+                    <li>+ Przewoźnik w oparciu o podane miejscowości wypełnił Formularz jazdy oraz wystawił fakturę.</li>
                 </ul>
             </div>
 
@@ -44,10 +45,10 @@
             <input v-if="!!company" type="hidden" :name="'Company.Value'" :value="company.value" />
 
             <div class="form-group">
-                <label for="StartingPlace" class="col-sm-2 control-label">Miejscowość wsiadania</label>
+                <label for="StartingPlace" class="col-sm-2 control-label">Miejscowość początkowa</label>
 
                 <div class="col-sm-10">
-                    <input id="StartingPlace" v-model="startingPlace" name="StartingPlace" data-vv-as="Miejscowość wsiadania" data-vv-name="startingPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejscowość wsiadania">
+                    <input id="StartingPlace" v-model="startingPlace" name="StartingPlace" data-vv-as="Miejscowość początkowa" data-vv-name="startingPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejscowość początkowa">
                     <span v-show="errors.has('startingPlace')" class="text-danger">{{ errors.first('startingPlace') }}</span>
                 </div>
             </div>
@@ -60,10 +61,10 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="FinalPlace" class="col-sm-2 control-label">Miejscowość docelowa + kraj</label>
+                <label for="FinalPlace" class="col-sm-2 control-label">Miejscowość końcowa + kraj</label>
 
                 <div class="col-sm-10">
-                    <input id="FinalPlace" v-model="finalPlace" name="FinalPlace" data-vv-as="Miejscowość docelowa + kraj" data-vv-name="finalPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejscowość docelowa + kraj">
+                    <input id="FinalPlace" v-model="finalPlace" name="FinalPlace" data-vv-as="Miejscowość końcowa + kraj" data-vv-name="finalPlace" v-validate="'required'" type="text" class="form-control" placeholder="Miejscowość końcowa + kraj">
                     <span v-show="errors.has('finalPlace')" class="text-danger">{{ errors.first('finalPlace') }}</span>
                 </div>
             </div>

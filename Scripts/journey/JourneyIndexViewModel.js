@@ -114,8 +114,8 @@ var journeyIndexViewModel = function (model) {
                 headings: {
                     companyColumn: "Firma",
                     vehiclesColumn: 'Pojazdy',
-                    startingPlace: 'Miejscowość wsiadania',
-                    finalPlace: 'Miejscowość docelowa + kraj',
+                    startingPlace: 'Miejscowość początkowa',
+                    finalPlace: 'Miejscowość końcowa + kraj',
                     startDate: 'Data wyjazdu',
                     endDate: 'Data powrotu',
                     actions: 'Akcje'

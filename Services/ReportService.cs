@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Atut.Identity;
 using Atut.Models;
 using Atut.ViewModels;
 using FixerSharp;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestSharp;
 
 namespace Atut.Services
 {
@@ -13,13 +17,19 @@ namespace Atut.Services
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IEmailService _emailService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUrlHelper _urlHelper;
 
         public ReportService(
             DatabaseContext databaseContext,
-            IEmailService emailService)
+            IEmailService emailService,
+            IHttpContextAccessor httpContextAccessor,
+            IUrlHelper urlHelper)
         {
             _databaseContext = databaseContext;
             _emailService = emailService;
+            _httpContextAccessor = httpContextAccessor;
+            _urlHelper = urlHelper;
         }
 
         public void NotifyAdmin(ClaimsPrincipal user, int[] journeyIds, string country, DateTime dateFrom, DateTime dateTo)
@@ -34,9 +44,17 @@ namespace Atut.Services
 
             var admins = _databaseContext.Users.Where(u => u.IsAdmin).ToList();
 
+            var url = _urlHelper.Action("GenerateReport", "Report", new { journeyIds, country }, _httpContextAccessor.HttpContext.Request.Scheme);
+
             admins.ForEach(u =>
             {
-                _emailService.SendEmailAsync(u.Email, "Atut - powiadomienie o zakończeniu rozliczenia", $"Firma {companyName} zakończyła rozliczenie dla kraju {country} dla okresu {dateFrom:d MMM yyyy} - {dateTo:d MMM yyyy}.");
+                _emailService.SendEmailAsync(
+                    u.Email, 
+                    "Atut - powiadomienie o zakończeniu rozliczenia",
+                    $"Firma {companyName} zakończyła rozliczenie dla kraju {country} " +
+                    $"dla okresu {dateFrom:d MMM yyyy} - {dateTo:d MMM yyyy}." +
+                    $"<br/>Kliknij w link poniżej, aby wygenerować raport:<br/><a href='{url}'>Generuj raport</a>"
+                );
             });
         }
 
@@ -84,7 +102,7 @@ namespace Atut.Services
                 CountryDistance = journey.Countries.Single(c => c.Name == country).Distance,
                 InvoicesDates = journey.Invoices.Select(i => i.Date),
                 InvoicesAmount = Math.Round(journey.Invoices.Sum(i => GetAmountForCurrency(i, CurrencyType.PLN)), 2),
-                ExchangeRate = (decimal) Fixer.Rate(CurrencyType.PLN.ToString(), GetCurrencyForCountry(country).ToString(), journey.Invoices.First().Date).Rate
+                ExchangeRate = GetRateBetweenCurrencies(journey.Invoices.First().Date, CurrencyType.PLN, GetCurrencyForCountry(country))
             };
 
             var partOfCountryInInvoicesAmount = row.InvoicesAmount * row.CountryDistance / row.TotalDistance;
@@ -148,16 +166,60 @@ namespace Atut.Services
             return CalculateBetweenCurrencies(invoice.Amount, invoice.Date, invoice.Type, currency);
         }
 
+        private decimal GetRateBetweenCurrencies(DateTime date, CurrencyType sourceCurrency, CurrencyType destCurrency)
+        {
+            if (sourceCurrency != CurrencyType.PLN)
+            {
+                throw new NotSupportedException("Not supported rate checking for sourceCurrency other than PLN");
+            }
+
+            return GetExchangeRateRequestResult(destCurrency, date);
+        }
+
+        private decimal GetExchangeRateRequestResult(CurrencyType destCurrency, DateTime date)
+        {
+            ExchangeRateRequestResult result = null;
+
+            while (result == null)
+            {
+                var client = new RestClient($"http://api.nbp.pl/api/exchangerates/rates/a/{destCurrency}/{date:yyyy-MM-dd}");
+                var request = new RestRequest(Method.GET);
+                var response = client.Execute<ExchangeRateRequestResult>(request);
+
+                result = response.Data;
+
+                if (result == null)
+                {
+                    date = date.AddDays(-1);
+                }
+            }
+
+            return result.Rates.First().Mid;
+            //            return (decimal) Fixer.Rate(sourceCurrency.ToString(), destCurrency.ToString(), date).Rate;
+        }
+
         private decimal CalculateBetweenCurrencies(decimal amount, DateTime date, CurrencyType sourceCurrency, CurrencyType destCurrency)
         {
             if (sourceCurrency == destCurrency)
             {
                 return amount;
             }
+            
+            return amount / GetRateBetweenCurrencies(date, sourceCurrency, destCurrency);
 
 //            return amount / (decimal) 4.1695;
-
-            return (decimal) Fixer.Convert(sourceCurrency.ToString(), destCurrency.ToString(), (double) amount, date);
+//            return (decimal) Fixer.Convert(sourceCurrency.ToString(), destCurrency.ToString(), (double) amount, date);
         }
     }
+
+    public class ExchangeRateRequestResult
+    {
+        public List<Rate> Rates { get; set; } = new List<Rate>();
+    }
+
+    public class Rate
+    {
+        public decimal Mid { get; set; }
+    }
 }
+

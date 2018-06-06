@@ -170,7 +170,12 @@ namespace Atut.Services
         {
             if (sourceCurrency != CurrencyType.PLN)
             {
-                throw new NotSupportedException("Not supported rate checking for sourceCurrency other than PLN");
+                if (sourceCurrency == CurrencyType.EUR)
+                {
+                    return 1 / GetExchangeRateRequestResult(sourceCurrency, date); //tutaj jest 1/kurs euro dla pln bo nie da sie z nbp wyciagnac kurs pln dla euro (jedynie na odwrót czyli wlasnie euro dla pln)
+                }
+
+                throw new NotSupportedException("Not supported rate checking for sourceCurrency other than PLN or EUR");
             }
 
             return GetExchangeRateRequestResult(destCurrency, date);

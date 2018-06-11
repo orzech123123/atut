@@ -3,7 +3,8 @@ var webpack = require("webpack");
 
 module.exports = {
     entry: {
-        vehicle: './Scripts/vehicle/VehicleIndexViewModel.js',
+        vehicleIndex: './Scripts/vehicle/VehicleIndexViewModel.js',
+        vehicleEdit: './Scripts/vehicle/VehicleEditViewModel.js',
         journeyIndex: './Scripts/journey/JourneyIndexViewModel.js',
         journeyEdit: './Scripts/journey/JourneyEditViewModel.js',
     },

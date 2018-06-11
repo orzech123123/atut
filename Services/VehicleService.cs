@@ -66,6 +66,20 @@ namespace Atut.Services
 
         public void ValidateSave(VehicleViewModel viewModel, ModelStateDictionary modelState)
         {
+            if (viewModel.Id > 0)
+            {
+                var vehicle = _databaseContext.Vehicles
+                    .Include(v => v.User)
+                    .Include(v => v.JourneyVehicles)
+                    .ThenInclude(jv => jv.Vehicle)
+                    .Single(v => v.Id == viewModel.Id);
+
+                if (vehicle.User.Id != viewModel.Company.Key && vehicle.JourneyVehicles.Any())
+                {
+                    modelState.AddModelError("_FORM", $"Pojazd jest przypisany do jednej z Tras firmy {vehicle.User.CompanyNameShort}. Nie można zmienić pola Firma.");
+                }
+            }
+
             if (!string.IsNullOrWhiteSpace(viewModel.RegistrationNumber))
             {
                 var sameRegisterNumberVehicle = _databaseContext.Vehicles

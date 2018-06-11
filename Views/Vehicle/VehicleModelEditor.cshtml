@@ -1,7 +1,9 @@
 ﻿@using Atut.Helpers;
+@using Atut.Services
 @using Atut.ViewModels
 
 @model Atut.ViewModels.VehicleViewModel
+@inject RoleService RoleService;
 
 @if (!ViewData.ModelState.IsValid)
 {
@@ -12,24 +14,46 @@
     <div class="box-header with-border">
         <h3 class="box-title">Dane pojazdu</h3>
     </div>
-    <form class="form-horizontal" method="post" role="form">
+    <form ref="form" class="form-horizontal" method="post" role="form" id="VehicleEdit" style="display: none" v-on:submit.prevent="validateBeforeSubmit">
         <div class="box-body">
+            @if (RoleService.IsAdmin)
+            {
+                <div class="form-group">
+                    <label for="Company" class="col-sm-2 control-label">Firma</label>
+
+                    <div class="col-sm-10">
+                        <select id="Company" class="form-control" v-model="selectedCompany" data-vv-as="Firma" data-vv-name="company" v-validate="'requireNotNull'">
+                            <option v-for="company in availableCompanies"
+                                    v-bind:value="company.key">
+                                {{ company.value }}
+                            </option>
+                        </select>
+                        <span v-show="errors.has('company')" class="text-danger">{{ errors.first('company') }}</span>
+                    </div>
+                </div>
+            }
+            <input v-if="!!company" type="hidden" :name="'Company.Key'" :value="company.key" />
+            <input v-if="!!company" type="hidden" :name="'Company.Value'" :value="company.value" />
+
             <div class="form-group">
                 <label for="Name" class="col-sm-2 control-label">Nazwa</label>
 
                 <div class="col-sm-10">
-                    <input asp-for="Name" type="text" class="form-control" id="Name" placeholder="Nazwa">
-                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <input id="Name" v-model="name" name="Name" data-vv-as="Nazwa" data-vv-name="name" v-validate="'required'" type="text" class="form-control" placeholder="Nazwa">
+                    <span v-show="errors.has('name')" class="text-danger">{{ errors.first('name') }}</span>
                 </div>
             </div>
             <div class="form-group">
                 <label for="RegistrationNumber" class="col-sm-2 control-label">Numer rejestracyjny</label>
 
                 <div class="col-sm-10">
-                    <input asp-for="RegistrationNumber" type="text" class="form-control" maxlength="7" id="RegistrationNumber" placeholder="Numer rejestracyjny">
-                    <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+                    <input id="RegistrationNumber" v-model="registrationNumber" name="Name" data-vv-as="Numer rejestracyjny" data-vv-name="registrationNumber" v-validate="'required'" type="text" class="form-control" placeholder="Numer rejestracyjny">
+                    <span v-show="errors.has('registrationNumber')" class="text-danger">{{ errors.first('registrationNumber') }}</span>
                 </div>
             </div>
+
+            <input type="hidden" :name="'Name'" :value="name" />
+            <input type="hidden" :name="'RegistrationNumber'" :value="registrationNumber" />
         </div>
         <!-- /.box-body -->
         <div class="box-footer">

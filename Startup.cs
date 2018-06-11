@@ -61,6 +61,7 @@ namespace Atut
             services.AddTransient<VehicleService>();
             services.AddTransient<JourneyService>();
             services.AddTransient<RoleService>();
+            services.AddTransient<CountriesHelper>();
             services.AddScoped<RouteHelper>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<ReportService>();

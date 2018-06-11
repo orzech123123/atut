@@ -19,17 +19,20 @@ namespace Atut.Services
         private readonly IEmailService _emailService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUrlHelper _urlHelper;
+        private readonly CountriesHelper _countriesHelper;
 
         public ReportService(
             DatabaseContext databaseContext,
             IEmailService emailService,
             IHttpContextAccessor httpContextAccessor,
-            IUrlHelper urlHelper)
+            IUrlHelper urlHelper,
+            CountriesHelper countriesHelper)
         {
             _databaseContext = databaseContext;
             _emailService = emailService;
             _httpContextAccessor = httpContextAccessor;
             _urlHelper = urlHelper;
+            _countriesHelper = countriesHelper;
         }
 
         public void NotifyAdmin(ClaimsPrincipal user, int[] journeyIds, string country, DateTime dateFrom, DateTime dateTo)
@@ -49,7 +52,7 @@ namespace Atut.Services
             admins.ForEach(u =>
             {
                 _emailService.SendEmailAsync(
-                    u.Email, 
+                    u.Email,
                     "Atut - powiadomienie o zakończeniu rozliczenia",
                     $"Firma {companyName} zakończyła rozliczenie dla kraju {country} " +
                     $"dla okresu {dateFrom:d MMM yyyy} - {dateTo:d MMM yyyy}." +
@@ -78,7 +81,7 @@ namespace Atut.Services
             var report = new ReportViewModel
             {
                 Country = country,
-                CountryCurrency = GetCurrencyForCountry(country)
+                CountryCurrency = _countriesHelper.GetCurrencyForCountry(country)
             };
 
             foreach (var journey in journeys)
@@ -86,6 +89,12 @@ namespace Atut.Services
                 report.Rows.Add(GenerateRow(journey, country));
             }
 
+            report.SumPartOfCountryInInvoicesAmountInCurrencyAndTax = Math.Round(
+                report.Rows.Sum(r => r.PartOfCountryInInvoicesAmountInCurrency) /
+                _countriesHelper.GetTaxFactorForCountry(country),
+                2
+            );
+            
             return report;
         }
 
@@ -102,63 +111,16 @@ namespace Atut.Services
                 CountryDistance = journey.Countries.Single(c => c.Name == country).Distance,
                 InvoicesDates = journey.Invoices.Select(i => i.Date),
                 InvoicesAmount = Math.Round(journey.Invoices.Sum(i => GetAmountForCurrency(i, CurrencyType.PLN)), 2),
-                ExchangeRate = GetRateBetweenCurrencies(journey.Invoices.First().Date, CurrencyType.PLN, GetCurrencyForCountry(country))
+                ExchangeRate = GetRateBetweenCurrencies(journey.Invoices.First().Date, CurrencyType.PLN, _countriesHelper.GetCurrencyForCountry(country))
             };
 
             var partOfCountryInInvoicesAmount = row.InvoicesAmount * row.CountryDistance / row.TotalDistance;
             row.PartOfCountryInInvoicesAmount = Math.Round(partOfCountryInInvoicesAmount, 2);
 
-            var partOfCountryInInvoicesAmountInCurrency = CalculateBetweenCurrencies(partOfCountryInInvoicesAmount, journey.Invoices.First().Date, CurrencyType.PLN, GetCurrencyForCountry(country));
-            partOfCountryInInvoicesAmountInCurrency /= GetTaxFactorForCountry(country);
-            row.PartOfCountryInInvoicesAmountInCurrencyAndWithTax = Math.Round(partOfCountryInInvoicesAmountInCurrency, 2);
+            var partOfCountryInInvoicesAmountInCurrency = CalculateBetweenCurrencies(partOfCountryInInvoicesAmount, journey.Invoices.First().Date, CurrencyType.PLN, _countriesHelper.GetCurrencyForCountry(country));
+            row.PartOfCountryInInvoicesAmountInCurrency = Math.Round(partOfCountryInInvoicesAmountInCurrency, 2);
 
             return row;
-        }
-
-        private decimal GetTaxFactorForCountry(string country)
-        {
-            if (country == CountriesProvider.Germany)
-            {
-                return new decimal(1.19);
-            }
-            if (country == CountriesProvider.Slovenia)
-            {
-                return new decimal(1.095);
-            }
-            if (country == CountriesProvider.Austria)
-            {
-                return new decimal(1.1);
-            }
-            if (country == CountriesProvider.Belgium || country == CountriesProvider.Netherlands)
-            {
-                return new decimal(1.06);
-            }
-            if (country == CountriesProvider.Denmark || country == CountriesProvider.Croatia)
-            {
-                return new decimal(1.25);
-            }
-
-            throw new NotSupportedException($"Not supported tax for country: {country}");
-        }
-
-        private CurrencyType GetCurrencyForCountry(string country)
-        {
-            if (CountriesProvider.EuroCurrencyCountries.Contains(country))
-            {
-                return CurrencyType.EUR;
-            }
-
-            if (CountriesProvider.HrkCurrencyCountries.Contains(country))
-            {
-                return CurrencyType.HRK;
-            }
-
-            if (CountriesProvider.DkkCurrencyCountries.Contains(country))
-            {
-                return CurrencyType.DKK;
-            }
-
-            throw new NotSupportedException($"Not supported currency for country: {country}");
         }
 
         private decimal GetAmountForCurrency(Invoice invoice, CurrencyType currency)
@@ -209,11 +171,11 @@ namespace Atut.Services
             {
                 return amount;
             }
-            
+
             return amount / GetRateBetweenCurrencies(date, sourceCurrency, destCurrency);
 
-//            return amount / (decimal) 4.1695;
-//            return (decimal) Fixer.Convert(sourceCurrency.ToString(), destCurrency.ToString(), (double) amount, date);
+            //            return amount / (decimal) 4.1695;
+            //            return (decimal) Fixer.Convert(sourceCurrency.ToString(), destCurrency.ToString(), (double) amount, date);
         }
     }
 

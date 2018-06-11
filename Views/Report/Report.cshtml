@@ -7,7 +7,7 @@
 
 @{
     Layout = null;
-    var labels = Model.Country == CountriesProvider.Germany ? (IReportLabelDictionary)GermanReportLabelDictionary : EnglishReportLabelDictionary;
+    var labels = Model.Country == CountriesHelper.Germany ? (IReportLabelDictionary)GermanReportLabelDictionary : EnglishReportLabelDictionary;
 }
 
 <html>
@@ -77,14 +77,14 @@
                     <td>@row.PartOfCountryInInvoicesAmount</td>
                     <td>@string.Join(", ", row.InvoicesDates.Select(d => d.ToString("dd.MM.yyyy")))</td>
                     <td class="right-align">@Math.Round(row.ExchangeRate, 4)</td>
-                    <td class="right-align">@row.PartOfCountryInInvoicesAmountInCurrencyAndWithTax</td>
+                    <td class="right-align">@row.PartOfCountryInInvoicesAmountInCurrency</td>
                 </tr>
             }
         </tbody>
         <tfoot>
             <tr>
                 <td colspan="11" class="right-align">Razem</td>
-                <td class="right-align">@Model.Rows.Sum(r => r.PartOfCountryInInvoicesAmountInCurrencyAndWithTax)</td>
+                <td class="right-align">@Model.SumPartOfCountryInInvoicesAmountInCurrencyAndTax</td>
             </tr>
         </tfoot>
     </table>

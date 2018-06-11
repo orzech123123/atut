@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Atut.ViewModels
 {
@@ -18,5 +14,8 @@ namespace Atut.ViewModels
         [Required(ErrorMessage = "Numer rejestracyjny jest wymagany")]
         [Display(Name = "Numer rejestracyjny")]
         public string RegistrationNumber { get; set; }
+        
+
+        public KeyValueViewModel Company { get; set; }
     }
 }

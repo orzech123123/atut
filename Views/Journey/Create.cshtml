@@ -13,7 +13,7 @@
 @section Scripts {
     <script type="text/javascript">
         window.model = @Html.ToJson(Model);
-        window.availableCountries = @Html.ToJson(CountriesProvider.Countries);
+        window.availableCountries = @Html.ToJson(CountriesHelper.Countries);
     </script>
 
     <script src="~/js/vendor.js"></script>

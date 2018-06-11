@@ -8,6 +8,7 @@ namespace Atut.ViewModels
     {
         public string Country { get; set; }
         public CurrencyType CountryCurrency { get; set; }
+        public decimal SumPartOfCountryInInvoicesAmountInCurrencyAndTax { get; set; }
         public IList<ReportRowViewModel> Rows = new List<ReportRowViewModel>();
     }
 
@@ -22,7 +23,7 @@ namespace Atut.ViewModels
         public int AmountOfPeople { get; set; }
         public decimal InvoicesAmount { get; set; }
         public decimal PartOfCountryInInvoicesAmount { get; set; }
-        public decimal PartOfCountryInInvoicesAmountInCurrencyAndWithTax { get; set; }
+        public decimal PartOfCountryInInvoicesAmountInCurrency { get; set; }
         public IEnumerable<DateTime> InvoicesDates { get; set; }
         public decimal ExchangeRate { get; set; }
     }

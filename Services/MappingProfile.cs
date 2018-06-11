@@ -14,7 +14,12 @@ namespace Atut.Services
                 .ForMember(v => v.Key, member => member.MapFrom(v => v.Id))
                 .ForMember(v => v.Value, member => member.MapFrom(v => $"{v.RegistrationNumber} - {v.Name}"));
 
-            CreateMap<Vehicle, VehicleViewModel>();
+            CreateMap<Vehicle, VehicleViewModel>()
+                .ForMember(j => j.Company, member => member.MapFrom(s => new KeyValueViewModel
+                {
+                    Key = s.User.Id,
+                    Value = s.User.CompanyNameShort
+                }));
             CreateMap<VehicleViewModel, Vehicle>();
 
             CreateMap<Journey, JourneyViewModel>()

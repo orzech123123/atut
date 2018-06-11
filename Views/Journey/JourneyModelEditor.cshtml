@@ -31,7 +31,6 @@
 
                     <div class="col-sm-10">
                         <select id="Company" class="form-control" v-model="selectedCompany" data-vv-as="Firma" data-vv-name="company" v-validate="'requireNotNull'">
-                            <option value="null">-- Wybierz firmę -- </option>
                             <option v-for="company in availableCompanies"
                                     v-bind:value="company.key">
                                 {{ company.value }}

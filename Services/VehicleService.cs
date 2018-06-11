@@ -15,24 +15,34 @@ namespace Atut.Services
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly INotificationManager _notificationManager;
+        private readonly RoleService _roleService;
 
         public VehicleService(
             DatabaseContext databaseContext,
             IMapper mapper,
             IHttpContextAccessor httpContextAccessor,
-            INotificationManager notificationManager)
+            INotificationManager notificationManager,
+            RoleService roleService)
         {
             _databaseContext = databaseContext;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _notificationManager = notificationManager;
+            _roleService = roleService;
         }
 
         public IEnumerable<VehicleViewModel> GetAll()
         {
-            return _databaseContext.Vehicles
-                .Include(v => v.User)
-                .Where(v => v.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name)
+            IQueryable<Vehicle> query = _databaseContext.Vehicles
+                .Include(v => v.User);
+            
+            if (!_roleService.IsAdmin)
+            {
+                query = query
+                    .Where(v => v.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
+            }
+
+            return query
                 .Select(v => _mapper.Map<Vehicle, VehicleViewModel>(v))
                 .ToList();
         }
@@ -59,13 +69,12 @@ namespace Atut.Services
             if (!string.IsNullOrWhiteSpace(viewModel.RegistrationNumber))
             {
                 var sameRegisterNumberVehicle = _databaseContext.Vehicles
-                    .Where(v => v.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name)
                     .Where(v => v.Id != viewModel.Id)
                     .SingleOrDefault(v => v.RegistrationNumber.ToLower() == viewModel.RegistrationNumber.ToLower());
 
                 if (sameRegisterNumberVehicle != null)
                 {
-                    modelState.AddModelError(nameof(VehicleViewModel.RegistrationNumber), "Istnieje już pojazd z identycznym numerem rejestracyjnym.");
+                    modelState.AddModelError(nameof(VehicleViewModel.RegistrationNumber), "W bazie istnieje już pojazd z identycznym numerem rejestracyjnym.");
                 }
             }
         }
@@ -84,7 +93,7 @@ namespace Atut.Services
             }
 
             _mapper.Map(viewModel, vehicle);
-            UpdateUser(vehicle);
+            UpdateUser(viewModel, vehicle);
 
             if (vehicle.Id <= 0)
             {
@@ -97,14 +106,20 @@ namespace Atut.Services
             }
         }
 
-        private void UpdateUser(Vehicle vehicle)
+        private void UpdateUser(VehicleViewModel viewModel, Vehicle vehicle)
         {
-            vehicle.User = vehicle.User ?? _databaseContext.Users.Single(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
+            vehicle.User = _databaseContext.Users.Single(u => u.Id == viewModel.Company.Key);
         }
 
         public VehicleViewModel Create()
         {
-            return new VehicleViewModel();
+            var viewModel = new VehicleViewModel();
+            
+            var user = _databaseContext.Users.Single(u => u.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
+            var company = new KeyValueViewModel { Key = user.Id, Value = user.CompanyNameShort };
+            viewModel.Company = company;
+
+            return viewModel;
         }
 
         public void Delete(int id)

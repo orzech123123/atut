@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Atut.Models;
@@ -54,7 +56,7 @@ namespace Atut.Controllers
         public IActionResult Login(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return View(new LoginViewModel());
         }
 
         //
@@ -67,6 +69,12 @@ namespace Atut.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                if (!model.AcceptRodo)
+                {
+                    ModelState.AddModelError(string.Empty, "Zaakceptowanie polityki dotyczącej RODO jest wymagane do zalogowania.");
+                    return View(model);
+                }
+
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user != null) if (!await _userManager.IsEmailConfirmedAsync(user))
                 {
@@ -110,6 +118,16 @@ namespace Atut.Controllers
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult DownloadRodo()
+        {
+            var assembly = typeof(Startup).GetTypeInfo().Assembly;
+            var rodo = assembly.GetManifestResourceStream("Atut.rodo.docx");
+
+            return File(rodo, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "RODO.docx");
         }
 
         //

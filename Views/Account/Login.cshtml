@@ -70,6 +70,15 @@
         .login-logo {
             color: white;
         }
+
+        .icheckbox_square-blue {
+            margin-right: 0.3em;
+            margin-top: -4px;
+        }
+
+        .checkbox.icheck {
+            margin: 0;
+        }
     </style>
 
 </head>
@@ -141,11 +150,11 @@
                  </div>
                 <div class="row">
                     <div class="col-xs-8">
-                        @* TODO <div class="checkbox icheck">
+                        <div class="checkbox icheck">
                             <label>
-                                <input type="checkbox"> Remember Me
+                                <input type="checkbox" asp-for="@Model.AcceptRodo" /> Akceptuj RODO
                             </label>
-                        </div>*@
+                        </div>
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
@@ -155,6 +164,7 @@
                 </div>
             </form>
 
+            <a href="@Url.Action("DownloadRodo")" class="text-center">Polityka RODO</a><br/>
             <a href="@Url.Action("Register")" class="text-center">Utwórz konto użytkownika</a><br/>
             <a href="@Url.Action("ForgotPassword")">Zapomniałem hasła</a><br>
         </div>

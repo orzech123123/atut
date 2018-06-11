@@ -14,5 +14,8 @@ namespace Atut.ViewModels.AccountViewModels
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+
+        [Display(Name = "Akceptuj RODO")]
+        public bool AcceptRodo { get; set; }
     }
 }

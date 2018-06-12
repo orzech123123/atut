@@ -18,6 +18,10 @@ namespace Atut.Services
         
         public decimal GetTaxFactorForCountry(string country)
         {
+            if (country == CountriesHelper.Poland)
+            {
+                return new decimal(1.23); //TODO czy tu na pewno tyle?
+            }
             if (country == CountriesHelper.Germany)
             {
                 return new decimal(1.19);
@@ -44,6 +48,11 @@ namespace Atut.Services
 
         public CurrencyType GetCurrencyForCountry(string country)
         {
+            if (country == Poland)
+            {
+                return CurrencyType.PLN;
+            }
+
             if (CountriesHelper.EuroCurrencyCountries.Contains(country))
             {
                 return CurrencyType.EUR;

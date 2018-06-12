@@ -73,10 +73,10 @@
                     <td class="right-align">@row.TotalDistance</td>
                     <td class="right-align">@row.CountryDistance</td>
                     <td class="right-align">@row.AmountOfPeople</td>
-                    <td class="right-align">@row.InvoicesAmount</td>
-                    <td>@row.PartOfCountryInInvoicesAmount</td>
+                    <td class="right-align">@string.Join(", ", row.InvoicesAmounts.Select(ia => $"{ia.Item1} {ia.Item2}"))</td>
+                    <td>@string.Join(", ", row.PartsOfCountryInInvoicesAmounts.Select(ia => $"{ia.Item1} {ia.Item2}"))</td>
                     <td>@string.Join(", ", row.InvoicesDates.Select(d => d.ToString("dd.MM.yyyy")))</td>
-                    <td class="right-align">@Math.Round(row.ExchangeRate, 4)</td>
+                    <td class="right-align">@string.Join(", ", row.ExchangeRates.Select(er => Math.Round(er, 4)))</td>
                     <td class="right-align">@row.PartOfCountryInInvoicesAmountInCurrency</td>
                 </tr>
             }

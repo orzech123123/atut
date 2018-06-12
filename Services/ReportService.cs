@@ -109,16 +109,21 @@ namespace Atut.Services
                 RegistratioNumber = string.Join(", ", journey.JourneyVehicles.Select(v => v.Vehicle.RegistrationNumber)),
                 TotalDistance = journey.TotalDistance,
                 CountryDistance = journey.Countries.Single(c => c.Name == country).Distance,
-                InvoicesDates = journey.Invoices.Select(i => i.Date),
-                InvoicesAmount = Math.Round(journey.Invoices.Sum(i => GetAmountForCurrency(i, CurrencyType.PLN)), 2),
-                ExchangeRate = GetRateBetweenCurrencies(journey.Invoices.First().Date, CurrencyType.PLN, _countriesHelper.GetCurrencyForCountry(country))
+                InvoicesDates = journey.Invoices.Select(i => i.Date).ToList(),
+                InvoicesAmounts = journey.Invoices.Select(i => (i.Amount, i.Type)).ToList(),
+                ExchangeRates = journey.Invoices.Select(i => GetRateBetweenCurrencies(i.Date, i.Type, _countriesHelper.GetCurrencyForCountry(country))).ToList()
             };
 
-            var partOfCountryInInvoicesAmount = row.InvoicesAmount * row.CountryDistance / row.TotalDistance;
-            row.PartOfCountryInInvoicesAmount = Math.Round(partOfCountryInInvoicesAmount, 2);
-
-            var partOfCountryInInvoicesAmountInCurrency = CalculateBetweenCurrencies(partOfCountryInInvoicesAmount, journey.Invoices.First().Date, CurrencyType.PLN, _countriesHelper.GetCurrencyForCountry(country));
-            row.PartOfCountryInInvoicesAmountInCurrency = Math.Round(partOfCountryInInvoicesAmountInCurrency, 2);
+            row.PartsOfCountryInInvoicesAmounts = journey.Invoices.Select(i =>
+                (
+                    Math.Round(i.Amount * row.CountryDistance / row.TotalDistance, 2),
+                    i.Type
+                )
+            ).ToList();
+            
+            row.PartOfCountryInInvoicesAmountInCurrency = Math.Round(journey.Invoices.Select((invoice, index) =>
+                CalculateBetweenCurrencies(row.PartsOfCountryInInvoicesAmounts[index].Item1, invoice.Date, invoice.Type, _countriesHelper.GetCurrencyForCountry(country))
+            ).Sum(), 2);
 
             return row;
         }
@@ -130,6 +135,11 @@ namespace Atut.Services
 
         private decimal GetRateBetweenCurrencies(DateTime date, CurrencyType sourceCurrency, CurrencyType destCurrency)
         {
+            if (sourceCurrency == destCurrency)
+            {
+                return 1;
+            }
+
             if (sourceCurrency != CurrencyType.PLN)
             {
                 if (sourceCurrency == CurrencyType.EUR)

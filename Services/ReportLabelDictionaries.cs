@@ -21,7 +21,7 @@ namespace Atut.Services
 
     public class EnglishReportLabelDictionary : IReportLabelDictionary
     {
-        public string Title => "Appendix Revenue calculation for the VAT annual declaration";
+        public string Title => "Attachment for VAT declaration";
         public string RegistrationNumbers => "Registration";
         public string FinalPlace => "Destination";
         public string StartDate => "Date of arrival";
@@ -29,16 +29,16 @@ namespace Atut.Services
         public string TotalDistance => "Km in total";
         public string CountryDistance(string country) => $"Km in {country}";
         public string AmountOfPeople => "Passengers";
-        public string InvoicesAmount => "Total transportfee in PLN";
-        public string PartOfCountryInInvoicesAmount(string country) => $"Portion for {country} in PLN";
-        public string InvoicesDates => "Invoice date";
-        public string ExchangeRate => "Exchange rate";
+        public string InvoicesAmount => "Total transportfee";
+        public string PartOfCountryInInvoicesAmount(string country) => $"Portion for {country}";
+        public string InvoicesDates => "Invoice dates";
+        public string ExchangeRate => "Exchange rates";
         public string PartOfCountryInInvoicesAmountInCurrencyAndWithTax(string country, CurrencyType currency) => $"Portion for {country} in {currency.ToString()}";
     }
 
     public class GermanReportLabelDictionary : IReportLabelDictionary
     {
-        public string Title => "Anlage Umsatzermittlung zur Umsatzsteuerjahreserklärung";
+        public string Title => "Anlage zur Umsatzsteuervoranmeldung";
         public string RegistrationNumbers => "KFZ - Kennzeichen";
         public string FinalPlace => "Reiseziel";
         public string StartDate => "Einreise Datum";
@@ -46,8 +46,8 @@ namespace Atut.Services
         public string TotalDistance => "Km insges";
         public string CountryDistance(string country) => $"Km in {country}";
         public string AmountOfPeople => "Anzahl Passagiere";
-        public string InvoicesAmount => "Beförderungsentgelt (PLN)";
-        public string PartOfCountryInInvoicesAmount(string country) => $"Anteil {country} in heimischer Währung (PLN)";
+        public string InvoicesAmount => "Beförderungsentgelt";
+        public string PartOfCountryInInvoicesAmount(string country) => $"Anteil {country} in heimischer Währung";
         public string InvoicesDates => "Rechnungsdatum";
         public string ExchangeRate => "Umrechnungskurs";
         public string PartOfCountryInInvoicesAmountInCurrencyAndWithTax(string country, CurrencyType currency) => $"Anteil {country} ({currency.ToString()})";

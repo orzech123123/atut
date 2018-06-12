@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Atut.Models;
 using Atut.ViewModels;
@@ -73,6 +74,21 @@ namespace Atut.Services
 
         public void ValidateSave(JourneyViewModel viewModel, ModelStateDictionary modelState)
         {
+            if (viewModel.StartDate > DateTime.Today)
+            {
+                modelState.AddModelError("StartDate", "Data wyjazdu nie może być mniejsza od bieżącej daty");
+            }
+
+            if (viewModel.EndDate > DateTime.Today)
+            {
+                modelState.AddModelError("EndDate", "Data powrotu nie może być mniejsza od bieżącej daty");
+            }
+
+            if (viewModel.StartDate > viewModel.EndDate)
+            {
+                modelState.AddModelError("_FORM", "Data wyjazdu nie może być większa od Daty powrotu");
+            }
+
             if (viewModel.TotalDistance <= 0)
             {
                 modelState.AddModelError("TotalDistance", "Całkowita długość trasy musi być większa niż 0");
@@ -80,7 +96,7 @@ namespace Atut.Services
 
             if (viewModel.OtherCountriesTotalDistance < 0)
             {
-                modelState.AddModelError("OtherCountriesTotalDistance", "Dystans pokonany w innych krajach musi być nie mniejszy niż 0");
+                modelState.AddModelError("OtherCountriesTotalDistance", "Ilość kilometrów pokonana w innych krajach musi być nie mniejszy niż 0");
             }
 
             if (!viewModel.Countries.Any())

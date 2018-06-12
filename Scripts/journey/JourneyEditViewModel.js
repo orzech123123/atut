@@ -55,7 +55,7 @@ Vue.component('countries-editor', {
             options: {
                 headings: {
                     name: 'Nazwa kraju',
-                    distance: 'Dystans [km]',
+                    distance: 'Ilość km w kraju',
                     actions: 'Akcje'
                 },
                 sortable: [],

@@ -6,11 +6,11 @@ using Microsoft.Extensions.Options;
 
 namespace Atut.Services
 {
-    public class EmailLabsMailService : IEmailService
+    public class EmailService : IEmailService
     {
         private readonly IOptions<EmailSettings> _emailSettings;
 
-        public EmailLabsMailService(IOptions<EmailSettings> emailSettings)
+        public EmailService(IOptions<EmailSettings> emailSettings)
         {
             _emailSettings = emailSettings;
         }
@@ -29,7 +29,7 @@ namespace Atut.Services
             {
                 Port = _emailSettings.Value.MailPort,
                 Host = _emailSettings.Value.MailHost,
-                EnableSsl = false,
+                EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(_emailSettings.Value.MailUsername, _emailSettings.Value.MailPassword)

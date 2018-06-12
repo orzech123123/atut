@@ -56,7 +56,7 @@ namespace Atut
             services.AddScoped<IDatabaseManager, DatabaseManager>();
             services.AddScoped<RequestModelService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IEmailService, EmailLabsMailService>();
+            services.AddTransient<IEmailService, EmailService>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddTransient<VehicleService>();
             services.AddTransient<JourneyService>();

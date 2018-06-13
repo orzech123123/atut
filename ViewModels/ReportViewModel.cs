@@ -14,7 +14,7 @@ namespace Atut.ViewModels
 
     public class ReportRowViewModel
     {
-        public string RegistratioNumber { get; set; }
+        public IList<string> RegistratioNumbers { get; set; } = new List<string>();
         public string FinalPlace { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

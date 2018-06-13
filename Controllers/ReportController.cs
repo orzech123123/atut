@@ -10,18 +10,27 @@ namespace Atut.Controllers
     {
         private readonly IDatabaseManager _databaseManager;
         private readonly ReportService _reportService;
+        private readonly RoleService _roleService;
 
         public ReportController(
             IDatabaseManager databaseManager,
-            ReportService reportService)
+            ReportService reportService,
+            RoleService roleService)
         {
             _databaseManager = databaseManager;
             _reportService = reportService;
+            _roleService = roleService;
         }
         
         [HttpGet]
         public IActionResult GenerateReport(int[] journeyIds, string country)
         {
+            //TODO zmienic na lepsze
+            if (!_roleService.IsAdmin)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
             var report = _reportService.GenerateReport(journeyIds, country);
 
             return View("Report", report);

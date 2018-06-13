@@ -25390,7 +25390,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('countries-editor', {
             options: {
                 headings: {
                     name: 'Nazwa kraju',
-                    distance: 'Dystans [km]',
+                    distance: 'Ilość km w kraju',
                     actions: 'Akcje'
                 },
                 sortable: [],

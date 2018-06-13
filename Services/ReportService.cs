@@ -106,11 +106,11 @@ namespace Atut.Services
                 EndDate = journey.EndDate,
                 FinalPlace = journey.FinalPlace,
                 StartDate = journey.StartDate,
-                RegistratioNumber = string.Join(", ", journey.JourneyVehicles.Select(v => v.Vehicle.RegistrationNumber)),
+                RegistratioNumbers = journey.JourneyVehicles.Select(v => v.Vehicle.RegistrationNumber).ToList(),
                 TotalDistance = journey.TotalDistance,
                 CountryDistance = journey.Countries.Single(c => c.Name == country).Distance,
                 InvoicesDates = journey.Invoices.Select(i => i.Date).ToList(),
-                InvoicesAmounts = journey.Invoices.Select(i => (i.Amount, i.Type)).ToList(),
+                InvoicesAmounts = journey.Invoices.Select(i => (Math.Round(i.Amount, 2), i.Type)).ToList(),
                 ExchangeRates = journey.Invoices.Select(i => GetRateBetweenCurrencies(i.Date, i.Type, _countriesHelper.GetCurrencyForCountry(country))).ToList()
             };
 

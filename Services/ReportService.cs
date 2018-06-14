@@ -43,25 +43,25 @@ namespace Atut.Services
 
             journeys.ForEach(j => j.IsNotified = true);
 
-            var companyName = user.Claims.Single(c => c.Type == UserClaimTypes.CompanyName).Value;
+            var company = user.Claims.Single(c => c.Type == UserClaimTypes.CompanyName).Value;
 
             var admins = _databaseContext.Users.Where(u => u.IsAdmin).ToList();
 
-            var url = _urlHelper.Action("GenerateReport", "Report", new { journeyIds, country }, _httpContextAccessor.HttpContext.Request.Scheme);
+            var url = _urlHelper.Action("GenerateReport", "Report", new { journeyIds, country, dateFrom, dateTo, company }, _httpContextAccessor.HttpContext.Request.Scheme);
 
             admins.ForEach(u =>
             {
                 _emailService.SendEmailAsync(
                     u.Email,
                     "Atut - powiadomienie o zakończeniu rozliczenia",
-                    $"Firma {companyName} zakończyła rozliczenie dla kraju {country} " +
+                    $"Firma {company} zakończyła rozliczenie dla kraju {country} " +
                     $"dla okresu {dateFrom:d MMM yyyy} - {dateTo:d MMM yyyy}." +
                     $"<br/>Kliknij w link poniżej, aby wygenerować raport:<br/><a href='{url}'>Generuj raport</a>"
                 );
             });
         }
 
-        public ReportViewModel GenerateReport(int[] journeyIds, string country)
+        public ReportViewModel GenerateReport(int[] journeyIds, string country, DateTime dateFrom, DateTime dateTo, string company)
         {
             var journeys = _databaseContext.Journeys
                 .Include(j => j.User)
@@ -81,7 +81,10 @@ namespace Atut.Services
             var report = new ReportViewModel
             {
                 Country = country,
-                CountryCurrency = _countriesHelper.GetCurrencyForCountry(country)
+                CountryCurrency = _countriesHelper.GetCurrencyForCountry(country),
+                DateFrom = dateFrom,
+                DateTo = dateTo,
+                Company = company
             };
 
             foreach (var journey in journeys)

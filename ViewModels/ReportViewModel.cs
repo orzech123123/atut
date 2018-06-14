@@ -9,6 +9,10 @@ namespace Atut.ViewModels
         public string Country { get; set; }
         public CurrencyType CountryCurrency { get; set; }
         public decimal SumPartOfCountryInInvoicesAmountInCurrencyAndTax { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public string Company { get; set; }
+
         public IList<ReportRowViewModel> Rows = new List<ReportRowViewModel>();
     }
 

@@ -104,7 +104,7 @@
 @section Scripts {
     <script type="text/javascript">
         window.model = @Html.ToJson(Model);
-        window.model.isAdmin = @RoleService.IsAdmin.ToString().ToLower();
+        window.isAdmin = @RoleService.IsAdmin.ToString().ToLower();
     </script>
 
     <script src="~/js/vendor.js"></script>

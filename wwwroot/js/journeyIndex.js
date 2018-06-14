@@ -18251,10 +18251,10 @@ window.moment = __WEBPACK_IMPORTED_MODULE_2_moment___default.a;
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_tables_2__["ClientTable"]);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_vue_resource__["a" /* default */]);
 
-var journeyIndexViewModel = function (model) {
+var journeyIndexViewModel = function (model, isAdmin) {
     var columns = ["vehiclesColumn", "startingPlace", "finalPlace", "startDate", "endDate", "actions"];
     
-    if (!!model.isAdmin) {
+    if (!!isAdmin) {
         columns.splice(0, 0, "companyColumn");
     }
 
@@ -18272,14 +18272,20 @@ var journeyIndexViewModel = function (model) {
                     .filteredData
                     .map(row => row.id);
                 
-                if (!this.filterCompany || !this.filterCountry || journeyIds.length == 0) {
-                    alert("Wybierz Firmę, Kraj oraz upewnij się, że masz na liście co najmniej jedną Trasę");
+                if (!this.filterCompany || !this.filterCountry || !this.filterFromDate || !this.filterToDate || journeyIds.length == 0) {
+                    alert("Wybierz Firmę, Datę wyjazdu od, Datę wyjazdu do, Kraj oraz upewnij się, że masz na liście co najmniej jedną Trasę");
                     return;
                 }
 
                 let url = "/Report/GenerateReport?" +
-                    "country=" +
+                    "companyId=" +
+                    this.filterCompany +
+                    "&country=" +
                     this.filterCountry +
+                    "&dateFrom=" +
+                    __WEBPACK_IMPORTED_MODULE_2_moment___default()(this.filterFromDate).format("YYYY-MM-DD") +
+                    "&dateTo=" +
+                    __WEBPACK_IMPORTED_MODULE_2_moment___default()(this.filterToDate).format("YYYY-MM-DD") +
                     "&journeyIds=" +
                     journeyIds.join("&journeyIds=");
 
@@ -18415,7 +18421,7 @@ var journeyIndexViewModel = function (model) {
     });
 }
 
-journeyIndexViewModel(window.model);
+journeyIndexViewModel(window.model, window.isAdmin);
 
 /***/ })
 ],[323]);

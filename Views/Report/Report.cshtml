@@ -49,7 +49,8 @@
     </style>
 </head>
 <body>
-    <h3>@labels.Title</h3>
+    <p style="text-align: right">Firma: @Model.Company</p>
+    <h3>@labels.Title (@Model.DateFrom.ToString("dd.MM.yyyy") - @Model.DateTo.ToString("dd.MM.yyyy"))</h3>
     <table>
         <thead>
             <tr>
@@ -88,11 +89,14 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="11" class="right-align">Σ</td>
+                <td colspan="11" class="right-align">Σ NETTO</td>
                 <td class="right-align">@Model.SumPartOfCountryInInvoicesAmountInCurrencyAndTax</td>
             </tr>
         </tfoot>
     </table>
+    
+    <br/>
+    <p style="text-align: right">Druk elektroniczny. Nie wymaga podpisu.</p>
 
 </body>
 </html>

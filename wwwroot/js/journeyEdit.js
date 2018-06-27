@@ -25483,14 +25483,23 @@ var JourneyEditViewModel = function (model, availableCountries) {
     model.availableCompanies = [];
     model.availableCountries = availableCountries;
     model.errorElement = null;
+    model.changesMade = false;
 
     var vue = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
         el: "#JourneyEdit",
         data: model,
         methods: {
+            checkIfChangesMade: function () {
+                if (this.changesMade) {
+                    return {};
+                }
+
+                return null;
+            },
             validateBeforeSubmit() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
+                        this.changesMade = false;
                         this.$refs.form.submit();
                     } else {
                         this.errorElement = document.querySelectorAll('[data-vv-name="' +
@@ -25523,7 +25532,7 @@ var JourneyEditViewModel = function (model, availableCountries) {
                 }
             }
         },
-        updated: function() {
+        updated: function () {
             if (!!this.errorElement) {
                 this.scrollDownToErrorElement();
                 this.errorElement = null;
@@ -25539,12 +25548,33 @@ var JourneyEditViewModel = function (model, availableCountries) {
             this.$http.get('/Account/GetAllCompanies').then(response => {
                 this.availableCompanies = response.body;
             });
+
+            let self = this;
+            window.onbeforeunload = function() {
+                return self.checkIfChangesMade();
+            };
         },
         components: {
             Datepicker: __WEBPACK_IMPORTED_MODULE_3_vuejs_datepicker___default.a,
             Multiselect: __WEBPACK_IMPORTED_MODULE_6_vue_multiselect___default.a
         },
         computed: {
+            changesMadeWatchedProperties: function() {
+                return [
+                    this.id,
+                    this.startingPlace,
+                    this.throughPlace,
+                    this.finalPlace,
+                    this.amountOfPeople,
+                    this.startDate,
+                    this.endDate,
+                    this.countries,
+                    this.totalDistance,
+                    this.otherCountriesTotalDistance,
+                    this.vehicles,
+                    this.invoices
+                ].join();
+            },
             startDateDisplayModel: function() {
                 return !!this.startDate ? __WEBPACK_IMPORTED_MODULE_5_moment___default()(this.startDate).format('YYYY-MM-DD') : null;
             },
@@ -25578,6 +25608,9 @@ var JourneyEditViewModel = function (model, availableCountries) {
             }
         },
         watch: {
+            changesMadeWatchedProperties: function() {
+                this.changesMade = true;
+            },
             totalDistance: function(val) {
                 this.recalculateOtherCountriesTotalDistance(val, this.countriesTotalDistance);
             },
@@ -25592,6 +25625,7 @@ var JourneyEditViewModel = function (model, availableCountries) {
 }
 
 JourneyEditViewModel(window.model, window.availableCountries);
+
 
 /***/ }),
 /* 325 */

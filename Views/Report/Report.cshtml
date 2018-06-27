@@ -72,7 +72,7 @@
             @foreach (var row in Model.Rows)
             {
                 <tr>
-                    <td>@Html.Raw(string.Join(",<br/>", row.RegistratioNumbers)))</td>
+                    <td>@Html.Raw(string.Join(",<br/>", row.RegistratioNumbers))</td>
                     <td>@row.FinalPlace</td>
                     <td>@row.StartDate.ToString("dd.MM.yyyy")</td>
                     <td>@row.EndDate.ToString("dd.MM.yyyy")</td>
@@ -80,7 +80,7 @@
                     <td class="right-align">@row.CountryDistance</td>
                     <td class="right-align">@row.AmountOfPeople</td>
                     <td class="right-align">@Html.Raw(string.Join(",<br/>", row.InvoicesAmounts.Select(ia => $"{ia.Item1} {ia.Item2}")))</td>
-                    <td>@Html.Raw(string.Join(",<br/>", row.PartsOfCountryInInvoicesAmounts.Select(ia => $"{ia.Item1} {ia.Item2}")))</td>
+                    <td class="right-align">@Html.Raw(string.Join(",<br/>", row.PartsOfCountryInInvoicesAmounts.Select(ia => $"{ia.Item1} {ia.Item2}")))</td>
                     <td>@Html.Raw(string.Join(",<br/>", row.InvoicesDates.Select(d => d.ToString("dd.MM.yyyy"))))</td>
                     <td class="right-align">@Html.Raw(string.Join(",<br/>", row.ExchangeRates.Select(er => Math.Round(er, 4))))</td>
                     <td class="right-align">@row.PartOfCountryInInvoicesAmountInCurrency</td>
@@ -96,7 +96,7 @@
     </table>
     
     <br/>
-    <p style="text-align: right">Druk elektroniczny. Nie wymaga podpisu.</p>
+    <p style="text-align: right">@labels.DigitalPrintNote</p>
 
 </body>
 </html>

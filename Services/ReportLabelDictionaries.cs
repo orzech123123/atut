@@ -16,6 +16,7 @@ namespace Atut.Services
         string PartOfCountryInInvoicesAmount(string country);
         string InvoicesDates { get; }
         string ExchangeRate { get; }
+        string DigitalPrintNote { get; }
         string PartOfCountryInInvoicesAmountInCurrencyAndWithTax(string country, CurrencyType currency);
     }
 
@@ -29,10 +30,11 @@ namespace Atut.Services
         public string TotalDistance => "Km in total";
         public string CountryDistance(string country) => $"Km in {country}";
         public string AmountOfPeople => "Passengers";
-        public string InvoicesAmount => "Total transportfee";
+        public string InvoicesAmount => "Total transport fee";
         public string PartOfCountryInInvoicesAmount(string country) => $"Portion for {country}";
         public string InvoicesDates => "Invoice dates";
         public string ExchangeRate => "Exchange rates";
+        public string DigitalPrintNote => "Digital print. Signature not required.";
         public string PartOfCountryInInvoicesAmountInCurrencyAndWithTax(string country, CurrencyType currency) => $"Portion for {country} in {currency.ToString()}";
     }
 
@@ -50,6 +52,7 @@ namespace Atut.Services
         public string PartOfCountryInInvoicesAmount(string country) => $"Anteil {country} in heimischer Währung";
         public string InvoicesDates => "Rechnungsdatum";
         public string ExchangeRate => "Umrechnungskurs";
+        public string DigitalPrintNote => "Digitaler Ausdruck. Unterschrift nicht erforderlich.";
         public string PartOfCountryInInvoicesAmountInCurrencyAndWithTax(string country, CurrencyType currency) => $"Anteil {country} ({currency.ToString()})";
     }
 }

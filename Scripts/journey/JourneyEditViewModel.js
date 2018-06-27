@@ -148,14 +148,23 @@ var JourneyEditViewModel = function (model, availableCountries) {
     model.availableCompanies = [];
     model.availableCountries = availableCountries;
     model.errorElement = null;
+    model.changesMade = false;
 
     var vue = new Vue({
         el: "#JourneyEdit",
         data: model,
         methods: {
+            checkIfChangesMade: function () {
+                if (this.changesMade) {
+                    return {};
+                }
+
+                return null;
+            },
             validateBeforeSubmit() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
+                        this.changesMade = false;
                         this.$refs.form.submit();
                     } else {
                         this.errorElement = document.querySelectorAll('[data-vv-name="' +
@@ -188,7 +197,7 @@ var JourneyEditViewModel = function (model, availableCountries) {
                 }
             }
         },
-        updated: function() {
+        updated: function () {
             if (!!this.errorElement) {
                 this.scrollDownToErrorElement();
                 this.errorElement = null;
@@ -204,12 +213,33 @@ var JourneyEditViewModel = function (model, availableCountries) {
             this.$http.get('/Account/GetAllCompanies').then(response => {
                 this.availableCompanies = response.body;
             });
+
+            let self = this;
+            window.onbeforeunload = function() {
+                return self.checkIfChangesMade();
+            };
         },
         components: {
             Datepicker,
             Multiselect
         },
         computed: {
+            changesMadeWatchedProperties: function() {
+                return [
+                    this.id,
+                    this.startingPlace,
+                    this.throughPlace,
+                    this.finalPlace,
+                    this.amountOfPeople,
+                    this.startDate,
+                    this.endDate,
+                    this.countries,
+                    this.totalDistance,
+                    this.otherCountriesTotalDistance,
+                    this.vehicles,
+                    this.invoices
+                ].join();
+            },
             startDateDisplayModel: function() {
                 return !!this.startDate ? moment(this.startDate).format('YYYY-MM-DD') : null;
             },
@@ -243,6 +273,9 @@ var JourneyEditViewModel = function (model, availableCountries) {
             }
         },
         watch: {
+            changesMadeWatchedProperties: function() {
+                this.changesMade = true;
+            },
             totalDistance: function(val) {
                 this.recalculateOtherCountriesTotalDistance(val, this.countriesTotalDistance);
             },

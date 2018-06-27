@@ -156,7 +156,7 @@ var journeyIndexViewModel = function (model, isAdmin) {
                             }
 
                             key.setHours(0, 0, 0, 0);
-                            return row.startDate >= moment(key);
+                            return row.endDate >= moment(key);
                         }
                     },
                     {
@@ -167,7 +167,7 @@ var journeyIndexViewModel = function (model, isAdmin) {
                             }
 
                             key.setHours(23, 59, 59, 0);
-                            return row.startDate <= moment(key);
+                            return row.endDate <= moment(key);
                         }
                     }]
             },

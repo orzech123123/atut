@@ -34,7 +34,7 @@ namespace Atut.Services
         public string PartOfCountryInInvoicesAmount(string country) => $"Portion for {country}";
         public string InvoicesDates => "Invoice dates";
         public string ExchangeRate => "Exchange rates";
-        public string DigitalPrintNote => "Digital print. Signature not required.";
+        public string DigitalPrintNote => "Digital print. Signature is not required.";
         public string PartOfCountryInInvoicesAmountInCurrencyAndWithTax(string country, CurrencyType currency) => $"Portion for {country} in {currency.ToString()}";
     }
 

@@ -4,100 +4,107 @@
 
 @inject EnglishReportLabelDictionary EnglishReportLabelDictionary;
 @inject GermanReportLabelDictionary GermanReportLabelDictionary;
-
+    
 @{
     Layout = null;
-    var labels = Model.Country == CountriesHelper.Germany ? (IReportLabelDictionary)GermanReportLabelDictionary : EnglishReportLabelDictionary;
 }
 
+@if (Model != null)
+{
+     var labels = Model.Country == CountriesHelper.Germany ? (IReportLabelDictionary)GermanReportLabelDictionary : EnglishReportLabelDictionary;
+    
 <html>
-<head>
-    <style>
-        body {
-            font-family: Arial
-        }
+    <head>
+        <style>
+            body {
+                font-family: Arial
+            }
 
-        h3 {
-            text-align: center;
-            text-decoration: underline;
-            margin: 50px
-        }
+            h3 {
+                text-align: center;
+                text-decoration: underline;
+                margin: 50px
+            }
 
-        table {
-            border-collapse: collapse;
-            margin: auto;
-            width: 90%;
-        }
+            table {
+                border-collapse: collapse;
+                margin: auto;
+                width: 90%;
+            }
 
-        table, th, td {
-            border: 1px solid black;
-            padding: 8px;
-        }
+            table, th, td {
+                border: 1px solid black;
+                padding: 8px;
+            }
 
-        .right-align {
-            text-align: right;
-        }
+            .right-align {
+                text-align: right;
+            }
 
-        tfoot td {
-            font-weight: bold;
-        }
+            tfoot td {
+                font-weight: bold;
+            }
 
-        tr td{
-            width:1%;
-            white-space:nowrap;
-        }
-    </style>
-</head>
-<body>
+            tr td {
+                width: 1%;
+                white-space: nowrap;
+            }
+        </style>
+    </head>
+    <body>
     <p style="text-align: right">Firma: @Model.Company</p>
     <h3>@labels.Title (@Model.DateFrom.ToString("dd.MM.yyyy") - @Model.DateTo.ToString("dd.MM.yyyy"))</h3>
     <table>
         <thead>
-            <tr>
-                <th>@labels.RegistrationNumbers</th>
-                <th>@labels.FinalPlace</th>
-                <th>@labels.StartDate</th>
-                <th>@labels.EndDate</th>
-                <th>@labels.TotalDistance</th>
-                <th>@labels.CountryDistance(Model.Country)</th>
-                <th>@labels.AmountOfPeople</th>
-                <th>@labels.InvoicesAmount</th>
-                <th>@labels.PartOfCountryInInvoicesAmount(Model.Country)</th>
-                <th>@labels.InvoicesDates</th>
-                <th>@labels.ExchangeRate</th>
-                <th>@labels.PartOfCountryInInvoicesAmountInCurrencyAndWithTax(Model.Country, Model.CountryCurrency)</th>
-            </tr>
+        <tr>
+            <th>@labels.RegistrationNumbers</th>
+            <th>@labels.FinalPlace</th>
+            <th>@labels.StartDate</th>
+            <th>@labels.EndDate</th>
+            <th>@labels.TotalDistance</th>
+            <th>@labels.CountryDistance(Model.Country)</th>
+            <th>@labels.AmountOfPeople</th>
+            <th>@labels.InvoicesAmount</th>
+            <th>@labels.PartOfCountryInInvoicesAmount(Model.Country)</th>
+            <th>@labels.InvoicesDates</th>
+            <th>@labels.ExchangeRate</th>
+            <th>@labels.PartOfCountryInInvoicesAmountInCurrencyAndWithTax(Model.Country, Model.CountryCurrency)</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var row in Model.Rows)
-            {
-                <tr>
-                    <td>@Html.Raw(string.Join(",<br/>", row.RegistratioNumbers))</td>
-                    <td>@row.FinalPlace</td>
-                    <td>@row.StartDate.ToString("dd.MM.yyyy")</td>
-                    <td>@row.EndDate.ToString("dd.MM.yyyy")</td>
-                    <td class="right-align">@row.TotalDistance</td>
-                    <td class="right-align">@row.CountryDistance</td>
-                    <td class="right-align">@row.AmountOfPeople</td>
-                    <td class="right-align">@Html.Raw(string.Join(",<br/>", row.InvoicesAmounts.Select(ia => $"{ia.Item1} {ia.Item2}")))</td>
-                    <td class="right-align">@Html.Raw(string.Join(",<br/>", row.PartsOfCountryInInvoicesAmounts.Select(ia => $"{ia.Item1} {ia.Item2}")))</td>
-                    <td>@Html.Raw(string.Join(",<br/>", row.InvoicesDates.Select(d => d.ToString("dd.MM.yyyy"))))</td>
-                    <td class="right-align">@Html.Raw(string.Join(",<br/>", row.ExchangeRates.Select(er => Math.Round(er, 4))))</td>
-                    <td class="right-align">@row.PartOfCountryInInvoicesAmountInCurrency</td>
-                </tr>
-            }
+        @foreach (var row in Model.Rows)
+        {
+            <tr>
+                <td>@Html.Raw(string.Join(",<br/>", row.RegistratioNumbers))</td>
+                <td>@row.FinalPlace</td>
+                <td>@row.StartDate.ToString("dd.MM.yyyy")</td>
+                <td>@row.EndDate.ToString("dd.MM.yyyy")</td>
+                <td class="right-align">@row.TotalDistance</td>
+                <td class="right-align">@row.CountryDistance</td>
+                <td class="right-align">@row.AmountOfPeople</td>
+                <td class="right-align">@Html.Raw(string.Join(",<br/>", row.InvoicesAmounts.Select(ia => $"{ia.Item1} {ia.Item2}")))</td>
+                <td class="right-align">@Html.Raw(string.Join(",<br/>", row.PartsOfCountryInInvoicesAmounts.Select(ia => $"{ia.Item1} {ia.Item2}")))</td>
+                <td>@Html.Raw(string.Join(",<br/>", row.InvoicesDates.Select(d => d.ToString("dd.MM.yyyy"))))</td>
+                <td class="right-align">@Html.Raw(string.Join(",<br/>", row.ExchangeRates.Select(er => Math.Round(er, 4))))</td>
+                <td class="right-align">@row.PartOfCountryInInvoicesAmountInCurrency</td>
+            </tr>
+        }
         </tbody>
         <tfoot>
-            <tr>
-                <td colspan="11" class="right-align">Σ NETTO</td>
-                <td class="right-align">@Model.SumPartOfCountryInInvoicesAmountInCurrencyAndTax</td>
-            </tr>
+        <tr>
+            <td colspan="11" class="right-align">Σ NETTO</td>
+            <td class="right-align">@Model.SumPartOfCountryInInvoicesAmountInCurrencyAndTax</td>
+        </tr>
         </tfoot>
     </table>
-    
+
     <br/>
     <p style="text-align: right">@labels.DigitalPrintNote</p>
 
-</body>
-</html>
-
+    </body>
+    </html>
+}
+else
+{
+    <p>Wystąpił problem ze spójnością kursów średnich NBP.</p>
+}

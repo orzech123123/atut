@@ -103,6 +103,8 @@ namespace Atut.Services
 
         private ReportRowViewModel GenerateRow(Journey journey, string country)
         {
+            var invoices = journey.Invoices.ToList();
+
             var row = new ReportRowViewModel
             {
                 AmountOfPeople = journey.AmountOfPeople,
@@ -112,30 +114,25 @@ namespace Atut.Services
                 RegistratioNumbers = journey.JourneyVehicles.Select(v => v.Vehicle.RegistrationNumber).ToList(),
                 TotalDistance = journey.TotalDistance,
                 CountryDistance = journey.Countries.Single(c => c.Name == country).Distance,
-                InvoicesDates = journey.Invoices.Select(i => i.Date).ToList(),
-                InvoicesAmounts = journey.Invoices.Select(i => (Math.Round(i.Amount, 2), i.Type)).ToList(),
-                ExchangeRates = journey.Invoices.Select(i => GetRateBetweenCurrencies(i.Date, i.Type, _countriesHelper.GetCurrencyForCountry(country))).ToList()
+                InvoicesDates = invoices.Select(i => i.Date).ToList(),
+                InvoicesAmounts = invoices.Select(i => (Math.Round(i.Amount, 2), i.Type)).ToList(),
+                ExchangeRates = invoices.Select(i => GetRateBetweenCurrencies(i.Date, i.Type, _countriesHelper.GetCurrencyForCountry(country))).ToList()
             };
 
-            row.PartsOfCountryInInvoicesAmounts = journey.Invoices.Select(i =>
+            row.PartsOfCountryInInvoicesAmounts = invoices.Select(i =>
                 (
                     Math.Round(i.Amount * row.CountryDistance / row.TotalDistance, 2),
                     i.Type
                 )
             ).ToList();
             
-            row.PartOfCountryInInvoicesAmountInCurrency = Math.Round(journey.Invoices.Select((invoice, index) =>
+            row.PartOfCountryInInvoicesAmountInCurrency = Math.Round(invoices.Select((invoice, index) =>
                 CalculateBetweenCurrencies(row.PartsOfCountryInInvoicesAmounts[index].Item1, invoice.Date, invoice.Type, _countriesHelper.GetCurrencyForCountry(country))
             ).Sum(), 2);
 
             return row;
         }
-
-        private decimal GetAmountForCurrency(Invoice invoice, CurrencyType currency)
-        {
-            return CalculateBetweenCurrencies(invoice.Amount, invoice.Date, invoice.Type, currency);
-        }
-
+        
         private decimal GetRateBetweenCurrencies(DateTime date, CurrencyType sourceCurrency, CurrencyType destCurrency)
         {
             if (sourceCurrency == destCurrency)
@@ -173,6 +170,9 @@ namespace Atut.Services
                     date = date.AddDays(-1);
                 }
             }
+
+            //TODO testy
+            ExchangeCache.CheckCache(date, destCurrency, result.Rates.First().Mid);
 
             return result.Rates.First().Mid;
             //            return (decimal) Fixer.Rate(sourceCurrency.ToString(), destCurrency.ToString(), date).Rate;

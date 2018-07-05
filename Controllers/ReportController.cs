@@ -3,6 +3,7 @@ using Atut.Services;
 using Atut.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace Atut.Controllers
 {
@@ -13,17 +14,20 @@ namespace Atut.Controllers
         private readonly ReportService _reportService;
         private readonly RoleService _roleService;
         private readonly DatabaseContext _databaseContext;
+        private readonly ILogger<ReportController> _logger;
 
         public ReportController(
             IDatabaseManager databaseManager,
             ReportService reportService,
             RoleService roleService,
-            DatabaseContext databaseContext)
+            DatabaseContext databaseContext,
+            ILogger<ReportController> logger)
         {
             _databaseManager = databaseManager;
             _reportService = reportService;
             _roleService = roleService;
             _databaseContext = databaseContext;
+            _logger = logger;
         }
         
         [HttpGet]
@@ -40,9 +44,16 @@ namespace Atut.Controllers
                 company = _databaseContext.Users.Find(companyId).CompanyName;
             }
 
-            var report = _reportService.GenerateReport(journeyIds, country, dateFrom, dateTo, company);
-
-            return View("Report", report);
+            try
+            {
+                var report = _reportService.GenerateReport(journeyIds, country, dateFrom, dateTo, company);
+                return View("Report", report);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return View("Report", null);
+            }
         }
         
         [HttpPost]

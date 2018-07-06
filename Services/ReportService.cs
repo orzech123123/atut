@@ -130,6 +130,25 @@ namespace Atut.Services
                 CalculateBetweenCurrencies(row.PartsOfCountryInInvoicesAmounts[index].Item1, invoice.Date, invoice.Type, _countriesHelper.GetCurrencyForCountry(country))
             ).Sum(), 2);
 
+//      do testowania:
+//            decimal ex2;
+//            row.PartOfCountryInInvoicesAmountInCurrency = Math.Round(invoices.Select((invoice, index) =>
+//                {
+//                    ex2 = GetExchangeRateRequestResult(_countriesHelper.GetCurrencyForCountry(country), invoice.Date);
+//                    return row.PartsOfCountryInInvoicesAmounts[index].Item1 / ex2;
+//                }
+//            ).Sum(), 2);
+//
+//            var ex1 = row.ExchangeRates.First();
+//            var x = Math.Round(invoices.Select((invoice, index) =>
+//                row.PartsOfCountryInInvoicesAmounts[index].Item1 / ex1
+//            ).Sum(), 2);
+//
+//            if (row.PartOfCountryInInvoicesAmountInCurrency != x)
+//            {
+//
+//            }
+
             return row;
         }
         
@@ -156,7 +175,7 @@ namespace Atut.Services
         private decimal GetExchangeRateRequestResult(CurrencyType destCurrency, DateTime date)
         {
             ExchangeRateRequestResult result = null;
-
+            
             while (result == null)
             {
                 var client = new RestClient($"http://api.nbp.pl/api/exchangerates/rates/a/{destCurrency}/{date:yyyy-MM-dd}");
@@ -164,8 +183,7 @@ namespace Atut.Services
                 var response = client.Execute<ExchangeRateRequestResult>(request);
 
                 result = response.Data;
-
-                if (result == null)
+                if (result == null && !response.Content.Contains("META HTTP-EQUIV=\"Refresh\""))
                 {
                     date = date.AddDays(-1);
                 }

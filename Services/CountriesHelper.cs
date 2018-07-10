@@ -38,9 +38,13 @@ namespace Atut.Services
             {
                 return new decimal(1.06);
             }
-            if (country == CountriesHelper.Denmark || country == CountriesHelper.Croatia)
+            if (country == CountriesHelper.Croatia)
             {
                 return new decimal(1.25);
+            }
+            if (country == CountriesHelper.Denmark)
+            {
+                return new decimal(1.2);
             }
 
             throw new NotSupportedException($"Not supported tax for country: {country}");

@@ -71,7 +71,7 @@ namespace Atut.Services
                 .Include(j => j.Invoices)
                 .Include(j => j.Countries)
                 .Where(v => journeyIds.Contains(v.Id))
-                .OrderByDescending(j => j.EndDate);
+                .OrderBy(j => j.EndDate);
 
             if (journeyIds.Count() != journeys.Count())
             {

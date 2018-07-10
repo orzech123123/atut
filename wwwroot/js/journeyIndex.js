@@ -16463,7 +16463,7 @@ webpackContext.id = 127;
 /* unused harmony export Http */
 /* unused harmony export Resource */
 /*!
- * vue-resource v1.5.0
+ * vue-resource v1.5.1
  * https://github.com/pagekit/vue-resource
  * Released under the MIT License.
  */
@@ -18273,7 +18273,7 @@ var journeyIndexViewModel = function (model, isAdmin) {
                     .map(row => row.id);
                 
                 if (!this.filterCompany || !this.filterCountry || !this.filterFromDate || !this.filterToDate || journeyIds.length == 0) {
-                    alert("Wybierz Firmę, Datę wyjazdu od, Datę wyjazdu do, Kraj oraz upewnij się, że masz na liście co najmniej jedną Trasę");
+                    alert("Wybierz Firmę, Datę raportu od, Datę raportu do, Kraj oraz upewnij się, że masz na liście co najmniej jedną Trasę");
                     return;
                 }
 
@@ -18299,7 +18299,7 @@ var journeyIndexViewModel = function (model, isAdmin) {
                     .map(row => row.id);
 
                 if (!this.filterCountry || !this.filterFromDate || !this.filterToDate || journeyIds.length == 0) {
-                    alert("Wybierz Datę wyjazdu od, Datę wyjazdu do oraz Kraj, aby poinformować administratora, którego kraju rozliczenie zakończyłeś.\n" +
+                    alert("Wybierz Datę raportu od, Datę raportu do oraz Kraj, aby poinformować administratora, którego kraju rozliczenie zakończyłeś.\n" +
                         "Upewnij się także, że masz na liście co najmniej jedną Trasę.");
                     return;
                 }

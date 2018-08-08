@@ -127,28 +127,22 @@ namespace Atut.Services
             ).ToList();
             
             row.PartOfCountryInInvoicesAmountInCurrency = Math.Round(invoices.Select((invoice, index) =>
-                CalculateBetweenCurrencies(row.PartsOfCountryInInvoicesAmounts[index].Item1, invoice.Date, invoice.Type, _countriesHelper.GetCurrencyForCountry(country))
+                {
+                    var result = CalculateBetweenCurrencies(row.PartsOfCountryInInvoicesAmounts[index].Item1, invoice.Date, invoice.Type, _countriesHelper.GetCurrencyForCountry(country));
+
+                    //poprawka formuly: nie dzialalo jak faktura byla w EUR a przeliczalo na HRK albo DKK:
+                    if (invoice.Type == CurrencyType.EUR &&
+                        (CountriesHelper.HrkCurrencyCountries.Contains(country) ||
+                         CountriesHelper.DkkCurrencyCountries.Contains(country)))
+                    {
+                        result = CalculateBetweenCurrencies(result, invoice.Date, CurrencyType.PLN, _countriesHelper.GetCurrencyForCountry(country));
+                        row.ExchangeRates[index] = GetRateBetweenCurrencies(invoice.Date, CurrencyType.PLN, _countriesHelper.GetCurrencyForCountry(country));
+                    }
+
+                    return result;
+                }
             ).Sum(), 2);
-
-//      do testowania:
-//            decimal ex2;
-//            row.PartOfCountryInInvoicesAmountInCurrency = Math.Round(invoices.Select((invoice, index) =>
-//                {
-//                    ex2 = GetExchangeRateRequestResult(_countriesHelper.GetCurrencyForCountry(country), invoice.Date);
-//                    return row.PartsOfCountryInInvoicesAmounts[index].Item1 / ex2;
-//                }
-//            ).Sum(), 2);
-//
-//            var ex1 = row.ExchangeRates.First();
-//            var x = Math.Round(invoices.Select((invoice, index) =>
-//                row.PartsOfCountryInInvoicesAmounts[index].Item1 / ex1
-//            ).Sum(), 2);
-//
-//            if (row.PartOfCountryInInvoicesAmountInCurrency != x)
-//            {
-//
-//            }
-
+            
             return row;
         }
         
@@ -193,7 +187,6 @@ namespace Atut.Services
             ExchangeCache.CheckCache(date, destCurrency, result.Rates.First().Mid);
 
             return result.Rates.First().Mid;
-            //            return (decimal) Fixer.Rate(sourceCurrency.ToString(), destCurrency.ToString(), date).Rate;
         }
 
         private decimal CalculateBetweenCurrencies(decimal amount, DateTime date, CurrencyType sourceCurrency, CurrencyType destCurrency)
@@ -204,9 +197,6 @@ namespace Atut.Services
             }
 
             return amount / GetRateBetweenCurrencies(date, sourceCurrency, destCurrency);
-
-            //            return amount / (decimal) 4.1695;
-            //            return (decimal) Fixer.Convert(sourceCurrency.ToString(), destCurrency.ToString(), (double) amount, date);
         }
     }
 

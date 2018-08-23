@@ -25,6 +25,7 @@ namespace Atut.ViewModels.AccountViewModels
         public string CompanyName { get; set; }
 
         [Required(ErrorMessage = "Nazwa firmy skrócona jest wymagana")]
+        [StringLength(15, ErrorMessage = "Nazwa firmy skrócona może zawierać maksymalnie 15 znaków")]
         [Display(Name = "Nazwa firmy skrócona")]
         public string CompanyNameShort { get; set; }
 

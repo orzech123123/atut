@@ -60,6 +60,11 @@
                     <span v-show="errors.has('throughPlace')" class="text-danger">{{ errors.first('throughPlace') }}</span>
                 </div>
             </div>
+            <div class="callout callout-info">
+                <ul>
+                    <li>Podczas wpisywania Miejscowości kocowej i kraju - w poniższym polu należny dalej wpisać daty i każdą granicę dla Słowenii.</li>
+                </ul>
+            </div>
             <div class="form-group">
                 <label for="FinalPlace" class="col-sm-2 control-label">Miejscowość końcowa + kraj</label>
 
@@ -81,7 +86,7 @@
 
                 <div class="col-sm-10">
                     <datepicker v-validate="'required'" data-vv-value-path="formattedValue" v-model="startDate" data-vv-as="Data wyjazdu" data-vv-name="startDate" ref="startDate" language="pl"></datepicker>
-                    <input type="hidden" name="StartDate" :value="startDateDisplayModel"/>
+                    <input type="hidden" name="StartDate" :value="startDateDisplayModel" />
                     <span v-show="errors.has('startDate')" class="text-danger">{{ errors.first('startDate') }}</span>
                 </div>
             </div>
@@ -90,7 +95,7 @@
 
                 <div class="col-sm-10">
                     <datepicker v-validate="'required'" data-vv-value-path="formattedValue" v-model="endDate" data-vv-as="Data powrotu" data-vv-name="endDate" ref="endDate" language="pl"></datepicker>
-                    <input type="hidden" name="EndDate" :value="endDateDisplayModel"/>
+                    <input type="hidden" name="EndDate" :value="endDateDisplayModel" />
                     <span v-show="errors.has('endDate')" class="text-danger">{{ errors.first('endDate') }}</span>
                 </div>
             </div>

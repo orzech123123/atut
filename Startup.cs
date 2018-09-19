@@ -2,6 +2,7 @@
 using System.IO;
 using Atut.Filters;
 using Atut.Identity;
+using Atut.Jobs;
 using Atut.Models;
 using Atut.Services;
 using AutoMapper;
@@ -17,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Atut
@@ -67,6 +69,7 @@ namespace Atut
             services.AddTransient<ReportService>();
             services.AddTransient<EnglishReportLabelDictionary>();
             services.AddTransient<GermanReportLabelDictionary>();
+            services.AddSingleton<IHostedService, DatabaseBackgroundJob>();
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUrlHelper>(x => {

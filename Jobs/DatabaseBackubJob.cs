@@ -16,7 +16,6 @@ namespace Atut.Jobs
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-
             while (!stoppingToken.IsCancellationRequested)
             {
                 using (var scope = ScopeFactory.CreateScope())

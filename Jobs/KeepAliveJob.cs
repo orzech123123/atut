@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Atut.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -20,16 +21,26 @@ namespace Atut.Jobs
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                try
+                using (var scope = ScopeFactory.CreateScope())
                 {
-                    var http = (HttpWebRequest)WebRequest.Create(_settings.Value.Url);
-                    http.GetResponse();
-                }
-                catch (Exception)
-                {
-                }
+                    var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
 
-                await Task.Delay(60000, stoppingToken);
+                    try
+                    {
+                        var http = (HttpWebRequest)WebRequest.Create(_settings.Value.Url);
+                        http.GetResponse();
+                    }
+                    catch (Exception e)
+                    {
+                        await emailService.SendEmailAsync(
+                            "michalorzechowski123@gmail.com",
+                            "Test - wysypalem sie",
+                            e.Message
+                        );
+                    }
+
+                    await Task.Delay(30000, stoppingToken);
+                }
             }
         }
     }

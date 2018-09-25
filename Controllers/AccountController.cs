@@ -44,6 +44,7 @@ namespace Atut.Controllers
         {
             var companies = _userManager.Users
                 .Select(u => new KeyValueViewModel {Key = u.Id, Value = u.CompanyNameShort})
+                .OrderBy(u => u.Value)
                 .ToList();
 
             return Json(companies);

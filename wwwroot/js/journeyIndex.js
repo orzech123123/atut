@@ -18328,6 +18328,8 @@ var journeyIndexViewModel = function (model, isAdmin) {
                     this.countries.push(country);
                 }
             }
+
+            this.companies = this.companies.sort(function (a, b) { return a.value.localeCompare(b.value); });
         },
         watch: {
             filterCompany: function() {

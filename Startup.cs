@@ -2,7 +2,6 @@
 using System.IO;
 using Atut.Filters;
 using Atut.Identity;
-using Atut.Jobs;
 using Atut.Models;
 using Atut.Services;
 using AutoMapper;
@@ -60,7 +59,6 @@ namespace Atut
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IEmailService, EmailService>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
-            services.Configure<KeepAliveSettings>(Configuration.GetSection("KeepAliveSettings"));
             services.AddTransient<VehicleService>();
             services.AddTransient<JourneyService>();
             services.AddTransient<RoleService>();
@@ -70,8 +68,6 @@ namespace Atut
             services.AddTransient<ReportService>();
             services.AddTransient<EnglishReportLabelDictionary>();
             services.AddTransient<GermanReportLabelDictionary>();
-            services.AddSingleton<IHostedService, DatabaseBackgroundJob>();
-            services.AddSingleton<IHostedService, KeepAliveJob>();
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUrlHelper>(x => {

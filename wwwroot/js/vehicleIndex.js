@@ -29,6 +29,8 @@ var vehicleIndexViewModel = function (model) {
                     this.companies.push(company);
                 }
             }  
+
+            this.companies = this.companies.sort(function (a, b) { return a.value.localeCompare(b.value); });
         },
         watch: {
             filterCompany: function () {

@@ -17,7 +17,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Atut
@@ -97,6 +96,7 @@ namespace Atut
 
             loggerFactory.AddFile("Logs/logs-{Date}.txt", LogLevel.Error);
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseFileServer(new FileServerOptions

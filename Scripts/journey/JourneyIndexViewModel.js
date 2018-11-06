@@ -28,7 +28,7 @@ var journeyIndexViewModel = function (model, isAdmin) {
             $("#generateReport").on("click", () => {
                 let journeyIds = this.$children
                     .filter(ch => ch.$el.className == "VueTables VueTables--client")[0]
-                    .filteredData
+                    .allFilteredData
                     .map(row => row.id);
                 
                 if (!this.filterCompany || !this.filterCountry || !this.filterFromDate || !this.filterToDate || journeyIds.length == 0) {
@@ -54,7 +54,7 @@ var journeyIndexViewModel = function (model, isAdmin) {
             $("#notifyAdmin").on("click", () => {
                 let journeyIds = this.$children
                     .filter(ch => ch.$el.className == "VueTables VueTables--client")[0]
-                    .filteredData
+                    .allFilteredData 
                     .map(row => row.id);
 
                 if (!this.filterCountry || !this.filterFromDate || !this.filterToDate || journeyIds.length == 0) {

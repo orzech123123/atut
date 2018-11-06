@@ -18036,9 +18036,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 /* 136 */,
 /* 137 */,
 /* 138 */,
-/* 139 */,
-/* 140 */,
-/* 141 */
+/* 139 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25019,7 +25017,7 @@ var index_esm = {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(125)))
 
 /***/ }),
-/* 142 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!function(e,n){"object"==typeof exports&&"undefined"!=typeof module?module.exports=n():"function"==typeof define&&define.amd?define(n):(e.__vee_validate_locale__pl=e.__vee_validate_locale__pl||{},e.__vee_validate_locale__pl.js=n())}(this,function(){"use strict";var e,n={name:"pl",messages:{after:function(e,n){return"Pole "+e+" musi być po polu "+n[0]+"."},alpha_dash:function(e){return"Pole "+e+" może zawierać litery, cyfry oraz myślnik lub podkreślnik."},alpha_num:function(e){return"Pole "+e+" może zawierać tylko litery i cyfry."},alpha_spaces:function(e){return"Pole "+e+" może zawierać tylko litery oraz spacje."},alpha:function(e){return"Pole "+e+" może zawierać tylko litery."},before:function(e,n){return"Pole "+e+" musi być przed "+n[0]+"."},between:function(e,n){return"Pole "+e+" must be between "+n[0]+" and "+n[1]+"."},confirmed:function(e,n){return"Pole "+e+" nie zgadza się z polem potwierdzającym "+n[0]+"."},date_between:function(e,n){return"Pole "+e+" musi zawierać się między "+n[0]+" a "+n[1]+"."},date_format:function(e,n){return"Pole "+e+" musi pasować do formatu "+n[0]+"."},decimal:function(e,n){void 0===n&&(n=[]);var i=n[0];return void 0===i&&(i="*"),"Pole "+e+" musi być liczbą i może zawierać "+("*"===i?"":i)+" miejsca po przecinku."},digits:function(e,n){return"Pole "+e+" musi być liczbą i dokładnie "+n[0]+" cyfr."},dimensions:function(e,n){return"Obraz "+e+" musi być szeroki na "+n[0]+" pikseli i wysoki na "+n[1]+" pikseli."},email:function(e){return"Pole "+e+" musi być poprawnym adresem email."},ext:function(e){return"Plik "+e+" musi być poprawnym plikiem."},image:function(e){return"Pole "+e+" musi być obrazem."},in:function(e){return"Pole "+e+" musi być poprawną wartością."},ip:function(e){return"Pole "+e+" musi być poprawnym adresem IP."},max:function(e,n){return"Pole "+e+" nie może być dłuższe niż "+n[0]+" znaków."},mimes:function(e){return"Plik "+e+" musi posiadać poprawne rozszerzenie."},min:function(e,n){return"Pole "+e+" musi być długie na co najmniej "+n[0]+" znaków."},not_in:function(e){return"Pole "+e+" musi być poprawną wartością."},numeric:function(e){return"Pole "+e+" może zawierać tylko cyfry."},regex:function(e){return"Format pola "+e+" jest nieodpowiedni."},required:function(e){return"Pole "+e+" jest wymagane."},size:function(e,n){var i,o,r,t=n[0];return"Plik "+e+" musi być mniejszy niż "+(i=t,o=1024,r=0==(i=Number(i)*o)?0:Math.floor(Math.log(i)/Math.log(o)),1*(i/Math.pow(o,r)).toFixed(2)+" "+["Byte","KB","MB","GB","TB","PB","EB","ZB","YB"][r])+"."},url:function(e){return"Pole "+e+" nie jest poprawnym URL."}},attributes:{}};"undefined"!=typeof VeeValidate&&VeeValidate.Validator.localize(((e={})[n.name]=n,e));return n});*/
@@ -25126,6 +25124,8 @@ var index_esm = {
 });
 
 /***/ }),
+/* 141 */,
+/* 142 */,
 /* 143 */,
 /* 144 */,
 /* 145 */,
@@ -25305,15 +25305,24 @@ var index_esm = {
 /* 319 */,
 /* 320 */,
 /* 321 */,
-/* 322 */
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */,
+/* 326 */,
+/* 327 */,
+/* 328 */,
+/* 329 */,
+/* 330 */,
+/* 331 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vee_validate_dist_locale_pl__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vee_validate_dist_locale_pl__ = __webpack_require__(140);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vee_validate_dist_locale_pl___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vee_validate_dist_locale_pl__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_tables_2__ = __webpack_require__(131);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_tables_2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_tables_2__);
@@ -25414,4 +25423,4 @@ var VehicleEditViewModel = function (model) {
 VehicleEditViewModel(window.model);
 
 /***/ })
-],[322]);
+],[331]);

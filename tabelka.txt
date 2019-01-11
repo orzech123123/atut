@@ -7,6 +7,6 @@ km [KRAJ]
 liczba osob
 faktura ogółem kwota [EUR]
 udział [KRAJU] w kwocie faktury ogółem [EUR]
-data wyst fakury
+data wyst fakury 
 kurs [WALUTY KRAJU]
 udział [KRAJU] w kwocie faktury ogółem wyrażony w [WALUCIE KRAJU]

@@ -9,6 +9,7 @@ namespace Atut.Models
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Journey> Journeys { get; set; }
         public DbSet<Country> Countries { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
         public DbSet<JourneyVehicle> JourneyVehicles { get; set; }
 
         public DatabaseContext(DbContextOptions options) : base(options) { }
@@ -37,6 +38,7 @@ namespace Atut.Models
                 .HasForeignKey(jv => jv.VehicleId);
 
             builder.Entity<Invoice>()
+                .ToTable("Invoice")
                 .HasOne(c => c.Journey)
                 .WithMany(j => j.Invoices);
 

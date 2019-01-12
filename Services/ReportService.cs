@@ -64,19 +64,21 @@ namespace Atut.Services
         public ReportViewModel GenerateReport(int[] journeyIds, string country, DateTime dateFrom, DateTime dateTo, string company)
         {
             var journeys = _databaseContext.Journeys
+                .Where(j => journeyIds.Contains(j.Id))
                 .Include(j => j.User)
-                .Include(j => j.Countries)
-                .Include(j => j.JourneyVehicles)
-                .ThenInclude(jv => jv.Vehicle)
-                .Include(j => j.Invoices)
-                .Include(j => j.Countries)
-                .Where(v => journeyIds.Contains(v.Id))
-                .OrderBy(j => j.StartDate);
+//                .Include(j => j.Countries)
+//                .Include(j => j.JourneyVehicles)
+//                .ThenInclude(jv => jv.Vehicle)
+//                .Include(j => j.Invoices)
+                .OrderBy(j => j.StartDate)
+                .ToList();
 
             if (journeyIds.Count() != journeys.Count())
             {
                 throw new Exception("Amount of Journeys on backend is not equal to journeyIds count");
             }
+            
+            FillJourneysAdditionalData(journeys);
 
             var report = new ReportViewModel
             {
@@ -99,6 +101,31 @@ namespace Atut.Services
             );
             
             return report;
+        }
+
+        private void FillJourneysAdditionalData(List<Journey> journeys)
+        {
+            var journeyIds = journeys.Select(j => j.Id);
+
+            var invoices = _databaseContext.Invoices
+                .Where(i => journeyIds.Contains(i.JourneyId))
+                .ToList();
+            
+            var countries = _databaseContext.Countries
+                .Where(c => journeyIds.Contains(c.JourneyId))
+                .ToList();
+            
+            var journeyVehicles = _databaseContext.JourneyVehicles
+                .Where(journeyVehicle => journeyIds.Contains(journeyVehicle.JourneyId))
+                .Include(jv => jv.Vehicle)
+                .ToList();
+
+            foreach (var journey in journeys)
+            {
+                journey.Invoices = invoices.Where(c => c.JourneyId == journey.Id).ToList();
+                journey.Countries = countries.Where(c => c.JourneyId == journey.Id).ToList();
+                journey.JourneyVehicles = journeyVehicles.Where(c => c.JourneyId == journey.Id).ToList();
+            }
         }
 
         private ReportRowViewModel GenerateRow(Journey journey, string country)

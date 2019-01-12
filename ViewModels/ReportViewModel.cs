@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Atut.Models;
 
 namespace Atut.ViewModels
@@ -8,12 +9,15 @@ namespace Atut.ViewModels
     {
         public string Country { get; set; }
         public CurrencyType CountryCurrency { get; set; }
-        public decimal SumPartOfCountryInInvoicesAmountInCurrencyAndTax { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public string Company { get; set; }
 
         public IList<ReportRowViewModel> Rows = new List<ReportRowViewModel>();
+
+        public decimal BruttoSum => Rows.Sum(r => r.PartOfCountryInInvoicesAmountInCurrency);
+        public decimal NettoSum => Rows.Sum(r => r.NettoResult);
+        public decimal VatResult => BruttoSum - NettoSum;
     }
 
     public class ReportRowViewModel
@@ -28,6 +32,7 @@ namespace Atut.ViewModels
         public IList<(decimal, CurrencyType)> InvoicesAmounts { get; set; } = new List<(decimal, CurrencyType)>();
         public IList<(decimal, CurrencyType)> PartsOfCountryInInvoicesAmounts { get; set; } = new List<(decimal, CurrencyType)>();
         public decimal PartOfCountryInInvoicesAmountInCurrency { get; set; }
+        public decimal NettoResult { get; set; }
         public IList<DateTime> InvoicesDates { get; set; } = new List<DateTime>();
         public IList<decimal> ExchangeRates { get; set; } = new List<decimal>();
     }

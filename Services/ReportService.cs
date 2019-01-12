@@ -93,12 +93,6 @@ namespace Atut.Services
             {
                 report.Rows.Add(GenerateRow(journey, country));
             }
-
-            report.SumPartOfCountryInInvoicesAmountInCurrencyAndTax = Math.Round(
-                report.Rows.Sum(r => r.PartOfCountryInInvoicesAmountInCurrency) /
-                _countriesHelper.GetTaxFactorForCountry(country),
-                2
-            );
             
             return report;
         }
@@ -169,6 +163,12 @@ namespace Atut.Services
                     return result;
                 }
             ).Sum(), 2);
+            
+            row.NettoResult = Math.Round(
+                row.PartOfCountryInInvoicesAmountInCurrency /
+                _countriesHelper.GetTaxFactorForCountry(country),
+                2
+            );
             
             return row;
         }

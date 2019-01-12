@@ -61,18 +61,26 @@
     <table>
         <thead>
         <tr>
-            <th>@labels.RegistrationNumbers</th>
-            <th>@labels.FinalPlace</th>
-            <th>@labels.StartDate</th>
-            <th>@labels.EndDate</th>
-            <th>@labels.TotalDistance</th>
-            <th>@labels.CountryDistance(Model.Country)</th>
-            <th>@labels.AmountOfPeople</th>
-            <th>@labels.InvoicesAmount</th>
-            <th>@labels.PartOfCountryInInvoicesAmount(Model.Country)</th>
-            <th>@labels.InvoicesDates</th>
-            <th>@labels.ExchangeRate</th>
-            <th>@labels.PartOfCountryInInvoicesAmountInCurrencyAndWithTax(Model.Country, Model.CountryCurrency)</th>
+            <th rowspan="2">@labels.RegistrationNumbers</th>
+            <th rowspan="2" style="min-width: 200px; white-space: normal">@labels.FinalPlace</th>
+            <th rowspan="2">@labels.StartDate</th>
+            <th rowspan="2">@labels.EndDate</th>
+            <th rowspan="2">@labels.TotalDistance</th>
+            <th rowspan="2">@labels.CountryDistance(Model.Country)</th>
+            <th rowspan="2">@labels.AmountOfPeople</th>
+            <th rowspan="2">@labels.InvoicesAmount</th>
+            <th rowspan="2">@labels.PartOfCountryInInvoicesAmount(Model.Country)</th>
+            <th rowspan="2">@labels.InvoicesDates</th>
+            <th rowspan="2">@labels.ExchangeRate</th>
+            <th colspan="2">@labels.PartOfCountryInInvoicesAmountInCurrencyAndWithTax(Model.Country, Model.CountryCurrency)</th>
+        </tr>
+        <tr>
+            <th>
+                BRUTTO
+            </th>
+            <th>
+                NETTO
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -80,7 +88,7 @@
         {
             <tr>
                 <td>@Html.Raw(string.Join(",<br/>", row.RegistratioNumbers))</td>
-                <td>@row.FinalPlace</td>
+                <td style="min-width: 200px; white-space: normal">@row.FinalPlace</td>
                 <td>@row.StartDate.ToString("dd.MM.yyyy")</td>
                 <td>@row.EndDate.ToString("dd.MM.yyyy")</td>
                 <td class="right-align">@row.TotalDistance</td>
@@ -91,13 +99,19 @@
                 <td>@Html.Raw(string.Join(",<br/>", row.InvoicesDates.Select(d => d.ToString("dd.MM.yyyy"))))</td>
                 <td class="right-align">@Html.Raw(string.Join(",<br/>", row.ExchangeRates.Select(er => Math.Round(er, 4))))</td>
                 <td class="right-align">@row.PartOfCountryInInvoicesAmountInCurrency</td>
+                <td class="right-align">@row.NettoResult</td>
             </tr>
         }
         </tbody>
         <tfoot>
         <tr>
-            <td colspan="11" class="right-align">Σ NETTO</td>
-            <td class="right-align">@Model.SumPartOfCountryInInvoicesAmountInCurrencyAndTax</td>
+            <td colspan="11" class="right-align">Σ BRUTTO/NETTO</td>
+            <td class="right-align">@Model.BruttoSum</td>
+            <td class="right-align">@Model.NettoSum</td>
+        </tr>
+        <tr>
+            <td colspan="11" class="right-align">VAT (BRUTTO-NETTO)</td>
+            <td colspan="2" class="right-align">@Model.VatResult</td>
         </tr>
         </tfoot>
     </table>

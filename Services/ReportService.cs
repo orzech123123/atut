@@ -66,6 +66,7 @@ namespace Atut.Services
             var journeys = _databaseContext.Journeys
                 .Where(j => journeyIds.Contains(j.Id))
                 .Include(j => j.User)
+//NOTE zamiast tych includow mamy test szybkosci FillJourneysAdditionalData
 //                .Include(j => j.Countries)
 //                .Include(j => j.JourneyVehicles)
 //                .ThenInclude(jv => jv.Vehicle)
@@ -200,11 +201,12 @@ namespace Atut.Services
             while (result == null)
             {
                 var client = new RestClient($"http://api.nbp.pl/api/exchangerates/rates/a/{destCurrency}/{date:yyyy-MM-dd}");
+                client.Timeout = 3000;
                 var request = new RestRequest(Method.GET);
                 var response = client.Execute<ExchangeRateRequestResult>(request);
 
                 result = response.Data;
-                if (result == null && !response.Content.Contains("META HTTP-EQUIV=\"Refresh\""))
+                if (result == null && !response.Content.Contains("META HTTP-EQUIV=\"Refresh\"") && response.StatusCode != 0 /*to zero jest dla lapania timeoutu*/)
                 {
                     date = date.AddDays(-1);
                 }

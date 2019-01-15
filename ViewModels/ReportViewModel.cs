@@ -16,7 +16,7 @@ namespace Atut.ViewModels
         public IList<ReportRowViewModel> Rows = new List<ReportRowViewModel>();
 
         public decimal BruttoSum => Rows.Sum(r => r.PartOfCountryInInvoicesAmountInCurrency);
-        public decimal NettoSum => Rows.Sum(r => r.NettoResult);
+        public decimal NettoSum { get; set; }
         public decimal VatResult => BruttoSum - NettoSum;
     }
 

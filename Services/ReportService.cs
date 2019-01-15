@@ -95,6 +95,12 @@ namespace Atut.Services
                 report.Rows.Add(GenerateRow(journey, country));
             }
             
+            report.NettoSum = Math.Round(
+                report.Rows.Sum(r => r.PartOfCountryInInvoicesAmountInCurrency) /
+                _countriesHelper.GetTaxFactorForCountry(country),
+                2
+            );
+            
             return report;
         }
 

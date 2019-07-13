@@ -36,6 +36,9 @@ var vehicleIndexViewModel = function (model) {
             companies: [],
             columns: columns,
             options: {
+                columnsClasses: {
+                    actions: "VueTables__atut_actions_width"
+                },
                 headings: {
                     companyColumn: "Firma",
                     name: 'Nazwa',

@@ -58,8 +58,8 @@
                         </template>
                         <template slot="actions" scope="props">
                             <div>
-                                <a :href="'/Vehicle/Edit/'+ props.row.id" class="btn btn-primary">Edytuj</a>
-                                <a :href="'/Vehicle/Delete/'+ props.row.id" class="btn btn-danger">Usuń</a>
+                                <a :href="'/Vehicle/Edit/'+ props.row.id" class="btn btn-primary" title="Edutuj"><i style="font-size: 1.3em" class="fa fa-pencil"></i></a>
+                                <a :href="'/Vehicle/Delete/'+ props.row.id" class="btn btn-danger" title="Usuń"><i style="font-size: 1.3em" class="fa fa-trash-o"></i></a>
                             </div>
                         </template>
                     </v-client-table>

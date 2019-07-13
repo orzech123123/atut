@@ -23,6 +23,15 @@
     background-color: rgb(245,245,245)
 }
 
+.VueTables__atut_actions_width {
+    width: 110px;
+}
+
+.VueTables__table th, .VueTables__table td {
+    vertical-align: middle !important;
+    display: table-cell;
+}
+
 .callout.callout-danger > ul {
     list-style-type: none;
     padding: 0;

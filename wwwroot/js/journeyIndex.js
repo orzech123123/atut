@@ -18359,6 +18359,9 @@ var journeyIndexViewModel = function (model, isAdmin) {
             companies: [],
             columns: columns,
             options: {
+                columnsClasses: {
+                    actions: "VueTables__atut_actions_width"
+                },
                 rowClassCallback: function(row) {
                     if (row.isNotified) {
                         return "journey-is-notified";

@@ -7,6 +7,7 @@ module.exports = {
         vehicleEdit: './Scripts/vehicle/VehicleEditViewModel.js',
         journeyIndex: './Scripts/journey/JourneyIndexViewModel.js',
         journeyEdit: './Scripts/journey/JourneyEditViewModel.js',
+        vatNumberEdit: './Scripts/vatNumber/VatNumberEditViewModel.js',
     },
     resolve: {
         extensions: [".js"],

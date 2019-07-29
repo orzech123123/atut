@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Atut.Models;
 using Atut.ViewModels;
 using AutoMapper;
@@ -36,6 +35,9 @@ namespace Atut.Services
 
             CreateMap<Invoice, InvoiceViewModel>();
             CreateMap<InvoiceViewModel, Invoice>();
+
+            CreateMap<VatNumber, VatNumberViewModel>();
+            CreateMap<VatNumberViewModel, VatNumber>();
         }
     }
 }

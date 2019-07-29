@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Atut.Models
@@ -11,6 +10,7 @@ namespace Atut.Models
         public DbSet<Country> Countries { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<JourneyVehicle> JourneyVehicles { get; set; }
+        public DbSet<VatNumber> VatNumbers { get; set; }
 
         public DatabaseContext(DbContextOptions options) : base(options) { }
 

@@ -78,6 +78,18 @@ namespace Atut.Services
             {
                 throw new Exception("Amount of Journeys on backend is not equal to journeyIds count");
             }
+            if (!journeys.Any())
+            {
+                throw new Exception("There are no Journeys to generate the report");
+            }
+
+            var userId = journeys.First().UserId;
+
+            var vatNumber = _databaseContext.VatNumbers
+                .Include(vat => vat.User)
+                .Where(vat => vat.CountryName == country)
+                .SingleOrDefault(vat => vat.User.Id == userId)
+                ?.Number;
             
             FillJourneysAdditionalData(journeys);
 
@@ -87,7 +99,8 @@ namespace Atut.Services
                 CountryCurrency = _countriesHelper.GetCurrencyForCountry(country),
                 DateFrom = dateFrom,
                 DateTo = dateTo,
-                Company = company
+                Company = company,
+                VatNumber = vatNumber
             };
 
             foreach (var journey in journeys)

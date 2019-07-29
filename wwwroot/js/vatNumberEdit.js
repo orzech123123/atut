@@ -1,4 +1,4 @@
-webpackJsonp([1],[
+webpackJsonp([2],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25314,7 +25314,16 @@ var index_esm = {
 /* 328 */,
 /* 329 */,
 /* 330 */,
-/* 331 */
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
+/* 338 */,
+/* 339 */,
+/* 340 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25360,34 +25369,16 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_
     }
 });
 
-var VehicleEditViewModel = function (model) {
+var VatNumberEditViewModel = function (model) {
     model.availableCompanies = [];
     model.errorElement = null;
 
     var vue = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-        el: "#VehicleEdit",
+        el: "#VatNumberEdit",
         data: model,
         methods: {
-            validateBeforeSubmit() {
-                this.$validator.validateAll().then((result) => {
-                    if (result) {
-                        this.$refs.form.submit();
-                    } else {
-                        this.errorElement = document.querySelectorAll('[data-vv-name="' +
-                            this.$validator.errors.items[0].field +
-                            '"]')[0];
-                        this.$forceUpdate();
-                    }
-                });
-            },
-            scrollDownToErrorElement: function() {
-                this.errorElement.scrollIntoView(true);
-            }
-        },
-        updated: function() {
-            if (!!this.errorElement) {
-                this.scrollDownToErrorElement();
-                this.errorElement = null;
+            onCountryChange(companyId) {
+                window.location = window.vatNumberEditUrl + "/" + companyId;
             }
         },
         mounted: function () {
@@ -25420,7 +25411,7 @@ var VehicleEditViewModel = function (model) {
     });
 }
 
-VehicleEditViewModel(window.model);
+VatNumberEditViewModel(window.model);
 
 /***/ })
-],[331]);
+],[340]);

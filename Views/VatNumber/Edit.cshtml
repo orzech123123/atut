@@ -1,0 +1,70 @@
+﻿@using Atut.Helpers;
+@using Atut.Services
+
+@model Atut.ViewModels.VatNumbersViewModel
+
+@{
+    ViewData["Title"] = "Numery VAT";
+}
+
+@inject RoleService RoleService;
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div asp-validation-summary="All" class="callout callout-danger"></div>
+}
+
+<form ref="form" class="form-horizontal" method="post" role="form" id="VatNumberEdit" style="display: none">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Kraje</h3>
+        </div>
+        <div class="box-body">
+            @if (RoleService.IsAdmin)
+            {
+                <div class="form-group">
+                    <label for="Company" class="col-sm-2 control-label">Firma</label>
+
+                    <div class="col-sm-10">
+                        <select id="Company" class="form-control" v-model="selectedCompany" @@change="onCountryChange(company.key)" data-vv-as="Firma" data-vv-name="company" v-validate="'requireNotNull'">
+                            <option v-for="company in availableCompanies"
+                                    v-bind:value="company.key">
+                                {{ company.value }}
+                            </option>
+                        </select>
+                        <span v-show="errors.has('company')" class="text-danger">{{ errors.first('company') }}</span>
+                    </div>
+                </div>
+            }
+            <input v-if="!!company" type="hidden" :name="'Company.Key'" :value="company.key" />
+            <input v-if="!!company" type="hidden" :name="'Company.Value'" :value="company.value" />
+
+            <div class="form-group" v-for="(vatNumber, index) in vatNumbers">
+                <label class="col-sm-2 control-label">{{ vatNumber.countryName }}</label>
+
+                <div class="col-sm-10">
+                    <input v-model="vatNumber.number" type="text" class="form-control">
+                </div>
+
+                <input type="hidden" :name="'VatNumbers[' + index + '].CountryName'" :value="vatNumber.countryName"/>
+                <input type="hidden" :name="'VatNumbers[' + index + '].Number'" :value="vatNumber.number"/>
+            </div>
+        </div>
+
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button type="submit" class="btn btn-primary pull-right">Zapisz</button>
+        </div>
+        <!-- /.box-footer -->
+    </div>
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        window.model = @Html.ToJson(Model);
+        window.vatNumberEditUrl = "@Url.Action("Edit", new { id = string.Empty })";
+    </script>
+
+    <script src="~/js/vendor.js"></script>
+    <script src="~/js/vatNumberEdit.js"></script>
+}

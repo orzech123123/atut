@@ -12,6 +12,7 @@ namespace Atut.ViewModels
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public string Company { get; set; }
+        public string VatNumber { get; set; }
 
         public IList<ReportRowViewModel> Rows = new List<ReportRowViewModel>();
 

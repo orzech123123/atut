@@ -1,5 +1,8 @@
 ﻿@using Atut.Helpers;
 @using Atut.ViewModels
+@using Microsoft.AspNetCore.Hosting
+
+@inject IHostingEnvironment HostingEnvironment;
 
 @model Atut.ViewModels.VehicleViewModel
 
@@ -15,6 +18,6 @@
         window.model = @Html.ToJson(Model);
     </script>
 
-    <script src="~/js/vendor.js"></script>
-    <script src="~/js/vehicleEdit.js"></script>
+    <script src="@Html.UrlWithVersion("/js/vendor.js", HostingEnvironment)"></script>
+    <script src="@Html.UrlWithVersion("/js/vehicleEdit.js", HostingEnvironment)"></script>
 }

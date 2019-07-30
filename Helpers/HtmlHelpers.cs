@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -18,6 +19,14 @@ namespace Atut.Helpers
 
             settings.Converters.Add(new JavaScriptDateTimeConverter());
             return helper.Raw(JsonConvert.SerializeObject(obj, settings));
+        }
+
+        public static IHtmlContent UrlWithVersion(this IHtmlHelper helper, string fileEntry, IHostingEnvironment hostingEnvironment)
+        {
+            var path = $"{hostingEnvironment.WebRootPath}{fileEntry.Replace("/", "\\")}";
+            var lastModificationDate = File.GetLastWriteTime(path).ToString("yyyyMMddhhmmss");
+
+            return helper.Raw($"{fileEntry}?v={lastModificationDate}");
         }
     }
 }

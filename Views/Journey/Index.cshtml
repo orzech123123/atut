@@ -1,5 +1,8 @@
 ﻿@using Atut.Helpers;
 @using Atut.Services
+@using Microsoft.AspNetCore.Hosting
+
+@inject IHostingEnvironment HostingEnvironment;
 
 @model IEnumerable<Atut.ViewModels.JourneyViewModel>
 @inject RoleService RoleService;
@@ -11,86 +14,86 @@
 }
 
 <div id="JourneyIndex">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-primary">
-                    <div class="box-body">
-                        <div class="row">
-                            @if (RoleService.IsAdmin)
-                            {
-                                <div class="@filterColumnWidthClass">
-                                    <div class="description-block">
-                                        <p>Firma</p>
-                                        <select class="form-control" v-model="filterCompany">
-                                            <option :value="null">-- Wybierz firmę -- </option>
-                                            <option v-for="company in companies"
-                                                    v-bind:value="company.key">
-                                                {{ company.value }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <!-- /.description-block -->
-                                </div>
-                                <!-- /.col -->
-                            }
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="row">
+                        @if (RoleService.IsAdmin)
+                        {
                             <div class="@filterColumnWidthClass">
                                 <div class="description-block">
-                                    <p>Data raportu od</p>
-                                    <datepicker v-model="filterFromDate" ref="endDate" language="pl"></datepicker>
-                                </div>
-                                <!-- /.description-block -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="@filterColumnWidthClass">
-                                <div class="description-block">
-                                    <p>Data raportu do</p>
-                                    <datepicker v-model="filterToDate" ref="endDate" language="pl"></datepicker>
-                                </div>
-                                <!-- /.description-block -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="@filterColumnWidthClass">
-                                <div class="description-block">
-                                    <p>Kraj</p>
-                                    <select class="form-control" v-model="filterCountry">
-                                        <option :value="null">-- Wybierz kraj -- </option>
-                                        <option v-for="country in countries"
-                                                v-bind:value="country.name">
-                                            {{ country.name }}
+                                    <p>Firma</p>
+                                    <select class="form-control" v-model="filterCompany">
+                                        <option :value="null">-- Wybierz firmę -- </option>
+                                        <option v-for="company in companies"
+                                                v-bind:value="company.key">
+                                            {{ company.value }}
                                         </option>
                                     </select>
                                 </div>
                                 <!-- /.description-block -->
                             </div>
+                            <!-- /.col -->
+                        }
+                        <div class="@filterColumnWidthClass">
+                            <div class="description-block">
+                                <p>Data raportu od</p>
+                                <datepicker v-model="filterFromDate" ref="endDate" language="pl"></datepicker>
+                            </div>
+                            <!-- /.description-block -->
                         </div>
-
-                        <div class="box-footer">
+                        <!-- /.col -->
+                        <div class="@filterColumnWidthClass">
+                            <div class="description-block">
+                                <p>Data raportu do</p>
+                                <datepicker v-model="filterToDate" ref="endDate" language="pl"></datepicker>
+                            </div>
+                            <!-- /.description-block -->
                         </div>
-
-                        <v-client-table :data="data" :columns="columns" :options="options">
-                            <template slot="companyColumn" scope="props">
-                                {{ props.row.company.value }}
-                            </template>
-                            <template slot="vehiclesColumn" scope="props">
-                                {{ props.row.vehicles.map(v => v.value).join(", ") }}
-                            </template>
-                            <template slot="actions" scope="props">
-                                <div>
-                                    <a :href="'/Journey/Edit/'+ props.row.id" class="btn btn-primary" title="Edutuj"><i style="font-size: 1.3em" class="fa fa-pencil"></i></a>
-                                    <a :href="'/Journey/Delete/'+ props.row.id" class="btn btn-danger" title="Usuń"><i style="font-size: 1.3em" class="fa fa-trash-o"></i></a>
-                                </div>
-                            </template>
-                        </v-client-table>
+                        <!-- /.col -->
+                        <div class="@filterColumnWidthClass">
+                            <div class="description-block">
+                                <p>Kraj</p>
+                                <select class="form-control" v-model="filterCountry">
+                                    <option :value="null">-- Wybierz kraj -- </option>
+                                    <option v-for="country in countries"
+                                            v-bind:value="country.name">
+                                        {{ country.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
                     </div>
+
+                    <div class="box-footer">
+                    </div>
+
+                    <v-client-table :data="data" :columns="columns" :options="options">
+                        <template slot="companyColumn" scope="props">
+                            {{ props.row.company.value }}
+                        </template>
+                        <template slot="vehiclesColumn" scope="props">
+                            {{ props.row.vehicles.map(v => v.value).join(", ") }}
+                        </template>
+                        <template slot="actions" scope="props">
+                            <div>
+                                <a :href="'/Journey/Edit/'+ props.row.id" class="btn btn-primary" title="Edutuj"><i style="font-size: 1.3em" class="fa fa-pencil"></i></a>
+                                <a :href="'/Journey/Delete/'+ props.row.id" class="btn btn-danger" title="Usuń"><i style="font-size: 1.3em" class="fa fa-trash-o"></i></a>
+                            </div>
+                        </template>
+                    </v-client-table>
                 </div>
             </div>
         </div>
+    </div>
 </div>
 
 @section Buttons
 {
     <a href="@Url.Action("Create")" class="btn btn-success">Dodaj</a>
-    
+
     @if (RoleService.IsAdmin)
     {
         <button class="btn btn-success" id="generateReport">Generuj raport</button>
@@ -107,6 +110,6 @@
         window.isAdmin = @RoleService.IsAdmin.ToString().ToLower();
     </script>
 
-    <script src="~/js/vendor.js"></script>
-    <script src="~/js/journeyIndex.js"></script>
+    <script src="@Html.UrlWithVersion("/js/vendor.js", HostingEnvironment)"></script>
+    <script src="@Html.UrlWithVersion("/js/journeyIndex.js", HostingEnvironment)"></script>
 }

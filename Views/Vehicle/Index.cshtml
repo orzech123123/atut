@@ -1,5 +1,8 @@
 ﻿@using Atut.Helpers;
 @using Atut.Services
+@using Microsoft.AspNetCore.Hosting
+
+@inject IHostingEnvironment HostingEnvironment;
 
 @model IEnumerable<Atut.ViewModels.VehicleViewModel>
 @inject RoleService RoleService;
@@ -80,6 +83,6 @@
         window.model.isAdmin = @RoleService.IsAdmin.ToString().ToLower();
     </script>
 
-    <script src="~/js/vendor.js"></script>
-    <script src="~/js/vehicleIndex.js"></script>
+    <script src="@Html.UrlWithVersion("/js/vendor.js", HostingEnvironment)"></script>
+    <script src="@Html.UrlWithVersion("/js/vehicleIndex.js", HostingEnvironment)"></script>
 }

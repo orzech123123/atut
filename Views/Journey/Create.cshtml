@@ -1,6 +1,8 @@
 ﻿@using Atut.Helpers;
 @using Atut.Services
-@using Atut.ViewModels
+@using Microsoft.AspNetCore.Hosting
+
+@inject IHostingEnvironment HostingEnvironment;
 
 @model Atut.ViewModels.JourneyViewModel
 
@@ -16,6 +18,6 @@
         window.availableCountries = @Html.ToJson(CountriesHelper.Countries);
     </script>
 
-    <script src="~/js/vendor.js"></script>
-    <script src="~/js/journeyEdit.js"></script>
+    <script src="@Html.UrlWithVersion("/js/vendor.js", HostingEnvironment)"></script>
+    <script src="@Html.UrlWithVersion("/js/journeyEdit.js", HostingEnvironment)"></script>
 }

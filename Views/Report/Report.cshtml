@@ -58,7 +58,7 @@
     </head>
     <body>
     <p style="text-align: right">Firma: @Model.Company</p>
-    <p style="text-align: right">Numer VAT: @(!string.IsNullOrWhiteSpace(Model.VatNumber) ? new HtmlString(Model.VatNumber) : Html.Raw("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"))</p>
+    <p style="text-align: right">VAT: @(!string.IsNullOrWhiteSpace(Model.VatNumber) ? new HtmlString(Model.VatNumber) : Html.Raw("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"))</p>
     <h3>@labels.Title (@Model.DateFrom.ToString("dd.MM.yyyy") - @Model.DateTo.ToString("dd.MM.yyyy"))</h3>
     <table>
         <thead>

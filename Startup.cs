@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using Atut.Filters;
 using Atut.Identity;
@@ -36,7 +37,7 @@ namespace Atut
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Environment.GetEnvironmentVariable("cs")));
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()

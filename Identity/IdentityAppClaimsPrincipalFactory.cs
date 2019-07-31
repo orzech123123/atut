@@ -45,6 +45,10 @@ namespace Atut.Identity
                 new Claim(UserClaimTypes.IsAdmin, Convert.ToString(user.IsAdmin))
             });
 
+            ((ClaimsIdentity)principal.Identity).AddClaims(new[] {
+                new Claim(UserClaimTypes.CompanyId, Convert.ToString(user.Id))
+            });
+
             return principal;
         }
     }

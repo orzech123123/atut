@@ -1,8 +1,11 @@
-﻿using Atut.Filters;
+﻿using System.Linq;
+using Atut.Filters;
+using Atut.Identity;
 using Atut.Services;
 using Atut.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace Atut.Controllers
 {
@@ -11,11 +14,19 @@ namespace Atut.Controllers
     {
         private readonly JourneyService _journeyService;
         private readonly IDatabaseManager _databaseManager;
+        private readonly Authorizer _authorizer;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public JourneyController(JourneyService journeyService, IDatabaseManager databaseManager)
+        public JourneyController(
+            JourneyService journeyService,
+            IDatabaseManager databaseManager,
+            Authorizer authorizer,
+            IHttpContextAccessor httpContextAccessor)
         {
             _journeyService = journeyService;
             _databaseManager = databaseManager;
+            _authorizer = authorizer;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [RequestModel(typeof(JourneyFilterModel))]
@@ -37,6 +48,8 @@ namespace Atut.Controllers
         [HttpPost]
         public IActionResult Create(JourneyViewModel viewModel)
         {
+            _authorizer.RequireJourneyAutorization(viewModel.Id, viewModel.Company.Key);
+
             _journeyService.ValidateSave(viewModel, ModelState);
 
             if (ModelState.IsValid)
@@ -52,6 +65,11 @@ namespace Atut.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            _authorizer.RequireJourneyAutorization(
+                id, 
+                _httpContextAccessor.HttpContext.User.Claims.Single(c => c.Type == UserClaimTypes.CompanyId).Value
+            );
+
             var viewModel = _journeyService.GetOneById(id);
 
             return View(viewModel);
@@ -60,6 +78,8 @@ namespace Atut.Controllers
         [HttpPost]
         public IActionResult Edit(JourneyViewModel viewModel)
         {
+            _authorizer.RequireJourneyAutorization(viewModel.Id, viewModel.Company.Key);
+
             _journeyService.ValidateSave(viewModel, ModelState);
 
             if (ModelState.IsValid)
@@ -76,6 +96,11 @@ namespace Atut.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
+            _authorizer.RequireJourneyAutorization(
+                id,
+                _httpContextAccessor.HttpContext.User.Claims.Single(c => c.Type == UserClaimTypes.CompanyId).Value
+            );
+
             _journeyService.Delete(id);
             _databaseManager.Commit();
 

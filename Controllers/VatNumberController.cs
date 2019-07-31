@@ -10,16 +10,23 @@ namespace Atut.Controllers
     {
         private readonly VatNumberService _vatNumberService;
         private readonly IDatabaseManager _databaseManager;
+        private readonly Authorizer _authorizer;
 
-        public VatNumberController(VatNumberService vatNumberService, IDatabaseManager databaseManager)
+        public VatNumberController(
+            VatNumberService vatNumberService,
+            IDatabaseManager databaseManager,
+            Authorizer authorizer)
         {
             _vatNumberService = vatNumberService;
             _databaseManager = databaseManager;
+            _authorizer = authorizer;
         }
 
         [HttpGet]
         public IActionResult Edit(string id)
         {
+            _authorizer.RequireVatNumberAutorization(id);
+
             var viewModel = _vatNumberService.GetByUserId(id);
 
             return View(viewModel);
@@ -28,6 +35,8 @@ namespace Atut.Controllers
         [HttpPost]
         public IActionResult Edit(VatNumbersViewModel viewModel)
         {
+            _authorizer.RequireVatNumberAutorization(viewModel.Company.Key);
+
             if (ModelState.IsValid)
             {
                 _vatNumberService.Save(viewModel);

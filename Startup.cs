@@ -74,6 +74,7 @@ namespace Atut
             services.AddTransient<ReportService>();
             services.AddTransient<EnglishReportLabelDictionary>();
             services.AddTransient<GermanReportLabelDictionary>();
+            services.AddTransient<Authorizer>();
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUrlHelper>(x => {

@@ -6,5 +6,6 @@
         public static string CompanyNameShort => nameof(CompanyNameShort);
         public static string Address => nameof(Address);
         public static string IsAdmin => nameof(IsAdmin);
+        public static string CompanyId => nameof(CompanyId);
     }
 }

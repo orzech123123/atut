@@ -56,6 +56,13 @@ namespace Atut.Services
             var user = _databaseContext.Users.Single(u => u.Id == id);
             var company = new KeyValueViewModel { Key = user.Id, Value = user.CompanyNameShort };
 
+            vatNumbersViewModels.ForEach(vat =>
+            {
+                if (CountriesHelper.MaxVatNumberCharacters.ContainsKey(vat.CountryName))
+                {
+                    vat.MaxCharactersNumber = CountriesHelper.MaxVatNumberCharacters[vat.CountryName];
+                }
+            });
             vatNumbersViewModels = vatNumbersViewModels.OrderBy(vat => vat.CountryName).ToList();
 
             var viewModel = new VatNumbersViewModel

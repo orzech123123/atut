@@ -108,7 +108,6 @@ namespace Atut.Services
 
         public static IDictionary<string, int> MaxVatNumberCharacters => new Dictionary<string, int>
         {
-            { Poland, 50 }
         };
     }
 }

@@ -25387,6 +25387,21 @@ var VatNumberEditViewModel = function (model) {
             this.$http.get('/Account/GetAllCompanies').then(response => {
                 this.availableCompanies = response.body;
             });
+
+            //PO CO TO KOMU, NA CO TO KOMU
+            var self = this;
+            this.vatNumbers.forEach(function(vat, index) {
+                var countryCode = vat.countryName.split("[")[1].split("]")[0];
+                var number = new String(vat.number || "");
+                if (!number.startsWith(countryCode + "-")) {
+                    self.$set(self.vatNumbers, index,
+                    {
+                        number: countryCode + "-" + number,
+                        countryName: vat.countryName,
+                        maxCharactersNumber: vat.maxCharactersNumber
+                    });
+                }
+            });
         },
         computed: {
             selectedCompany: {

@@ -133,7 +133,7 @@ var journeyIndexViewModel = function (isAdmin) {
                     endDate: 'Data powrotu',
                     actions: 'Akcje'
                 },
-                sortable: ["companyColumn", "startingPlace", "finalPlace", "startDate", "endDate"],
+                sortable: ["startingPlace", "finalPlace", "startDate", "endDate"],
                 perPage: 20,
                 customFilters: [{
                     name: 'company',

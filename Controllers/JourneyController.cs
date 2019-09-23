@@ -4,6 +4,7 @@ using Atut.Filters;
 using Atut.Identity;
 using Atut.Services;
 using Atut.Paging;
+using Atut.Sorting;
 using Atut.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -108,10 +109,10 @@ namespace Atut.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> FetchAll(VueTablesPageRequest pageInfo)
+        public async Task<IActionResult> FetchAll(VueTablesPageRequest pageInfo, VueTablesSortRequest sortInfo)
         {
-            var data = await _journeyService.GetAllAsync(pageInfo);
-            var count = await _journeyService.CountAllAsync();
+            var data = await _journeyService.GetAllAsync(sortInfo, pageInfo);
+            var count = await _journeyService.CountAllAsync(sortInfo);
 
             return Json(new { data, count });
         }

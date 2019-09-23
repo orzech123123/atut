@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
+using System.Globalization;
 using Atut.Models;
 using Atut.Paging;
+using Atut.Sorting;
 using Atut.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -38,15 +42,15 @@ namespace Atut.Services
             _requestModelService = requestModelService;
         }
 
-        public async Task<IEnumerable<JourneyViewModel>> GetAllAsync(IPagingInfo pagingInfo)
+        public async Task<IEnumerable<JourneyViewModel>> GetAllAsync(ISortingInfo sortingInfo, IPagingInfo pagingInfo)
         {
-            var query = BuildIndexQuery(pagingInfo);
+            var query = BuildIndexQuery(sortingInfo, pagingInfo);
             var data = await query.ToListAsync();
 
             return data;
         }
 
-        private IQueryable<JourneyViewModel> BuildIndexQuery(IPagingInfo pagingInfo = null)
+        private IQueryable<JourneyViewModel> BuildIndexQuery(ISortingInfo sortingInfo, IPagingInfo pagingInfo = null)
         {
             //            var filterModel = _requestModelService.GetModel<JourneyFilterModel>();
 
@@ -62,6 +66,17 @@ namespace Atut.Services
                     .Where(v => v.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
             }
 
+            if (!string.IsNullOrWhiteSpace(sortingInfo.ColumnName))
+            {
+                query = sortingInfo.IsAscending ? 
+                    query.OrderBy(j => EF.Property<object>(j, sortingInfo.ColumnName)) :
+                    query.OrderByDescending(j => EF.Property<object>(j, sortingInfo.ColumnName));
+            }
+            else
+            {
+                query = query.OrderByDescending(j => j.StartDate);
+            }
+            
             if (pagingInfo != null)
             {
                 query = query
@@ -73,9 +88,9 @@ namespace Atut.Services
                 .Select(v => _mapper.Map<Journey, JourneyViewModel>(v));
         }
 
-        public async Task<int> CountAllAsync()
+        public async Task<int> CountAllAsync(ISortingInfo sortingInfo)
         {
-            var query = BuildIndexQuery();
+            var query = BuildIndexQuery(sortingInfo);
             var count = await query.CountAsync();
 
             return count;

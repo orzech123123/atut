@@ -1,7 +1,9 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Atut.Filters;
 using Atut.Identity;
 using Atut.Services;
+using Atut.Paging;
 using Atut.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -32,9 +34,7 @@ namespace Atut.Controllers
         [RequestModel(typeof(JourneyFilterModel))]
         public IActionResult Index()
         {
-            var viewModel = _journeyService.GetAll();
-
-            return View(viewModel);
+            return View();
         }
 
         [HttpGet]
@@ -105,6 +105,15 @@ namespace Atut.Controllers
             _databaseManager.Commit();
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> FetchAll(VueTablesPageRequest pageInfo)
+        {
+            var data = await _journeyService.GetAllAsync(pageInfo);
+            var count = await _journeyService.CountAllAsync();
+
+            return Json(new { data, count });
         }
     }
 }

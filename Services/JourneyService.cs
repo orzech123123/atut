@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Atut.Models;
+using Atut.Paging;
 using Atut.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -36,10 +38,18 @@ namespace Atut.Services
             _requestModelService = requestModelService;
         }
 
-        public IEnumerable<JourneyViewModel> GetAll()
+        public async Task<IEnumerable<JourneyViewModel>> GetAllAsync(IPagingInfo pagingInfo)
         {
-//            var filterModel = _requestModelService.GetModel<JourneyFilterModel>();
-            
+            var query = BuildIndexQuery(pagingInfo);
+            var data = await query.ToListAsync();
+
+            return data;
+        }
+
+        private IQueryable<JourneyViewModel> BuildIndexQuery(IPagingInfo pagingInfo = null)
+        {
+            //            var filterModel = _requestModelService.GetModel<JourneyFilterModel>();
+
             IQueryable<Journey> query = _databaseContext.Journeys
                 .Include(j => j.User)
                 .Include(j => j.Countries)
@@ -52,9 +62,23 @@ namespace Atut.Services
                     .Where(v => v.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
             }
 
+            if (pagingInfo != null)
+            {
+                query = query
+                    .Skip((pagingInfo.PageNumber - 1) * pagingInfo.PageSize)
+                    .Take(pagingInfo.PageSize);
+            }
+
             return query
-                .Select(v => _mapper.Map<Journey, JourneyViewModel>(v))
-                .ToList();
+                .Select(v => _mapper.Map<Journey, JourneyViewModel>(v));
+        }
+
+        public async Task<int> CountAllAsync()
+        {
+            var query = BuildIndexQuery();
+            var count = await query.CountAsync();
+
+            return count;
         }
 
         public JourneyViewModel GetOneById(int id)

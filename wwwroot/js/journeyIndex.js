@@ -18258,9 +18258,10 @@ __WEBPACK_IMPORTED_MODULE_2_moment___default.a.locale('pl');
 window.moment = __WEBPACK_IMPORTED_MODULE_2_moment___default.a;
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_tables_2__["ClientTable"]);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_tables_2__["ServerTable"]);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_vue_resource__["a" /* default */]);
 
-var journeyIndexViewModel = function (model, isAdmin) {
+var journeyIndexViewModel = function (isAdmin) {
     var columns = ["vehiclesColumn", "startingPlace", "finalPlace", "startDate", "endDate", "actions"];
     
     if (!!isAdmin) {
@@ -18327,16 +18328,17 @@ var journeyIndexViewModel = function (model, isAdmin) {
                 });
             });
 
-            for (var company of model.map(m => m.company)) {
-                if (this.companies.filter(m => m.key === company.key).length == 0) {
-                    this.companies.push(company);
-                }
-            }
-            for (var country of model.map(m => m.countries).reduce((a, b) => a.concat(b), [])) {
-                if (this.countries.filter(m => m.name === country.name).length == 0) {
-                    this.countries.push(country);
-                }
-            }
+            //TODO
+            //for (var company of model.map(m => m.company)) {
+            //    if (this.companies.filter(m => m.key === company.key).length == 0) {
+            //        this.companies.push(company);
+            //    }
+            //}
+            //for (var country of model.map(m => m.countries).reduce((a, b) => a.concat(b), [])) {
+            //    if (this.countries.filter(m => m.name === country.name).length == 0) {
+            //        this.countries.push(country);
+            //    }
+            //}
 
             this.companies = this.companies.sort(function (a, b) { return a.value.localeCompare(b.value); });
         },
@@ -18426,7 +18428,6 @@ var journeyIndexViewModel = function (model, isAdmin) {
                         }
                     }]
             },
-            data: model,
             filterCompany: null,
             filterFromDate: null,
             filterToDate: null,
@@ -18435,7 +18436,7 @@ var journeyIndexViewModel = function (model, isAdmin) {
     });
 }
 
-journeyIndexViewModel(window.model, window.isAdmin);
+journeyIndexViewModel(window.isAdmin);
 
 /***/ })
 ],[332]);

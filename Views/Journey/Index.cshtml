@@ -4,7 +4,6 @@
 
 @inject IHostingEnvironment HostingEnvironment;
 
-@model IEnumerable<Atut.ViewModels.JourneyViewModel>
 @inject RoleService RoleService;
 
 @{
@@ -70,7 +69,7 @@
                     <div class="box-footer">
                     </div>
 
-                    <v-client-table :data="data" :columns="columns" :options="options">
+                    <v-server-table url="Journey/FetchAll" :columns="columns" :options="options">
                         <template slot="companyColumn" scope="props">
                             {{ props.row.company.value }}
                         </template>
@@ -83,7 +82,7 @@
                                 <a :href="'/Journey/Delete/'+ props.row.id" class="btn btn-danger" title="Usuń"><i style="font-size: 1.3em" class="fa fa-trash-o"></i></a>
                             </div>
                         </template>
-                    </v-client-table>
+                    </v-server-table>
                 </div>
             </div>
         </div>
@@ -106,7 +105,6 @@
 
 @section Scripts {
     <script type="text/javascript">
-        window.model = @Html.ToJson(Model);
         window.isAdmin = @RoleService.IsAdmin.ToString().ToLower();
     </script>
 

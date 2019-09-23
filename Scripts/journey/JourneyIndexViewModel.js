@@ -1,5 +1,5 @@
 ﻿import Vue from "vue";
-import { ClientTable, Event } from "vue-tables-2";
+import { ClientTable, ServerTable, Event } from "vue-tables-2";
 import moment from 'moment';
 import Datepicker from 'vuejs-datepicker';
 import VueResource from 'vue-resource';
@@ -8,9 +8,10 @@ moment.locale('pl');
 window.moment = moment;
 
 Vue.use(ClientTable);
+Vue.use(ServerTable);
 Vue.use(VueResource);
 
-var journeyIndexViewModel = function (model, isAdmin) {
+var journeyIndexViewModel = function (isAdmin) {
     var columns = ["vehiclesColumn", "startingPlace", "finalPlace", "startDate", "endDate", "actions"];
     
     if (!!isAdmin) {
@@ -77,16 +78,17 @@ var journeyIndexViewModel = function (model, isAdmin) {
                 });
             });
 
-            for (var company of model.map(m => m.company)) {
-                if (this.companies.filter(m => m.key === company.key).length == 0) {
-                    this.companies.push(company);
-                }
-            }
-            for (var country of model.map(m => m.countries).reduce((a, b) => a.concat(b), [])) {
-                if (this.countries.filter(m => m.name === country.name).length == 0) {
-                    this.countries.push(country);
-                }
-            }
+            //TODO
+            //for (var company of model.map(m => m.company)) {
+            //    if (this.companies.filter(m => m.key === company.key).length == 0) {
+            //        this.companies.push(company);
+            //    }
+            //}
+            //for (var country of model.map(m => m.countries).reduce((a, b) => a.concat(b), [])) {
+            //    if (this.countries.filter(m => m.name === country.name).length == 0) {
+            //        this.countries.push(country);
+            //    }
+            //}
 
             this.companies = this.companies.sort(function (a, b) { return a.value.localeCompare(b.value); });
         },
@@ -176,7 +178,6 @@ var journeyIndexViewModel = function (model, isAdmin) {
                         }
                     }]
             },
-            data: model,
             filterCompany: null,
             filterFromDate: null,
             filterToDate: null,
@@ -185,4 +186,4 @@ var journeyIndexViewModel = function (model, isAdmin) {
     });
 }
 
-journeyIndexViewModel(window.model, window.isAdmin);
+journeyIndexViewModel(window.isAdmin);

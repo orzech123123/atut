@@ -18361,6 +18361,17 @@ var journeyIndexViewModel = function (isAdmin) {
             companies: [],
             columns: columns,
             options: {
+                requestFunction: function (params) {
+                    return this
+                        .$http
+                        .get('/Journey/FetchAll?ascending=' + params.ascending + "&orderBy=" + (!!params.orderBy ? params.orderBy : "") + "&page=" + params.page + "&limit=" + params.limit);
+                },
+                responseAdapter: function (response) {
+                    return {
+                        data: response.data.data,
+                        count: response.data.count
+                    };
+                },
                 columnsClasses: {
                     actions: "VueTables__atut_actions_width"
                 },

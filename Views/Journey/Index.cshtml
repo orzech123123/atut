@@ -69,7 +69,7 @@
                     <div class="box-footer">
                     </div>
 
-                    <v-server-table url="Journey/FetchAll" :columns="columns" :options="options">
+                    <v-server-table :columns="columns" :options="options">
                         <template slot="companyColumn" scope="props">
                             {{ props.row.company.value }}
                         </template>

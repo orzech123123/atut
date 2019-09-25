@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Atut.Filters;
 using Atut.Identity;
@@ -109,10 +110,17 @@ namespace Atut.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> FetchAll(VueTablesPageRequest pageInfo, VueTablesSortRequest sortInfo)
+        public async Task<IActionResult> FetchAll(
+            string company,
+            string country,
+            DateTime? dateFrom,
+            DateTime? dateTo,
+            VueTablesPageRequest pageInfo,
+            VueTablesSortRequest sortInfo
+            )
         {
-            var data = await _journeyService.GetAllAsync(sortInfo, pageInfo);
-            var count = await _journeyService.CountAllAsync(sortInfo);
+            var data = await _journeyService.GetAllAsync(company, country, dateFrom, dateTo, sortInfo, pageInfo);
+            var count = await _journeyService.CountAllAsync(company, country, dateFrom, dateTo, sortInfo);
 
             return Json(new { data, count });
         }

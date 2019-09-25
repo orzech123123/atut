@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
-using System.Globalization;
 using Atut.Models;
 using Atut.Paging;
 using Atut.Sorting;
@@ -42,15 +39,27 @@ namespace Atut.Services
             _requestModelService = requestModelService;
         }
 
-        public async Task<IEnumerable<JourneyViewModel>> GetAllAsync(ISortingInfo sortingInfo, IPagingInfo pagingInfo)
+        public async Task<IEnumerable<JourneyViewModel>> GetAllAsync(
+            string company,
+            string country,
+            DateTime? dateFrom,
+            DateTime? dateTo,
+            ISortingInfo sortingInfo,
+            IPagingInfo pagingInfo)
         {
-            var query = BuildIndexQuery(sortingInfo, pagingInfo);
-            var data = await query.ToListAsync();
+            var query = BuildIndexQuery(company, country, dateFrom, dateTo, sortingInfo, pagingInfo);
+            var data = await query.Select(v => _mapper.Map<Journey, JourneyViewModel>(v)).ToListAsync();
 
             return data;
         }
 
-        private IQueryable<JourneyViewModel> BuildIndexQuery(ISortingInfo sortingInfo, IPagingInfo pagingInfo = null)
+        public IQueryable<Journey> BuildIndexQuery(
+            string company,
+            string country,
+            DateTime? dateFrom,
+            DateTime? dateTo,
+            ISortingInfo sortingInfo,
+            IPagingInfo pagingInfo = null)
         {
             //            var filterModel = _requestModelService.GetModel<JourneyFilterModel>();
 
@@ -63,7 +72,31 @@ namespace Atut.Services
             if (!_roleService.IsAdmin)
             {
                 query = query
-                    .Where(v => v.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
+                    .Where(j => j.User.UserName == _httpContextAccessor.HttpContext.User.Identity.Name);
+            }
+
+            if (dateFrom.HasValue)
+            {
+                query = query
+                    .Where(j => j.EndDate >= dateFrom.Value.Date);
+            }
+            if (dateTo.HasValue)
+            {
+                dateTo = dateTo.Value.Date.AddDays(1).AddSeconds(-1);
+                query = query
+                    .Where(j => j.EndDate <= dateTo);
+            }
+
+            if (!string.IsNullOrWhiteSpace(company))
+            {
+                query = query
+                    .Where(j => j.UserId == company);
+            }
+
+            if (!string.IsNullOrWhiteSpace(country))
+            {
+                query = query
+                    .Where(j => j.Countries.Any(c => c.Name == country));
             }
 
             if (!string.IsNullOrWhiteSpace(sortingInfo.ColumnName))
@@ -74,7 +107,7 @@ namespace Atut.Services
             }
             else
             {
-                query = query.OrderByDescending(j => j.StartDate);
+                query = query.OrderByDescending(j => j.EndDate);
             }
             
             if (pagingInfo != null)
@@ -84,13 +117,17 @@ namespace Atut.Services
                     .Take(pagingInfo.PageSize);
             }
 
-            return query
-                .Select(v => _mapper.Map<Journey, JourneyViewModel>(v));
+            return query;
         }
 
-        public async Task<int> CountAllAsync(ISortingInfo sortingInfo)
+        public async Task<int> CountAllAsync(
+            string company,
+            string country,
+            DateTime? dateFrom,
+            DateTime? dateTo,
+            ISortingInfo sortingInfo)
         {
-            var query = BuildIndexQuery(sortingInfo);
+            var query = BuildIndexQuery(company, country, dateFrom, dateTo, sortingInfo);
             var count = await query.CountAsync();
 
             return count;

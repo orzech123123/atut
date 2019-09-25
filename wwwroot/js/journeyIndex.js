@@ -18278,8 +18278,8 @@ var journeyIndexViewModel = function (isAdmin) {
             
             $("#generateReport").on("click", () => {
                 let journeyIds = this.$children
-                    .filter(ch => ch.$el.className == "VueTables VueTables--client")[0]
-                    .allFilteredData
+                    .filter(ch => ch.$el.className == "VueTables VueTables--server")[0]
+                    .data
                     .map(row => row.id);
                 
                 if (!this.filterCompany || !this.filterCountry || !this.filterFromDate || !this.filterToDate || journeyIds.length == 0) {
@@ -18304,8 +18304,8 @@ var journeyIndexViewModel = function (isAdmin) {
 
             $("#notifyAdmin").on("click", () => {
                 let journeyIds = this.$children
-                    .filter(ch => ch.$el.className == "VueTables VueTables--client")[0]
-                    .allFilteredData 
+                    .filter(ch => ch.$el.className == "VueTables VueTables--server")[0]
+                    .data 
                     .map(row => row.id);
 
                 if (!this.filterCountry || !this.filterFromDate || !this.filterToDate || journeyIds.length == 0) {
@@ -18329,6 +18329,12 @@ var journeyIndexViewModel = function (isAdmin) {
             });
 
             //TODO
+            this.$http.get('/Account/GetAllCompanies').then(response => {
+                this.companies = response.body;
+            });
+            this.$http.get('/Account/GetAllCountries').then(response => {
+                this.countries = response.body;
+            });
             //for (var company of model.map(m => m.company)) {
             //    if (this.companies.filter(m => m.key === company.key).length == 0) {
             //        this.companies.push(company);
@@ -18343,28 +18349,41 @@ var journeyIndexViewModel = function (isAdmin) {
             this.companies = this.companies.sort(function (a, b) { return a.value.localeCompare(b.value); });
         },
         watch: {
-            filterCompany: function() {
-                __WEBPACK_IMPORTED_MODULE_1_vue_tables_2__["Event"].$emit('vue-tables.filter::company', this.filterCompany);
+            filterCompany: function () {
+                this.$refs.table.refresh();
+//                Event.$emit('vue-tables.filter::company', this.filterCompany);
             },  
-            filterCountry: function() {
-                __WEBPACK_IMPORTED_MODULE_1_vue_tables_2__["Event"].$emit('vue-tables.filter::country', this.filterCountry);
+            filterCountry: function () {
+                this.$refs.table.refresh();
+//                Event.$emit('vue-tables.filter::country', this.filterCountry);
             },
-            filterFromDate: function() {
-                __WEBPACK_IMPORTED_MODULE_1_vue_tables_2__["Event"].$emit('vue-tables.filter::dateFrom', this.filterFromDate);
+            filterFromDate: function () {
+                this.$refs.table.refresh();
+//                Event.$emit('vue-tables.filter::dateFrom', this.filterFromDate);
             }, 
-            filterToDate: function() {
-                __WEBPACK_IMPORTED_MODULE_1_vue_tables_2__["Event"].$emit('vue-tables.filter::dateTo', this.filterToDate);
+            filterToDate: function () {
+                this.$refs.table.refresh();
+//                Event.$emit('vue-tables.filter::dateTo', this.filterToDate);
             }  
         },
         data: {
             countries: [],
             companies: [],
+            filterCompany: null,
+            filterFromDate: null,
+            filterToDate: null,
+            filterCountry: null,
             columns: columns,
             options: {
                 requestFunction: function (params) {
+                    var dateFrom = !!vue && !!vue.filterFromDate ? __WEBPACK_IMPORTED_MODULE_2_moment___default()(vue.filterFromDate).format("YYYY-MM-DD") : "";
+                    var dateTo = !!vue && !!vue.filterToDate ? __WEBPACK_IMPORTED_MODULE_2_moment___default()(vue.filterToDate).format("YYYY-MM-DD") : "";
+                    var company = !!vue && !!vue.filterCompany ? vue.filterCompany : "";
+                    var country = !!vue && !!vue.filterCountry ? vue.filterCountry : "";
+
                     return this
                         .$http
-                        .get('/Journey/FetchAll?ascending=' + params.ascending + "&orderBy=" + (!!params.orderBy ? params.orderBy : "") + "&page=" + params.page + "&limit=" + params.limit);
+                        .get('/Journey/FetchAll?ascending=' + params.ascending + "&orderBy=" + (!!params.orderBy ? params.orderBy : "") + "&page=" + params.page + "&limit=" + params.limit + "&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&company=" + company + "&country=" + country);
                 },
                 responseAdapter: function (response) {
                     return {
@@ -18438,11 +18457,7 @@ var journeyIndexViewModel = function (isAdmin) {
                             return row.endDate <= __WEBPACK_IMPORTED_MODULE_2_moment___default()(key);
                         }
                     }]
-            },
-            filterCompany: null,
-            filterFromDate: null,
-            filterToDate: null,
-            filterCountry: null
+            }
         }
     });
 }

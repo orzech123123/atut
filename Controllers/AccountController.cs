@@ -49,6 +49,13 @@ namespace Atut.Controllers
 
             return Json(companies);
         }
+        [HttpGet]
+        public IActionResult GetAllCountries()
+        {
+            var countries = CountriesHelper.Countries.Select(c => new {Name = c});
+
+            return Json(countries);
+        }
 
         //
         // GET: /Account/Login

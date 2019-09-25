@@ -32,6 +32,13 @@
     display: table-cell;
 }
 
+#JourneyIndex .VueTables__table th:nth-child(5),
+#JourneyIndex .VueTables__table th:nth-child(6)
+{
+    width: 90px;
+}
+
+
 .callout.callout-danger > ul {
     list-style-type: none;
     padding: 0;

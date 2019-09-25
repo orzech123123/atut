@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Atut.Converters;
+using Newtonsoft.Json;
 
 namespace Atut.ViewModels
 {
@@ -34,10 +36,12 @@ namespace Atut.ViewModels
 
         [Required(ErrorMessage = "Data wyjazdu jest wymagana")]
         [Display(Name = "Data wyjazdu")]
+        [JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
         public DateTime? StartDate { get; set; }
 
         [Required(ErrorMessage = "Data powrotu jest wymagana")]
         [Display(Name = "Data powrotu")]
+        [JsonConverter(typeof(DateTimeJsonConverter), "yyyy-MM-dd")]
         public DateTime? EndDate { get; set; }
 
         [Required(ErrorMessage = "Kraje są wymagane")]

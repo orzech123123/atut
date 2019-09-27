@@ -47,7 +47,7 @@ namespace Atut.Services
             ISortingInfo sortingInfo,
             IPagingInfo pagingInfo)
         {
-            var query = BuildIndexQuery(company, country, dateFrom, dateTo, sortingInfo, pagingInfo);
+            var query = BuildIndexQuery(company, country, dateFrom, dateTo, sortingInfo, true, pagingInfo);
             var data = await query.Select(v => _mapper.Map<Journey, JourneyViewModel>(v)).ToListAsync();
 
             return data;
@@ -61,7 +61,7 @@ namespace Atut.Services
             DateTime dateTo,
             ISortingInfo sortingInfo)
         {
-            var query = BuildIndexQuery(company, country, dateFrom, dateTo, sortingInfo, null);
+            var query = BuildIndexQuery(company, country, dateFrom, dateTo, sortingInfo, false);
             var data = await query.ToListAsync();
 
             return data;
@@ -73,15 +73,20 @@ namespace Atut.Services
             DateTime? dateFrom,
             DateTime? dateTo,
             ISortingInfo sortingInfo,
+            bool withIncludes = true,
             IPagingInfo pagingInfo = null)
         {
             //            var filterModel = _requestModelService.GetModel<JourneyFilterModel>();
 
-            IQueryable<Journey> query = _databaseContext.Journeys
-                .Include(j => j.User)
-                .Include(j => j.Countries)
-                .Include(j => j.JourneyVehicles)
-                .ThenInclude(jv => jv.Vehicle);
+            IQueryable<Journey> query = _databaseContext.Journeys.Include(j => j.User);
+
+            if (withIncludes)
+            {
+                query = query
+                    .Include(j => j.Countries)
+                    .Include(j => j.JourneyVehicles)
+                    .ThenInclude(jv => jv.Vehicle);
+            }
 
             if (!_roleService.IsAdmin)
             {
@@ -141,7 +146,7 @@ namespace Atut.Services
             DateTime? dateTo,
             ISortingInfo sortingInfo)
         {
-            var query = BuildIndexQuery(company, country, dateFrom, dateTo, sortingInfo);
+            var query = BuildIndexQuery(company, country, dateFrom, dateTo, sortingInfo, false);
             var count = await query.CountAsync();
 
             return count;

@@ -65,9 +65,29 @@ namespace Atut.Services
             });
         }
 
-        public async Task<ReportViewModel> GenerateReport(string companyId, string country, DateTime dateFrom, DateTime dateTo)
+        public async Task<ReportViewModel> GenerateReport(string companyId, string country, DateTime dateFrom, DateTime dateTo, int[] journeyIds = null)
         {
-            var journeys = (await _journeyService.GetAllAsync(companyId, country, dateFrom, dateTo, new VueTablesSortRequest { Ascending = 1, OrderBy = nameof(Journey.StartDate)})).ToList();
+            List<Journey> journeys;
+            //backward-compability
+            if (journeyIds != null && journeyIds.Any())
+            {
+                journeys = _databaseContext.Journeys
+                    .Where(j => journeyIds.Contains(j.Id))
+                    .Include(j => j.User)
+                    //NOTE zamiast tych includow mamy test szybkosci FillJourneysAdditionalData
+                    //                .Include(j => j.Countries)
+                    //                .Include(j => j.JourneyVehicles)
+                    //                .ThenInclude(jv => jv.Vehicle)
+                    //                .Include(j => j.Invoices)
+                    .OrderBy(j => j.StartDate)
+                    .ToList();
+
+                companyId = journeys.First().UserId;
+            }
+            else
+            {
+                journeys = (await _journeyService.GetAllAsync(companyId, country, dateFrom, dateTo, new VueTablesSortRequest { Ascending = 1, OrderBy = nameof(Journey.StartDate) })).ToList();
+            }
 
             var company = _databaseContext.Users.Find(companyId).CompanyName;
 

@@ -32,7 +32,7 @@ namespace Atut.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> GenerateReport(string companyId, string country, DateTime dateFrom, DateTime dateTo)
+        public async Task<IActionResult> GenerateReport(string companyId, string country, DateTime dateFrom, DateTime dateTo, int[] journeyIds = null)
         {
             //TODO zmienic na lepsze
             if (!_roleService.IsAdmin)
@@ -42,7 +42,7 @@ namespace Atut.Controllers
 
             try
             {
-                var report = await _reportService.GenerateReport(companyId, country, dateFrom, dateTo);
+                var report = await _reportService.GenerateReport(companyId, country, dateFrom, dateTo, journeyIds);
                 return View("Report", report);
             }
             catch (Exception e)

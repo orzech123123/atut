@@ -113,7 +113,7 @@ namespace Atut.Services
                     .Where(j => j.Countries.Any(c => c.Name == country));
             }
 
-            if (!string.IsNullOrWhiteSpace(sortingInfo.ColumnName))
+            if (!string.IsNullOrWhiteSpace(sortingInfo?.ColumnName))
             {
                 query = sortingInfo.IsAscending ? 
                     query.OrderBy(j => EF.Property<object>(j, sortingInfo.ColumnName)) :

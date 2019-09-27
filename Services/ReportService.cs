@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Atut.Identity;
 using Atut.Models;
+using Atut.Sorting;
 using Atut.ViewModels;
-using FixerSharp;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,26 +21,29 @@ namespace Atut.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUrlHelper _urlHelper;
         private readonly CountriesHelper _countriesHelper;
+        private readonly JourneyService _journeyService;
 
         public ReportService(
             DatabaseContext databaseContext,
             IEmailService emailService,
             IHttpContextAccessor httpContextAccessor,
             IUrlHelper urlHelper,
-            CountriesHelper countriesHelper)
+            CountriesHelper countriesHelper,
+            JourneyService journeyService)
         {
             _databaseContext = databaseContext;
             _emailService = emailService;
             _httpContextAccessor = httpContextAccessor;
             _urlHelper = urlHelper;
             _countriesHelper = countriesHelper;
+            _journeyService = journeyService;
         }
 
-        public void NotifyAdmin(ClaimsPrincipal user, int[] journeyIds, string country, DateTime dateFrom, DateTime dateTo)
+        public async Task NotifyAdmin(ClaimsPrincipal user, string country, DateTime dateFrom, DateTime dateTo)
         {
-            var journeys = _databaseContext.Journeys
-                .Where(v => journeyIds.Contains(v.Id))
-                .ToList();
+            var companyId = user.Claims.Single(c => c.Type == UserClaimTypes.CompanyId).Value;
+
+            var journeys = (await _journeyService.GetAllAsync(companyId, country, dateFrom, dateTo, null)).ToList();
 
             journeys.ForEach(j => j.IsNotified = true);
 
@@ -47,7 +51,7 @@ namespace Atut.Services
 
             var admins = _databaseContext.Users.Where(u => u.IsAdmin).ToList();
 
-            var url = _urlHelper.Action("GenerateReport", "Report", new { journeyIds, country, dateFrom, dateTo, company }, _httpContextAccessor.HttpContext.Request.Scheme);
+            var url = _urlHelper.Action("GenerateReport", "Report", new { companyId, country, dateFrom, dateTo }, _httpContextAccessor.HttpContext.Request.Scheme);
 
             admins.ForEach(u =>
             {
@@ -61,23 +65,12 @@ namespace Atut.Services
             });
         }
 
-        public ReportViewModel GenerateReport(int[] journeyIds, string country, DateTime dateFrom, DateTime dateTo, string company)
+        public async Task<ReportViewModel> GenerateReport(string companyId, string country, DateTime dateFrom, DateTime dateTo)
         {
-            var journeys = _databaseContext.Journeys
-                .Where(j => journeyIds.Contains(j.Id))
-                .Include(j => j.User)
-//NOTE zamiast tych includow mamy test szybkosci FillJourneysAdditionalData
-//                .Include(j => j.Countries)
-//                .Include(j => j.JourneyVehicles)
-//                .ThenInclude(jv => jv.Vehicle)
-//                .Include(j => j.Invoices)
-                .OrderBy(j => j.StartDate)
-                .ToList();
+            var journeys = (await _journeyService.GetAllAsync(companyId, country, dateFrom, dateTo, new VueTablesSortRequest { Ascending = 1, OrderBy = nameof(Journey.StartDate)})).ToList();
 
-            if (journeyIds.Count() != journeys.Count())
-            {
-                throw new Exception("Amount of Journeys on backend is not equal to journeyIds count");
-            }
+            var company = _databaseContext.Users.Find(companyId).CompanyName;
+
             if (!journeys.Any())
             {
                 throw new Exception("There are no Journeys to generate the report");

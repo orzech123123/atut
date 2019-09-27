@@ -53,6 +53,20 @@ namespace Atut.Services
             return data;
         }
 
+
+        public async Task<IEnumerable<Journey>> GetAllAsync(
+            string company,
+            string country,
+            DateTime dateFrom,
+            DateTime dateTo,
+            ISortingInfo sortingInfo)
+        {
+            var query = BuildIndexQuery(company, country, dateFrom, dateTo, sortingInfo, null);
+            var data = await query.ToListAsync();
+
+            return data;
+        }
+
         public IQueryable<Journey> BuildIndexQuery(
             string company,
             string country,

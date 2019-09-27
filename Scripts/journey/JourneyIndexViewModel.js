@@ -45,9 +45,7 @@ var journeyIndexViewModel = function (isAdmin) {
                     "&dateFrom=" +
                     moment(this.filterFromDate).format("YYYY-MM-DD") +
                     "&dateTo=" +
-                    moment(this.filterToDate).format("YYYY-MM-DD") +
-                    "&journeyIds=" +
-                    journeyIds.join("&journeyIds=");
+                    moment(this.filterToDate).format("YYYY-MM-DD");
 
                 window.open(url);
             }); 
@@ -69,9 +67,7 @@ var journeyIndexViewModel = function (isAdmin) {
                     "&dateFrom=" +
                     moment(this.filterFromDate).format("YYYY-MM-DD") +
                     "&dateTo=" +
-                    moment(this.filterToDate).format("YYYY-MM-DD") +
-                    "&journeyIds=" +
-                    journeyIds.join("&journeyIds=");
+                    moment(this.filterToDate).format("YYYY-MM-DD");
 
                 this.$http.post(url).then(() => {
                     alert("Administrator został poinformowany o zakończeniu rozliczenia kraju " + this.filterCountry + ".");

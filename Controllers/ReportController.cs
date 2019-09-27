@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Atut.Services;
 using Atut.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace Atut.Controllers
         }
         
         [HttpGet]
-        public IActionResult GenerateReport(int[] journeyIds, string country, DateTime dateFrom, DateTime dateTo, string companyId = null, string company = null)
+        public async Task<IActionResult> GenerateReport(string companyId, string country, DateTime dateFrom, DateTime dateTo)
         {
             //TODO zmienic na lepsze
             if (!_roleService.IsAdmin)
@@ -39,14 +40,9 @@ namespace Atut.Controllers
                 throw new UnauthorizedAccessException();
             }
 
-            if (company == null)
-            {
-                company = _databaseContext.Users.Find(companyId).CompanyName;
-            }
-
             try
             {
-                var report = _reportService.GenerateReport(journeyIds, country, dateFrom, dateTo, company);
+                var report = await _reportService.GenerateReport(companyId, country, dateFrom, dateTo);
                 return View("Report", report);
             }
             catch (Exception e)
@@ -57,9 +53,9 @@ namespace Atut.Controllers
         }
         
         [HttpPost]
-        public IActionResult NotifyAdmin(int[] journeyIds, string country, DateTime dateFrom, DateTime dateTo)
+        public async Task<IActionResult> NotifyAdmin(string country, DateTime dateFrom, DateTime dateTo)
         {
-            _reportService.NotifyAdmin(User, journeyIds, country, dateFrom, dateTo);
+            await _reportService.NotifyAdmin(User, country, dateFrom, dateTo);
             _databaseManager.Commit();
 
             return Ok();

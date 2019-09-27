@@ -18295,9 +18295,7 @@ var journeyIndexViewModel = function (isAdmin) {
                     "&dateFrom=" +
                     __WEBPACK_IMPORTED_MODULE_2_moment___default()(this.filterFromDate).format("YYYY-MM-DD") +
                     "&dateTo=" +
-                    __WEBPACK_IMPORTED_MODULE_2_moment___default()(this.filterToDate).format("YYYY-MM-DD") +
-                    "&journeyIds=" +
-                    journeyIds.join("&journeyIds=");
+                    __WEBPACK_IMPORTED_MODULE_2_moment___default()(this.filterToDate).format("YYYY-MM-DD");
 
                 window.open(url);
             }); 
@@ -18319,9 +18317,7 @@ var journeyIndexViewModel = function (isAdmin) {
                     "&dateFrom=" +
                     __WEBPACK_IMPORTED_MODULE_2_moment___default()(this.filterFromDate).format("YYYY-MM-DD") +
                     "&dateTo=" +
-                    __WEBPACK_IMPORTED_MODULE_2_moment___default()(this.filterToDate).format("YYYY-MM-DD") +
-                    "&journeyIds=" +
-                    journeyIds.join("&journeyIds=");
+                    __WEBPACK_IMPORTED_MODULE_2_moment___default()(this.filterToDate).format("YYYY-MM-DD");
 
                 this.$http.post(url).then(() => {
                     alert("Administrator został poinformowany o zakończeniu rozliczenia kraju " + this.filterCountry + ".");

@@ -3,18 +3,18 @@
   "name": "asp.net",
   "private": true,
   "devDependencies": {
-    "css-loader": "^0.28.11",
-    "ts-loader": "^2.3.4",
+    "css-loader": "^6.7.3",
+    "ts-loader": "^9.4.2",
     "typescript": "^2.4.2",
-    "webpack": "^3.5.5"
+    "webpack": "^5.75.0"
   },
   "scripts": {
     "build:dev": "webpack --display-error-details --watch"
   },
   "dependencies": {
-    "css-loader": "^0.28.11",
+    "css-loader": "^6.7.3",
     "moment": "^2.21.0",
-    "style-loader": "^0.20.3",
+    "style-loader": "^3.3.1",
     "vee-validate": "^2.0.5",
     "vue": "^2.5.13",
     "vue-multiselect": "^2.0.8",

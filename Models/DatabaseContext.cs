@@ -42,6 +42,9 @@ namespace Atut.Models
                 .HasOne(c => c.Journey)
                 .WithMany(j => j.Invoices);
 
+            builder.Entity<VatNumber>()
+                .ToTable("VatNumbers", "vat2_atutdb");
+
             base.OnModelCreating(builder);
         }
     }

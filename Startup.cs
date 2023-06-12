@@ -50,7 +50,7 @@ namespace Atut
             {
                 options.Filters.Add<RouteHelperUpdateFilter>();
             });
-            
+
             services.AddHttpsRedirection(options =>
             {
                 options.HttpsPort = 443;

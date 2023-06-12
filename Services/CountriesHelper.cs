@@ -34,9 +34,13 @@ namespace Atut.Services
             {
                 return new decimal(1.1);
             }
-            if (country == CountriesHelper.Belgium || country == CountriesHelper.Netherlands)
+            if (country == CountriesHelper.Belgium)
             {
                 return new decimal(1.06);
+            }
+            if (country == CountriesHelper.Netherlands)
+            {
+                return new decimal(1.09);
             }
             if (country == CountriesHelper.Croatia)
             {
@@ -44,7 +48,7 @@ namespace Atut.Services
             }
             if (country == CountriesHelper.Denmark)
             {
-                return new decimal(1.2);
+                return new decimal(1.25);
             }
 
             throw new NotSupportedException($"Not supported tax for country: {country}");
@@ -64,7 +68,7 @@ namespace Atut.Services
 
             if (CountriesHelper.HrkCurrencyCountries.Contains(country))
             {
-                return CurrencyType.HRK;
+                return CurrencyType.EUR;
             }
 
             if (CountriesHelper.DkkCurrencyCountries.Contains(country))

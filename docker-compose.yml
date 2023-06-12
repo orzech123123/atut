@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  atut-app:
+    container_name: atut-app
+    ports:
+        - "80:80"
+    image: ${DOCKER_REGISTRY-}atut
+    #env var with cs !
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    build:
+      context: .
+      dockerfile: Dockerfile
